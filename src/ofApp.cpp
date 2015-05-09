@@ -6,6 +6,9 @@ void ofApp::setup(){
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
     
+    boundaries.panelLeft.panelSize      = ofRectangle( 100, ofGetWindowHeight()/2, 50,200 );
+    boundaries.panelRight.panelSize     = ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 );
+    
     superPong.init();
 }
 
@@ -35,12 +38,12 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    superPong.paddleLeft->setPosition(100, y);
+    superPong.paddleLeft_->setPosition(100, y);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    superPong.paddleRight->setPosition(ofGetWindowWidth()-100, y);
+    superPong.paddleRight_->setPosition(ofGetWindowWidth()-100, y);
 }
 
 //--------------------------------------------------------------

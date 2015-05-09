@@ -10,6 +10,7 @@
 #define __telePong__PongGame__
 
 #include <iostream>
+#include "PongHelpers.h"
 #include "ofxBox2d.h"
 
 namespace telePong
@@ -19,6 +20,8 @@ class PongGame {
     
 public:
     ~PongGame();
+    void    setBoundaries( BoundaryType const &boundary )           { boundaries_ = boundary; }
+    
     void restrictSpeed(     shared_ptr< ofxBox2dCircle > mBall, int maxSpeed );
     void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall );
     void resetBall(         shared_ptr< ofxBox2dCircle > mBall );
@@ -27,9 +30,10 @@ public:
     void init();
     void rescaleBounds();
     
-    shared_ptr< ofxBox2dRect >             paddleLeft, paddleRight;
-    shared_ptr< ofxBox2dCircle >           ball;
-    shared_ptr< ofxBox2d >                 world;
+    BoundaryType                            boundaries_;
+    shared_ptr< ofxBox2dRect >             paddleLeft_, paddleRight_;
+    shared_ptr< ofxBox2dCircle >           ball_;
+    shared_ptr< ofxBox2d >                 world_;
 };
 
 }   // namespace telePong
