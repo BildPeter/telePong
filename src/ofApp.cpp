@@ -5,10 +5,10 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
+
+    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
     
-    boundaries.panelLeft.panelSize      = ofRectangle( 100, ofGetWindowHeight()/2, 50,200 );
-    boundaries.panelRight.panelSize     = ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 );
-    
+    superPong.setBoundaries( pongCalibrator.getBoundaries() );
     superPong.init();
 }
 

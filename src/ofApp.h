@@ -4,6 +4,7 @@
 
 #include "PongGame.h"
 #include "PongHelpers.h"
+#include "PongCalibrator.h"
 
 class ofApp : public ofBaseApp{
     
@@ -23,6 +24,7 @@ public:
     void gotMessage(ofMessage msg);
     
     telePong::PongGame          superPong;
+    telePong::Calibrator        pongCalibrator;
     telePong::BoundaryType      boundaries;
 };
 
