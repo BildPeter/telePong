@@ -9,6 +9,28 @@
 #ifndef __telePong__TouchHandler__
 #define __telePong__TouchHandler__
 
-#include <stdio.h>
+#include <iostream>
+#include "PongHelpers.h"
+#include "ofxOsc.h"
+
+
+namespace telePong
+{
+
+class TouchHandler{
+public:
+    void                update();
+    void                setBoundaries( BoundaryType boundary )  { boundaries_ = boundary; }
+    void                setupOSC( int port, string adress );
+    
+private:
+    ofxOscReceiver      oscReciever_;
+    BoundaryType        boundaries_;
+    string              oscAdress_  = "";
+    int                 oscPort_;
+};
+    
+}   // namespace telePong
+
 
 #endif /* defined(__telePong__TouchHandler__) */
