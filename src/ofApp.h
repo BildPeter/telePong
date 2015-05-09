@@ -5,6 +5,7 @@
 #include "PongGame.h"
 #include "PongHelpers.h"
 #include "PongCalibrator.h"
+#include "TouchHandler.h"
 
 class ofApp : public ofBaseApp{
     
@@ -26,5 +27,6 @@ public:
     telePong::PongGame          superPong;
     telePong::Calibrator        pongCalibrator;
     telePong::BoundaryType      boundaries;
+    telePong::TouchHandler      touchHandler;
 };
 

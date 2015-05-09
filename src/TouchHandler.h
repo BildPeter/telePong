@@ -22,12 +22,13 @@ public:
     void                update();
     void                setBoundaries( BoundaryType boundary )  { boundaries_ = boundary; }
     void                setupOSC( int port, string adress );
+    ofxOscMessage       oscMessage_;
     
 private:
     ofxOscReceiver      oscReciever_;
     BoundaryType        boundaries_;
     string              oscAdress_  = "";
-    int                 oscPort_;
+    int                 oscPort_    = 3333;
 };
     
 }   // namespace telePong

@@ -8,12 +8,15 @@ void ofApp::setup(){
 
     pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
     
+    touchHandler.setupOSC( 3333, "/tuio/2dcur");
+    
     superPong.setBoundaries( pongCalibrator.getBoundaries() );
     superPong.init();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    touchHandler.update();
     superPong.update();
 }
 
