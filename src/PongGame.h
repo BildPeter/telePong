@@ -1,16 +1,19 @@
 //
 //  PongGame.h
-//  PongBox
+//  telePong
 //
 //  Created by Peter A. Kolski on 03.05.15.
 //
 //
 
-#ifndef __PongBox__PongGame__
-#define __PongBox__PongGame__
+#ifndef __telePong__PongGame__
+#define __telePong__PongGame__
 
 #include <iostream>
 #include "ofxBox2d.h"
+
+namespace telePong
+{
 
 class PongGame {
     
@@ -29,4 +32,7 @@ public:
     shared_ptr< ofxBox2d >                 world;
 };
 
-#endif /* defined(__PongBox__PongGame__) */
+}   // namespace telePong
+
+
+#endif /* defined(__telePong__PongGame__) */

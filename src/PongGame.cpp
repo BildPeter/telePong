@@ -1,12 +1,16 @@
 //
 //  PongGame.cpp
-//  PongBox
+//  telePong
 //
 //  Created by Peter A. Kolski on 03.05.15.
 //
 //
 
 #include "PongGame.h"
+
+namespace telePong
+{
+
 
 void PongGame::update()
 {
@@ -85,3 +89,5 @@ PongGame::~PongGame()
     ball.reset();
     world.reset();
 }
+    
+}   // namespace telePong
