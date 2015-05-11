@@ -17,9 +17,12 @@ void    TouchHandler::setup( int port, string adress )
 {
     oscPort_    = port;
     oscAdress_  = adress;    
-//    oscReciever_.setup( port );
     
     tuioClient.start( oscPort_ );
+    
+    ofAddListener(tuioClient.cursorAdded, this, &TouchHandler::tuioAdded );
+    ofAddListener(tuioClient.cursorRemoved,this,&TouchHandler::tuioRemoved);
+    ofAddListener(tuioClient.cursorUpdated,this,&TouchHandler::tuioUpdated);
 }
     
 void TouchHandler::update()
@@ -33,8 +36,18 @@ void TouchHandler::drawVerbose()
 }
 
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
-    {
-        cout << "Test works\n";
-    }
+{
+    cout << "added\n";
+}
+ 
+void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
+{
+    cout << "removed\n";
+}
+
+void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
+{
+    cout << "updated\n";
+}
     
 }   // namespace telePong

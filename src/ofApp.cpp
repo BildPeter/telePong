@@ -14,14 +14,6 @@ void ofApp::setup(){
     superPong.init();
     
     ofEnableSmoothing();
-    
-//    tuioClient.start(3333);
-    
-    ofAddListener(tuioClient.cursorAdded,this,&ofApp::tuioAdded);
-    ofAddListener(tuioClient.cursorRemoved,this,&ofApp::tuioRemoved);
-    ofAddListener(tuioClient.cursorUpdated,this,&ofApp::tuioUpdated);
-
-
 }
 
 //--------------------------------------------------------------

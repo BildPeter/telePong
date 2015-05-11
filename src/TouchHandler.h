@@ -25,13 +25,13 @@ public:
     void                setup( int port, string adress );
     void                drawVerbose();
 
+private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor);
     void	tuioRemoved(    ofxTuioCursor & tuioCursor);
     void	tuioUpdated(    ofxTuioCursor & tuioCursor);
     
     ofxTuioClient       tuioClient;
-    
-private:
+
     
     BoundaryType        boundaries_;
     string              oscAdress_  = "";
