@@ -31,13 +31,13 @@ namespace telePong
 class TuioTouch
 {
 public:
-    void            setEvent( ofxTuioCursor &cursor )   { eventCursor_ = &cursor;   cursorIsSet_ = true; }
-    void            unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
+    void                setEvent( ofxTuioCursor &cursor )   { eventCursor_ = &cursor;   cursorIsSet_ = true; }
+    void                unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
     
-    float           getX()                              { return eventCursor_->getX(); }
-    float           getY()                              { return eventCursor_->getY(); }
-    int             getID()                             { return eventCursor_->getSessionId(); }
-    bool            isSet()                             { return cursorIsSet_; }
+    float               getX()                              { return eventCursor_->getX(); }
+    float               getY()                              { return eventCursor_->getY(); }
+    int                 getID()                             { return eventCursor_->getSessionId(); }
+    bool                isSet()                             { return cursorIsSet_; }
     
 private:
     ofxTuioCursor  *eventCursor_;
@@ -47,24 +47,28 @@ private:
     
 class TouchHandler{
 public:
+    TouchHandler()
+    {
+        oscPort_ = 3333;
+    }
+
+    void                setup( int port, BoundaryType<2> const boundary );
     void                update();
-    void                setBoundaries( BoundaryType boundary )  { boundaries_ = boundary; }
-    void                setup( int port );
     void                drawVerbose();
+    vector<TuioTouch>  &getTouches()                        { return touchVector_; }
+    vector<ofPoint>    &getPositions()                      { return positions_; }
 
 private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor );
     void	tuioRemoved(    ofxTuioCursor & tuioCursor );
     void	tuioUpdated(    ofxTuioCursor & tuioCursor );
+    bool    isInBoundary(   ofxTuioCursor &tuioCursor );
     
-    bool    isInBoundary(   ofxTuioCursor & tuioCursor );
-    
-    ofxTuioClient       tuioClient;
-
-    
-    BoundaryType        boundaries_;
-    string              oscAdress_  = "";
-    int                 oscPort_    = 3333;
+    ofxTuioClient       tuioClient_;
+    BoundaryType<2>     boundaries_;
+    int                 oscPort_;
+    vector<TuioTouch>   touchVector_;
+    vector<ofPoint>     positions_;
     
 };
     

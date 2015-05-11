@@ -20,7 +20,7 @@ class PongGame {
     
 public:
     ~PongGame();
-    void    setBoundaries( BoundaryType const &boundary )           { boundaries_ = boundary; }
+    void    setBoundaries( BoundaryType<2> &boundary )        { boundaries_ = boundary; }
     
     void restrictSpeed(     shared_ptr< ofxBox2dCircle > mBall, int maxSpeed );
     void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall );
@@ -30,7 +30,7 @@ public:
     void init();
     void rescaleBounds();
     
-    BoundaryType                            boundaries_;
+    BoundaryType<2>                        boundaries_;
     shared_ptr< ofxBox2dRect >             paddleLeft_, paddleRight_;
     shared_ptr< ofxBox2dCircle >           ball_;
     shared_ptr< ofxBox2d >                 world_;

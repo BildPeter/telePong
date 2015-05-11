@@ -44,8 +44,8 @@ void PongGame::init()
     
     paddleLeft_->isFixed();
     paddleRight_->isFixed();
-    paddleLeft_->setup(   world_->getWorld(), boundaries_.panelLeft.panelSize );
-    paddleRight_->setup(  world_->getWorld(), boundaries_.panelRight.panelSize );
+    paddleLeft_->setup(   world_->getWorld(), boundaries_.panels[0] );
+    paddleRight_->setup(  world_->getWorld(), boundaries_.panels[1] );
     //    noStroke();
     
     ball_->setPhysics(3, 1, 0.1);

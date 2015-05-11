@@ -7,9 +7,12 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_NOTICE);
     ofEnableSmoothing();
     
-    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
+//    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
+    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
+
+    touchHandler.setup(3333, pongCalibrator.getBoundaries() );
     
-    touchHandler.setup( 3333 );
+    cout << "touches: " << touchHandler.getTouches().size() << "\n";
     
     superPong.setBoundaries( pongCalibrator.getBoundaries() );
     superPong.init();

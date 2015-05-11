@@ -25,9 +25,8 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    telePong::PongGame          superPong;
-    telePong::Calibrator        pongCalibrator;
-    telePong::BoundaryType      boundaries;
-    telePong::TouchHandler      touchHandler;
+    telePong::PongGame         superPong;
+    telePong::Calibrator       pongCalibrator;
+    telePong::TouchHandler     touchHandler;
 };
 
