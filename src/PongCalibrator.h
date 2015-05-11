@@ -18,12 +18,12 @@ namespace telePong
 
 class   Calibrator{
 public:
-    BoundaryType    const   getBoundaries() { return boundaries_; }
+    BoundaryType<2>        &getBoundaries() { return boundaries_; }
     void                    setPaddelSize( ofRectangle sizeLeft, ofRectangle sizeRight );
     void                    setActiveArea( ofRectangle areaLeft, ofRectangle areaRight );
     
 private:
-    BoundaryType            boundaries_;
+    BoundaryType<2>            boundaries_;
 };
     
 }   // namespace telePong

@@ -12,17 +12,17 @@
 
 namespace telePong
 {
-
+    
 void Calibrator::setPaddelSize( ofRectangle sizeLeft, ofRectangle sizeRight)
 {
-    boundaries_.panelLeft.panelSize     = sizeLeft;
-    boundaries_.panelRight.panelSize    = sizeRight;
+        boundaries_.panels[0]    = sizeRight;
+        boundaries_.panels[1]    = sizeRight;
 }
 
 void Calibrator::setActiveArea( ofRectangle areaLeft, ofRectangle areaRight )
 {
-    boundaries_.panelLeft.activeArea    = areaLeft;
-    boundaries_.panelRight.activeArea   = areaRight;
+    boundaries_.activeArea[0]    = areaLeft;
+    boundaries_.activeArea[1]    = areaRight;
 }
     
 }   // namespace telePong
