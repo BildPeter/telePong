@@ -18,6 +18,33 @@
 namespace telePong
 {
 
+//class ITouch
+//{
+//public:
+//    virtual float   getX()      = 0;
+//    virtual float   getY()      = 0;
+//    virtual int     getID()     = 0;
+//    virtual bool    isSet()     = 0;
+//};
+    
+    
+class TuioTouch
+{
+public:
+    void            setEvent( ofxTuioCursor &cursor )   { eventCursor_ = &cursor;   cursorIsSet_ = true; }
+    void            unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
+    
+    float           getX()                              { return eventCursor_->getX(); }
+    float           getY()                              { return eventCursor_->getY(); }
+    int             getID()                             { return eventCursor_->getSessionId(); }
+    bool            isSet()                             { return cursorIsSet_; }
+    
+private:
+    ofxTuioCursor  *eventCursor_;
+    bool            cursorIsSet_;
+};
+    
+    
 class TouchHandler{
 public:
     void                update();
@@ -26,9 +53,11 @@ public:
     void                drawVerbose();
 
 private:
-    void	tuioAdded(      ofxTuioCursor & tuioCursor);
-    void	tuioRemoved(    ofxTuioCursor & tuioCursor);
-    void	tuioUpdated(    ofxTuioCursor & tuioCursor);
+    void	tuioAdded(      ofxTuioCursor & tuioCursor );
+    void	tuioRemoved(    ofxTuioCursor & tuioCursor );
+    void	tuioUpdated(    ofxTuioCursor & tuioCursor );
+    
+    bool    isInBoundary(   ofxTuioCursor & tuioCursor );
     
     ofxTuioClient       tuioClient;
 
