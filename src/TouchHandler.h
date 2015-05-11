@@ -52,11 +52,11 @@ public:
         oscPort_ = 3333;
     }
 
-    void                setup( int port, BoundaryType<2> const boundary );
+    void                setup( int port, BoundaryType<2> &boundary );
     void                update();
     void                drawVerbose();
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
-    vector<ofPoint>    &getPositions()                      { return positions_; }
+    BoundaryType<2>    &getBoundaries()                     { return boundaries_; }
 
 private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor );

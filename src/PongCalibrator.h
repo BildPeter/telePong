@@ -23,7 +23,7 @@ public:
     void                    setActiveArea( ofRectangle areaLeft, ofRectangle areaRight );
     
 private:
-    BoundaryType<2>            boundaries_;
+    BoundaryType<2>         boundaries_;
 };
     
 }   // namespace telePong

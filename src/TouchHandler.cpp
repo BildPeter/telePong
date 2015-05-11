@@ -13,10 +13,11 @@ using namespace std;
 namespace telePong
 {
     
-void    TouchHandler::setup( int port, BoundaryType<2> const boundary )
+void    TouchHandler::setup( int port, BoundaryType<2> &boundary )
 {
     boundaries_     = boundary;
     oscPort_        = port;
+    touchVector_    = vector<TuioTouch>( boundaries_.panels.size() );
     
     tuioClient_.start( oscPort_ );
     
@@ -38,11 +39,12 @@ void TouchHandler::drawVerbose()
 bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
 {
     // TODO transform coordinates
-    ofPoint     point = ofPoint( ofGetWidth() * tuioCursor.getX(), ofGetHeight() * tuioCursor.getY() );
-    bool    isIn = false;
+    ofPoint     point   = ofPoint( ofGetWidth() * tuioCursor.getX(), ofGetHeight() * tuioCursor.getY() );
+    bool        isIn    = false;
+    
     for ( auto &panel :  boundaries_.panels )
     {
-        isIn = isIn || panel.inside( point );
+        isIn = ( isIn || panel.inside( point ) );
     }
         
     return isIn;
@@ -79,6 +81,25 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
+    for ( auto & mTouch : touchVector_ )
+    {
+        if ( mTouch.isSet() )
+        {
+            if (mTouch.getID() == tuioCursor.getSessionId() )
+            {
+                ofPoint     mPoint   = ofPoint( ofGetWidth() * tuioCursor.getX(), ofGetHeight() * tuioCursor.getY() );
+
+                if ( boundaries_.panels[0].inside( mPoint ) ) {
+                    boundaries_.panels[0].setY( mPoint.y );
+                    cout << "New Coordinate: " << boundaries_.panels[0].getPosition() << "\n";
+                }
+                if ( boundaries_.panels[1].inside( mPoint ) ) {
+                    boundaries_.panels[1].setY( mPoint.y );
+                    cout << "New Coordinate: " << boundaries_.panels[1].getPosition() << " \n";
+                }
+            }
+        }
+    }
 
 }
     

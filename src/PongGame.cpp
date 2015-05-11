@@ -11,8 +11,15 @@
 namespace telePong
 {
 
+void PongGame::updatePositions()
+{
+    paddleLeft_->setPosition( boundaries_->panels[0].getX(), boundaries_->panels[0].getY() );
+    paddleRight_->setPosition( boundaries_->panels[1].getX(), boundaries_->panels[1].getY() );
+}
+    
 void PongGame::update()
 {
+    updatePositions();
     world_->update();
     
     restrictSpeed( ball_, 30 );
@@ -22,9 +29,10 @@ void PongGame::update()
 
 void PongGame::draw()
 {
+    ofNoFill();
+    ofSetColor( 100, 100, 100);
     paddleLeft_->draw();
     paddleRight_->draw();
-    ofSetColor( 200,200,200);
     ofFill();
     ball_->draw();
 }
@@ -38,18 +46,20 @@ void PongGame::init()
     
     world_->init();
     world_->setGravity(0, 0);
-    world_->createBounds();
-    world_->setFPS(60.0);
+    world_->setFPS( ofGetFrameRate() );
     world_->registerGrabbing();
+    cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
+    world_->createBounds( worldRect_ );
+
     
     paddleLeft_->isFixed();
     paddleRight_->isFixed();
-    paddleLeft_->setup(   world_->getWorld(), boundaries_.panels[0] );
-    paddleRight_->setup(  world_->getWorld(), boundaries_.panels[1] );
+    paddleLeft_->setup(   world_->getWorld(), boundaries_->panels[0] );
+    paddleRight_->setup(  world_->getWorld(), boundaries_->panels[1] );
     //    noStroke();
     
     ball_->setPhysics(3, 1, 0.1);
-    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , 30);
+    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_ );
 }
 
 void PongGame::restrictSpeed( shared_ptr< ofxBox2dCircle > mball_, int maxSpeed )
@@ -60,15 +70,23 @@ void PongGame::restrictSpeed( shared_ptr< ofxBox2dCircle > mball_, int maxSpeed 
 
 void PongGame::catchBugVertical( shared_ptr< ofxBox2dCircle > mball )
 {
-    if ( ( mball->getVelocity().x <= 1 ) && ( mball->getVelocity().y > 10 ) )
-        mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom(-10, 10 ), ofRandom( -10, 10 ) ) );
+    
+    if ( ( mball->getVelocity().x <= 0.1 ) && ( mball->getVelocity().x >= 0.1 ) && ( mball->getVelocity().y > 10 ) )
+    {
+        if ( mball->getVelocity().x > 0 )
+            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( 0, speedRestriction_ ), mball->getVelocity().y ) );
+        else
+            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( 0, -speedRestriction_ ), mball->getVelocity().y ) );
+    }
+    
 }
 
 void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
 {
     int     distanceFromBorder = 5;
-    if (     ( mBall->getPosition().x < mBall->getRadius() + distanceFromBorder )
-        ||   ( mBall->getPosition().x > ofGetWindowWidth() - mBall->getRadius() - distanceFromBorder ) )
+    
+    if (     ( mBall->getPosition().x < ( -( mBall->getRadius() ) - distanceFromBorder ) )
+        ||   ( mBall->getPosition().x > ofGetWindowWidth() + mBall->getRadius() + distanceFromBorder ) )
     {
         mBall->setPosition( ofVec2f( ofGetWindowWidth() / 2, ofGetWindowHeight() / 2 ) );
         mBall->setVelocity( ofVec2f::zero() );
@@ -78,7 +96,7 @@ void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
 
 void PongGame::rescaleBounds()
 {
-    world_->createBounds();
+    world_->createBounds( worldRect_ );
 }
 
 PongGame::~PongGame()

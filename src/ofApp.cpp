@@ -11,10 +11,7 @@ void ofApp::setup(){
     pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
 
     touchHandler.setup(3333, pongCalibrator.getBoundaries() );
-    
-    cout << "touches: " << touchHandler.getTouches().size() << "\n";
-    
-    superPong.setBoundaries( pongCalibrator.getBoundaries() );
+    superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
 }
 
@@ -47,12 +44,15 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    superPong.paddleLeft_->setPosition(100, y);
+    
+    touchHandler.getBoundaries().panels[0].y = y;
+    superPong.paddleLeft_->setPosition( touchHandler.getBoundaries().panels[0].x, touchHandler.getBoundaries().panels[0].y );
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    superPong.paddleRight_->setPosition(ofGetWindowWidth()-100, y);
+    touchHandler.getBoundaries().panels[1].y = y;
+//    superPong.paddleRight_->setPosition( touchHandler.getBoundaries().panels[1].x, touchHandler.getBoundaries().panels[1].y );
 }
 
 //--------------------------------------------------------------

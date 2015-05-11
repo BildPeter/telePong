@@ -15,7 +15,7 @@ namespace telePong
     
 void Calibrator::setPaddelSize( ofRectangle sizeLeft, ofRectangle sizeRight)
 {
-        boundaries_.panels[0]    = sizeRight;
+        boundaries_.panels[0]    = sizeLeft;
         boundaries_.panels[1]    = sizeRight;
 }
 
