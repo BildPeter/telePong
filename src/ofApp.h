@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxTuio.h"
 
 #include "PongGame.h"
 #include "PongHelpers.h"
@@ -28,5 +29,12 @@ public:
     telePong::Calibrator        pongCalibrator;
     telePong::BoundaryType      boundaries;
     telePong::TouchHandler      touchHandler;
+    
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+    void	tuioRemoved(ofxTuioCursor & tuioCursor);
+    void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    ofxTuioClient   tuioClient;
+
 };
 

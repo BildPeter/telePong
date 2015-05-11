@@ -12,6 +12,7 @@
 #include <iostream>
 #include "PongHelpers.h"
 #include "ofxOsc.h"
+#include "ofxTuio.h"
 
 
 namespace telePong
@@ -21,14 +22,21 @@ class TouchHandler{
 public:
     void                update();
     void                setBoundaries( BoundaryType boundary )  { boundaries_ = boundary; }
-    void                setupOSC( int port, string adress );
-    ofxOscMessage       oscMessage_;
+    void                setup( int port, string adress );
+    void                drawVerbose();
+
+    void	tuioAdded(      ofxTuioCursor & tuioCursor);
+    void	tuioRemoved(    ofxTuioCursor & tuioCursor);
+    void	tuioUpdated(    ofxTuioCursor & tuioCursor);
+    
+    ofxTuioClient       tuioClient;
     
 private:
-    ofxOscReceiver      oscReciever_;
+    
     BoundaryType        boundaries_;
     string              oscAdress_  = "";
     int                 oscPort_    = 3333;
+    
 };
     
 }   // namespace telePong
