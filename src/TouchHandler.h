@@ -22,7 +22,7 @@ class TouchHandler{
 public:
     void                update();
     void                setBoundaries( BoundaryType boundary )  { boundaries_ = boundary; }
-    void                setup( int port, string adress );
+    void                setup( int port );
     void                drawVerbose();
 
 private:

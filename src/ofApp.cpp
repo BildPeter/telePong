@@ -5,30 +5,27 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
-
+    ofEnableSmoothing();
+    
     pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
     
-    touchHandler.setup( 3333, "/tuio/2dcur");
+    touchHandler.setup( 3333 );
     
     superPong.setBoundaries( pongCalibrator.getBoundaries() );
     superPong.init();
-    
-    ofEnableSmoothing();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     touchHandler.update();
     superPong.update();
-//    tuioClient.getMessage();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground( ofColor::black);
+    superPong.draw();
     touchHandler.drawVerbose();
-    //    superPong.draw();
-//    tuioClient.drawCursors();
 }
 
 //--------------------------------------------------------------
@@ -79,20 +76,3 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
-
-void ofApp::tuioAdded(ofxTuioCursor &tuioCursor){
-    ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-    cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
-}
-
-void ofApp::tuioUpdated(ofxTuioCursor &tuioCursor){
-    ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-    cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
-}
-
-void ofApp::tuioRemoved(ofxTuioCursor &tuioCursor){
-    ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-    cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
-}
-

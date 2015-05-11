@@ -13,10 +13,9 @@ using namespace std;
 namespace telePong
 {
     
-void    TouchHandler::setup( int port, string adress )
+void    TouchHandler::setup( int port )
 {
     oscPort_    = port;
-    oscAdress_  = adress;    
     
     tuioClient.start( oscPort_ );
     
