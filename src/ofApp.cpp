@@ -9,7 +9,7 @@ void ofApp::setup(){
     
     int     portTuio    = 3333;
     int     portControl = 4444;
-    screenScale  = 1;
+    screenScale  = 0.5;
     screenShift  = ofPoint(0, 0 );
     
 //    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
@@ -34,7 +34,8 @@ void ofApp::setup(){
 void ofApp::update(){
     
     touchHandler.update();
-    worldDimension = ofRectangle( screenShift, ofGetWindowHeight() * screenScale, ofGetWindowHeight() * screenScale );
+//    worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() * screenScale, (float)ofGetWindowHeight() * screenScale );
+    worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
     superPong.rescaleBounds(worldDimension);
     superPong.update();
 }
@@ -51,10 +52,12 @@ void ofApp::draw(){
         ofScale( screenScale, screenScale );
         ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
         superPong.draw();
-        touchHandler.drawVerbose();
     }
     ofPopMatrix();
+
+    touchHandler.drawVerbose();
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
@@ -63,6 +66,7 @@ void ofApp::keyPressed(int key){
         ofToggleFullscreen();
         rescalePong();
     }
+
 }
 
 //--------------------------------------------------------------

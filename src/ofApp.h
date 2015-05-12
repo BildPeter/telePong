@@ -35,7 +35,7 @@ public:
     ofRectangle                 mPadA, mPadB;
     ofRectangle                 worldDimension;
     
-    int                         screenScale;
+    float                       screenScale;
     ofPoint                     screenShift;
 };
 
