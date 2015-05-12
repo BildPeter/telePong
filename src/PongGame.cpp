@@ -90,8 +90,8 @@ void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
 {
     int     distanceFromBorder = 5;
     
-    if (     ( mBall->getPosition().x < ( -( mBall->getRadius() ) - distanceFromBorder ) )
-        ||   ( mBall->getPosition().x > ofGetWindowWidth() + mBall->getRadius() + distanceFromBorder ) )
+    if (     ( mBall->getPosition().x < (mBall->getRadius()*2) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > ofGetWindowWidth() - (mBall->getRadius()*2) - distanceFromBorder ) )
     {
         mBall->setPosition( ofVec2f( ofGetWindowWidth() / 2, ofGetWindowHeight() / 2 ) );
         mBall->setVelocity( ofVec2f::zero() );
