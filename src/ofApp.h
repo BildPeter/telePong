@@ -24,16 +24,18 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
+    void rescalePong();
     
-    telePong::PongGame         superPong;
-    telePong::Calibrator       pongCalibrator;
-    telePong::TouchHandler     touchHandler;
-
+    telePong::PongGame          superPong;
+    telePong::Calibrator        pongCalibrator;
+    telePong::TouchHandler      touchHandler;
+    telePong::BoundaryType      mBoundary;
+    
     ofxOscReceiver              screenControl;
     ofRectangle                 mPadA, mPadB;
     ofRectangle                 worldDimension;
     
-    int                     screenScale;
-    ofPoint                 screenShift;
+    int                         screenScale;
+    ofPoint                     screenShift;
 };
 

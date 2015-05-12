@@ -10,7 +10,7 @@ void ofApp::setup(){
     int     portTuio    = 3333;
     int     portControl = 4444;
     screenScale  = 1;
-    screenShift  = ofPoint(30, 30 );
+    screenShift  = ofPoint(0, 0 );
     
 //    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
 //    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
@@ -18,8 +18,6 @@ void ofApp::setup(){
     
     mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
-    
-    telePong::BoundaryType  mBoundary;
     
     std::vector<ofRectangle>    mBund;
     std::vector<ofRectangle*>    mBundPntr;
@@ -63,7 +61,7 @@ void ofApp::keyPressed(int key){
     if(key == 'f')
     {
         ofToggleFullscreen();
-        superPong.rescaleBounds();
+        rescalePong();
     }
 }
 
@@ -115,5 +113,16 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
+
+}
+void ofApp::rescalePong(){
+    superPong.rescaleBounds();
+    
+    mPadA.setFromCenter( 70 , ofGetWindowHeight()/2, 50,100 );
+    mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
+    //        mBoundary.panels[ 0 ] = &mPadA;
+    //        mBoundary.panels[ 1 ] = mPadB
+    
+    //        superPong.setBoundaries( );
 
 }

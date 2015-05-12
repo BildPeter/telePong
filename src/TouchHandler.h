@@ -57,6 +57,7 @@ public:
     }
 
     void                setup( int port, BoundaryType    boundary );
+    void                setBoundray( BoundaryType    boundary )     { boundaries_     = boundary; }
     void                update();
     void                drawVerbose();
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
