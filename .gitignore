@@ -167,3 +167,12 @@ telePong.sdf
 telePong.sln
 telePong.vcxproj
 telePong.vcxproj.filters
+/bin/*.dll
+/bin/telePong.lib
+/bin/telePong.exe
+/bin/telePong.exp
+/bin/telePong_debug.pdb
+/bin/telePong_debug.exe
+/bin/telePong_debug.exp
+/bin/telePong_debug.ilk
+/bin/telePong_debug.lib
