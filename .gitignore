@@ -160,3 +160,10 @@ telePong.xcodeproj/project.xcworkspace/xcuserdata/sonneundasche.xcuserdatad/User
 telePong.xcodeproj/xcshareddata/xcschemes/telePong Debug.xcscheme
 telePong.xcodeproj/xcshareddata/xcschemes/telePong Release.xcscheme
 telePong.xcodeproj/xcuserdata/sonneundasche.xcuserdatad/xcschemes/xcschememanagement.plist
+telePong.vcxproj.user
+obj
+icon.rc
+telePong.sdf
+telePong.sln
+telePong.vcxproj
+telePong.vcxproj.filters
