@@ -77,7 +77,7 @@ void PongGame::restrictSpeed( shared_ptr< ofxBox2dCircle > mball_, int maxSpeed 
 void PongGame::catchBugVertical( shared_ptr< ofxBox2dCircle > mball, double tolerance )
 {
     
-    if ( ( ( mball->getVelocity().x <= tolerance ) && ( mball->getVelocity().x >= (-tolerance) ) ) && ( mball->getVelocity().y > 0.1 ) )
+    if ( ( ( mball->getVelocity().x <= tolerance ) && ( mball->getVelocity().x >= (-tolerance) ) ) && ( mball->getVelocity().y > 0.01 ) )
     {
         if ( mball->getVelocity().x >= 0 )
             mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( tolerance*3, speedRestriction_ ), mball->getVelocity().y ) );

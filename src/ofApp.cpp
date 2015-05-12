@@ -103,7 +103,7 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
+    rescalePong();
 }
 
 //--------------------------------------------------------------
@@ -119,7 +119,7 @@ void ofApp::rescalePong(){
     superPong.rescaleBounds();
     
     mPadA.setFromCenter( 70 , ofGetWindowHeight()/2, 50,100 );
-    mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
+    mPadB.setFromCenter( ofGetWindowHeight()-70, ofGetWindowHeight()/2, 50,100 );
     //        mBoundary.panels[ 0 ] = &mPadA;
     //        mBoundary.panels[ 1 ] = mPadB
     
