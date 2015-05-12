@@ -31,23 +31,6 @@ void TouchHandler::update()
     tuioClient_.getMessage();
     
 //    cout << "POS x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n";
-    for ( auto &mTouch : touchVector_ )
-    {
-        if ( mTouch.isSet() )
-        {
-            ofPoint     point   = ofPoint( (float)ofGetWidth() * mTouch.getX(), (float)ofGetWindowHeight() * mTouch.getY() );
-            if ( boundaries_.panels[0]->inside( point ) )
-            {
-                boundaries_.panels[0]->setY( point.y );
-                cout << "pos: " << point << "\n";
-            }
-            if ( boundaries_.panels[1]->inside( point ) )
-            {
-                boundaries_.panels[1]->setY( point.y );
-                cout << "pos: " << point << "\n";
-            }
-        }
-    }
 }
     
 void TouchHandler::drawVerbose()
@@ -116,8 +99,24 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
-//    ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
-//    cout << "all: " << point << " : "<< ofGetWindowSize() << "\n";
+    
+    for ( auto &mTouch : touchVector_ )
+    {
+        if ( mTouch.isSet() )
+        {
+            ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
+            if ( boundaries_.panels[0]->inside( point ) )
+            {
+                boundaries_.panels[0]->setY( point.y - (boundaries_.panels[0]->height/2)  );
+                cout << "pos: " << point << "\n";
+            }
+            if ( boundaries_.panels[1]->inside( point ) )
+            {
+                boundaries_.panels[1]->setY( point.y - (boundaries_.panels[1]->height/2) );
+                cout << "pos: " << point << "\n";
+            }
+        }
+    }
 }
     
 }   // namespace telePong

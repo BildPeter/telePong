@@ -13,8 +13,14 @@ namespace telePong
 
 void PongGame::updatePositions()
 {
-    paddleLeft_->setPosition( boundaries_->panels[0]->getX(), boundaries_->panels[0]->getY() );
-    paddleRight_->setPosition( boundaries_->panels[1]->getX(), boundaries_->panels[1]->getY() );
+    // TODO Global width/height
+    
+    paddleLeft_->setPosition(   boundaries_->panels[0]->getX() + (boundaries_->panels[0]->width/2) ,
+                                boundaries_->panels[0]->getY() + (boundaries_->panels[0]->height/2) );
+    
+    paddleRight_->setPosition(  boundaries_->panels[1]->getX()  + (boundaries_->panels[1]->width/2) ,
+                                boundaries_->panels[1]->getY()  + (boundaries_->panels[1]->height/2) );
+
 }
     
 void PongGame::update()

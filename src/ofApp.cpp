@@ -9,10 +9,10 @@ void ofApp::setup(){
     
 //    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
     
-    mPadA.set( 300, ofGetWindowHeight()/2, 300,300 );
-    mPadB.set( ofGetWindowWidth()-300, ofGetWindowHeight()/2, 300,300 );
+    mPadA.setFromCenter( 300, ofGetWindowHeight()/2, 300,300 );
+    mPadB.setFromCenter( ofGetWindowWidth()-300, ofGetWindowHeight()/2, 300,300 );
 //    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
-    pongCalibrator.setPaddelSize( mPadA, mPadA );
+//    pongCalibrator.setPaddelSize( mPadA, mPadA );
     telePong::BoundaryType  mBoundary;
     
     
