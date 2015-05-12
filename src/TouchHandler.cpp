@@ -13,12 +13,12 @@ using namespace std;
 namespace telePong
 {
     
-void   TuioTouch::setEvent( ofxTuioCursor &cursor, int paddleID )
+void   TuioTouch::setEvent( ofxTuioCursor &cursor, ofPoint boundaryCenter, int paddleID )
 {
     eventCursor_    = &cursor;
     cursorIsSet_    = true;
     paddleID_       = paddleID;
-//    shiftPosition_  = ofPoint( eventCursor_->getX(), eventCursor_->getY() );
+    shiftY_         = -( ofGetWindowHeight() * eventCursor_->getY() ) + boundaryCenter.y;
 }
     
 // ---------------------------------------------------------------------------
@@ -78,16 +78,13 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
     {
         if ( !mTouch.isSet() )
         {
-                ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
-            if ( boundaries_.panels[0]->inside( point ) )
-            {
-                mTouch.setEvent( tuioCursor, 0 );
-                cout << "event set: " << mTouch.getSessionID() << "\n";
-            }
-            if ( boundaries_.panels[1]->inside( point ) )
-            {
-                mTouch.setEvent( tuioCursor, 1 );
-                cout << "event set: " << mTouch.getSessionID() << "\n";
+            ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
+            for (int i = 0; i < boundaries_.panels.size(); i++) {
+                if ( boundaries_.panels[i]->inside( point ) )
+                {
+                    mTouch.setEvent( tuioCursor, boundaries_.panels[i]->getCenter(), i );
+                    cout << "event set: " << mTouch.getSessionID() << "\n";
+                }
             }
         }
     }
@@ -117,7 +114,7 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
             if ( boundaries_.panels[ mTouch.getPaddleID() ]->inside( point ) )
             {
-                boundaries_.panels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.panels[ mTouch.getPaddleID() ]->height/2)  );
+                boundaries_.panels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.panels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
                 cout << "pos: " << point << "\n";
             } else
             {

@@ -31,20 +31,20 @@ namespace telePong
 class TuioTouch
 {
 public:
-    void                setEvent( ofxTuioCursor &cursor, int paddleID );
+    void                setEvent( ofxTuioCursor &cursor, ofPoint boundaryCenter, int paddleID );
+    
     void                unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
-
-    int                 getPaddleID()                             { return paddleID_; }
-    ofPoint             getShiftPoint()                     { return shiftPosition_; }
+    int                 getSessionID()                      { return eventCursor_->getSessionId(); }
+    int                 getPaddleID()                       { return paddleID_; }
+    float               getShiftY()                         { return shiftY_; }
     float               getX()                              { return eventCursor_->getX(); }
     float               getY()                              { return eventCursor_->getY(); }
-    int                 getSessionID()                             { return eventCursor_->getSessionId(); }
     bool                isSet()                             { return cursorIsSet_; }
     
 private:
     ofxTuioCursor  *eventCursor_;
     bool            cursorIsSet_;
-    ofPoint         shiftPosition_;
+    float           shiftY_;
     int             paddleID_;
 };
     
