@@ -13,16 +13,16 @@
 namespace telePong
 {
     
-void Calibrator::setPaddelSize( ofRectangle sizeLeft, ofRectangle sizeRight)
+void Calibrator::setPaddelSize( ofRectangle &sizeLeft, ofRectangle &sizeRight)
 {
-        boundaries_.panels[0]    = sizeLeft;
-        boundaries_.panels[1]    = sizeRight;
+//        boundaries_.panels.push_back( sizeLeft );
+//        boundaries_.panels.push_back( sizeRight );
 }
 
 void Calibrator::setActiveArea( ofRectangle areaLeft, ofRectangle areaRight )
 {
-    boundaries_.activeArea[0]    = areaLeft;
-    boundaries_.activeArea[1]    = areaRight;
+    boundaries_.activeArea.push_back( areaLeft );
+    boundaries_.activeArea.push_back( areaRight );
 }
     
 }   // namespace telePong

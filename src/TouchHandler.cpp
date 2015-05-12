@@ -13,7 +13,7 @@ using namespace std;
 namespace telePong
 {
     
-void    TouchHandler::setup( int port, BoundaryType<2> &boundary )
+void    TouchHandler::setup( int port, BoundaryType    boundary )
 {
     boundaries_     = boundary;
     oscPort_        = port;
@@ -29,34 +29,69 @@ void    TouchHandler::setup( int port, BoundaryType<2> &boundary )
 void TouchHandler::update()
 {
     tuioClient_.getMessage();
+    
+//    cout << "POS x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n";
+    for ( auto &mTouch : touchVector_ )
+    {
+        if ( mTouch.isSet() )
+        {
+            ofPoint     point   = ofPoint( (float)ofGetWidth() * mTouch.getX(), (float)ofGetWindowHeight() * mTouch.getY() );
+            if ( boundaries_.panels[0]->inside( point ) )
+            {
+                boundaries_.panels[0]->setY( point.y );
+                cout << "pos: " << point << "\n";
+            }
+            if ( boundaries_.panels[1]->inside( point ) )
+            {
+                boundaries_.panels[1]->setY( point.y );
+                cout << "pos: " << point << "\n";
+            }
+        }
+    }
 }
     
 void TouchHandler::drawVerbose()
 {
     tuioClient_.drawCursors();
+    ofNoFill();
+    ofSetColor( ofColor::red );
+    ofRect( *boundaries_.panels[0] );
+    ofRect( *boundaries_.panels[1] );
 }
 
 bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
 {
     // TODO transform coordinates
-    ofPoint     point   = ofPoint( ofGetWidth() * tuioCursor.getX(), ofGetHeight() * tuioCursor.getY() );
+    ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     bool        isIn    = false;
+    
     
     for ( auto &panel :  boundaries_.panels )
     {
-        isIn = ( isIn || panel.inside( point ) );
+        isIn = ( isIn || panel->
+                inside( point ) );
     }
         
-    return isIn;
+    return ( boundaries_.panels[0]->inside( point ) || boundaries_.panels[1]->inside( point )  );
 }
     
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
+    cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n";
+    // ---  cursors will only be usefull, if they are inside the box from the start
+    
     for ( auto & mTouch : touchVector_ )
     {
         if ( !mTouch.isSet() )
         {
-            if ( isInBoundary( tuioCursor ) ) {
+                ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
+            if ( boundaries_.panels[0]->inside( point ) )
+            {
+                mTouch.setEvent( tuioCursor );
+                cout << "event set: " << mTouch.getID() << "\n";
+            }
+            if ( boundaries_.panels[1]->inside( point ) )
+            {
                 mTouch.setEvent( tuioCursor );
                 cout << "event set: " << mTouch.getID() << "\n";
             }
@@ -81,26 +116,8 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
-    for ( auto & mTouch : touchVector_ )
-    {
-        if ( mTouch.isSet() )
-        {
-            if (mTouch.getID() == tuioCursor.getSessionId() )
-            {
-                ofPoint     mPoint   = ofPoint( ofGetWidth() * tuioCursor.getX(), ofGetHeight() * tuioCursor.getY() );
-
-                if ( boundaries_.panels[0].inside( mPoint ) ) {
-                    boundaries_.panels[0].setY( mPoint.y );
-                    cout << "New Coordinate: " << boundaries_.panels[0].getPosition() << "\n";
-                }
-                if ( boundaries_.panels[1].inside( mPoint ) ) {
-                    boundaries_.panels[1].setY( mPoint.y );
-                    cout << "New Coordinate: " << boundaries_.panels[1].getPosition() << " \n";
-                }
-            }
-        }
-    }
-
+//    ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
+//    cout << "all: " << point << " : "<< ofGetWindowSize() << "\n";
 }
     
 }   // namespace telePong

@@ -15,16 +15,16 @@ namespace telePong
 {
     
 
-template< int size  = 2 >
 struct BoundaryType
 {
-    BoundaryType()
-    :   activeArea( size ),
-        panels( size )
-    {}
+//    BoundaryType()
+//    {
+//        activeArea  = vector<ofRectangle>(2);
+//        panels      = vector<ofRectangle>(2);
+//    }
     
-    vector<ofRectangle>     activeArea;
-    vector<ofRectangle>     panels;
+    std::vector<ofRectangle>     activeArea;
+    std::vector<ofRectangle*>     panels;
 };
     
 }   // namespace telePong

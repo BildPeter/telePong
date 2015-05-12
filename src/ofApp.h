@@ -28,5 +28,6 @@ public:
     telePong::PongGame         superPong;
     telePong::Calibrator       pongCalibrator;
     telePong::TouchHandler     touchHandler;
+    ofRectangle  mPadA, mPadB;
 };
 

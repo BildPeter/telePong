@@ -23,7 +23,7 @@ public:
     {
         ballRadius_         = 30;
         speedRestriction_   = 10;
-        worldRect_  = ofGetWindowRect();
+        worldRect_          = ofGetWindowRect();
 //        worldRect_          = ofRectangle( ofGetWindowRect().getPosition() , ofGetWindowWidth() + (ballRadius_*4), ofGetWindowHeight() );
     }
     ~PongGame();
@@ -31,8 +31,8 @@ public:
     void draw();
     void init();
     void rescaleBounds();
-    void                    setBoundaries( BoundaryType<2> *boundary )      { boundaries_ = boundary; }
-    vector<ofRectangle>    &getPanels()                                     { return boundaries_->panels; }
+    void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
+    vector<ofRectangle*>    &getPanels()                                     { return boundaries_->panels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
 
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
@@ -43,7 +43,7 @@ private:
     void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall );
     void resetBall(         shared_ptr< ofxBox2dCircle > mBall );
     
-    BoundaryType<2>                        *boundaries_;
+    BoundaryType                           *boundaries_;
 
     shared_ptr< ofxBox2dCircle >            ball_;
     shared_ptr< ofxBox2d >                  world_;

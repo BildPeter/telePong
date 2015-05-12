@@ -13,14 +13,14 @@ namespace telePong
 
 void PongGame::updatePositions()
 {
-    paddleLeft_->setPosition( boundaries_->panels[0].getX(), boundaries_->panels[0].getY() );
-    paddleRight_->setPosition( boundaries_->panels[1].getX(), boundaries_->panels[1].getY() );
+    paddleLeft_->setPosition( boundaries_->panels[0]->getX(), boundaries_->panels[0]->getY() );
+    paddleRight_->setPosition( boundaries_->panels[1]->getX(), boundaries_->panels[1]->getY() );
 }
     
 void PongGame::update()
 {
-    updatePositions();
     world_->update();
+    updatePositions();
     
     restrictSpeed( ball_, 30 );
     catchBugVertical( ball_ );
@@ -54,8 +54,8 @@ void PongGame::init()
     
     paddleLeft_->isFixed();
     paddleRight_->isFixed();
-    paddleLeft_->setup(   world_->getWorld(), boundaries_->panels[0] );
-    paddleRight_->setup(  world_->getWorld(), boundaries_->panels[1] );
+    paddleLeft_->setup(   world_->getWorld(), *boundaries_->panels[0] );
+    paddleRight_->setup(  world_->getWorld(), *boundaries_->panels[1] );
     //    noStroke();
     
     ball_->setPhysics(3, 1, 0.1);
@@ -78,7 +78,6 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dCircle > mball )
         else
             mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( 0, -speedRestriction_ ), mball->getVelocity().y ) );
     }
-    
 }
 
 void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )

@@ -11,19 +11,18 @@
 
 #include <iostream>
 #include "PongHelpers.h"
-#include "ofxBox2d.h"
 
 namespace telePong
 {
 
 class   Calibrator{
 public:
-    BoundaryType<2>        &getBoundaries() { return boundaries_; }
-    void                    setPaddelSize( ofRectangle sizeLeft, ofRectangle sizeRight );
+    BoundaryType            getBoundaries() { return boundaries_; }
+    void                    setPaddelSize( ofRectangle &sizeLeft, ofRectangle &sizeRight );
     void                    setActiveArea( ofRectangle areaLeft, ofRectangle areaRight );
     
 private:
-    BoundaryType<2>         boundaries_;
+    BoundaryType            boundaries_;
 };
     
 }   // namespace telePong

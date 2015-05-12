@@ -52,11 +52,11 @@ public:
         oscPort_ = 3333;
     }
 
-    void                setup( int port, BoundaryType<2> &boundary );
+    void                setup( int port, BoundaryType    boundary );
     void                update();
     void                drawVerbose();
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
-    BoundaryType<2>    &getBoundaries()                     { return boundaries_; }
+    BoundaryType       &getBoundaries()                     { return boundaries_; }
 
 private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor );
@@ -65,7 +65,7 @@ private:
     bool    isInBoundary(   ofxTuioCursor &tuioCursor );
     
     ofxTuioClient       tuioClient_;
-    BoundaryType<2>     boundaries_;
+    BoundaryType        boundaries_;
     int                 oscPort_;
     vector<TuioTouch>   touchVector_;
     vector<ofPoint>     positions_;
