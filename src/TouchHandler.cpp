@@ -13,6 +13,17 @@ using namespace std;
 namespace telePong
 {
     
+void   TuioTouch::setEvent( ofxTuioCursor &cursor, int paddleID )
+{
+    eventCursor_    = &cursor;
+    cursorIsSet_    = true;
+    paddleID_       = paddleID;
+//    shiftPosition_  = ofPoint( eventCursor_->getX(), eventCursor_->getY() );
+}
+    
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+    
 void    TouchHandler::setup( int port, BoundaryType    boundary )
 {
     boundaries_     = boundary;
@@ -70,13 +81,13 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
                 ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
             if ( boundaries_.panels[0]->inside( point ) )
             {
-                mTouch.setEvent( tuioCursor );
-                cout << "event set: " << mTouch.getID() << "\n";
+                mTouch.setEvent( tuioCursor, 0 );
+                cout << "event set: " << mTouch.getSessionID() << "\n";
             }
             if ( boundaries_.panels[1]->inside( point ) )
             {
-                mTouch.setEvent( tuioCursor );
-                cout << "event set: " << mTouch.getID() << "\n";
+                mTouch.setEvent( tuioCursor, 1 );
+                cout << "event set: " << mTouch.getSessionID() << "\n";
             }
         }
     }
@@ -88,7 +99,7 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
     {
         if ( mTouch.isSet() )
         {
-            if (mTouch.getID() == tuioCursor.getSessionId() )
+            if (mTouch.getSessionID() == tuioCursor.getSessionId() )
             {
                 mTouch.unsetEvent();
                 cout << "event UNset: " << tuioCursor.getSessionId() << "\n";
@@ -99,21 +110,18 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
-    
     for ( auto &mTouch : touchVector_ )
     {
         if ( mTouch.isSet() )
         {
             ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
-            if ( boundaries_.panels[0]->inside( point ) )
+            if ( boundaries_.panels[ mTouch.getPaddleID() ]->inside( point ) )
             {
-                boundaries_.panels[0]->setY( point.y - (boundaries_.panels[0]->height/2)  );
+                boundaries_.panels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.panels[ mTouch.getPaddleID() ]->height/2)  );
                 cout << "pos: " << point << "\n";
-            }
-            if ( boundaries_.panels[1]->inside( point ) )
+            } else
             {
-                boundaries_.panels[1]->setY( point.y - (boundaries_.panels[1]->height/2) );
-                cout << "pos: " << point << "\n";
+                mTouch.unsetEvent();
             }
         }
     }

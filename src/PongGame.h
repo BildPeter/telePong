@@ -40,7 +40,7 @@ public:
 private:
     void updatePositions();
     void restrictSpeed(     shared_ptr< ofxBox2dCircle > mBall, int maxSpeed );
-    void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall );
+    void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall, double tolerance  );
     void resetBall(         shared_ptr< ofxBox2dCircle > mBall );
     
     BoundaryType                           *boundaries_;

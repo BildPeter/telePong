@@ -41,9 +41,6 @@ void ofApp::draw(){
     ofBackground( ofColor::black);
     superPong.draw();
     touchHandler.drawVerbose();
-    
-    ofSetColor( ofColor::white );
-    ofDrawBitmapString( "Left: " + ofToString( superPong.getPanels()[0]->getPosition() ), ofPoint(100,100) );
 }
 
 //--------------------------------------------------------------

@@ -176,3 +176,5 @@ telePong.vcxproj.filters
 /bin/telePong_debug.exp
 /bin/telePong_debug.ilk
 /bin/telePong_debug.lib
+telePong.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+telePong.xcodeproj/project.xcworkspace/xcshareddata/telePong.xccheckout
