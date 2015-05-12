@@ -27,10 +27,11 @@ public:
 //        worldRect_          = ofRectangle( ofGetWindowRect().getPosition() , ofGetWindowWidth() + (ballRadius_*4), ofGetWindowHeight() );
     }
     ~PongGame();
-    void update();
-    void draw();
-    void init();
-    void rescaleBounds();
+    void                    update();
+    void                    draw();
+    void                    init();
+    void                    rescaleBounds();
+    void                    rescaleBounds( ofRectangle bounds );
     void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
     vector<ofRectangle*>    &getPanels()                                     { return boundaries_->panels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }

@@ -7,40 +7,55 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_NOTICE);
     ofEnableSmoothing();
     
-//    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
+    int     portTuio    = 3333;
+    int     portControl = 4444;
+    screenScale  = 1;
+    screenShift  = ofPoint(30, 30 );
     
-    mPadA.setFromCenter( 300, ofGetWindowHeight()/2, 300,300 );
-    mPadB.setFromCenter( ofGetWindowWidth()-300, ofGetWindowHeight()/2, 300,300 );
+//    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
 //    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
 //    pongCalibrator.setPaddelSize( mPadA, mPadA );
-    telePong::BoundaryType  mBoundary;
     
+    mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
+    mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
+    
+    telePong::BoundaryType  mBoundary;
     
     std::vector<ofRectangle>    mBund;
     std::vector<ofRectangle*>    mBundPntr;
     mBoundary.panels.push_back( &mPadA );
     mBoundary.panels.push_back( &mPadB );
-//    mBund.push_back( mPadA );
-//    mBund.push_back( mPadA );
-//    mBundPntr.push_back( &mPadA );
-//    mBundPntr.push_back( &mPadA );
     
-    touchHandler.setup(3333, mBoundary );
+    screenControl.setup( portControl );
+    touchHandler.setup( portTuio, mBoundary );
     superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
     touchHandler.update();
+    worldDimension = ofRectangle( screenShift, ofGetWindowHeight() * screenScale, ofGetWindowHeight() * screenScale );
+    superPong.rescaleBounds(worldDimension);
     superPong.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofBackground( ofColor::black);
-    superPong.draw();
-    touchHandler.drawVerbose();
+    ofClear(0,0,0);
+
+    ofSetColor(255, 255, 255 );
+    ofNoFill();
+    ofPushMatrix();
+    {
+        ofTranslate( screenShift );
+        ofScale( screenScale, screenScale );
+        ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
+        superPong.draw();
+        touchHandler.drawVerbose();
+    }
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------

@@ -29,7 +29,7 @@ void PongGame::update()
     updatePositions();
     
     restrictSpeed( ball_, 30 );
-    catchBugVertical( ball_, 0.2 );
+    catchBugVertical( ball_, 0.3 );
     resetBall( ball_ );
 }
 
@@ -90,8 +90,8 @@ void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
 {
     int     distanceFromBorder = 5;
     
-    if (     ( mBall->getPosition().x < (mBall->getRadius()*2) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > ofGetWindowWidth() - (mBall->getRadius()*2) - distanceFromBorder ) )
+    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getRadius()*2) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getRadius()*2) - distanceFromBorder ) )
     {
         mBall->setPosition( ofVec2f( ofGetWindowWidth() / 2, ofGetWindowHeight() / 2 ) );
         mBall->setVelocity( ofVec2f::zero() );
@@ -101,8 +101,13 @@ void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
 
 void PongGame::rescaleBounds()
 {
+    world_->createBounds();
+}
+    
+void PongGame::rescaleBounds( ofRectangle bounds )
+{
+    worldRect_ = bounds;
     world_->createBounds( worldRect_ );
-//    world_->createBounds();
 }
 
 PongGame::~PongGame()

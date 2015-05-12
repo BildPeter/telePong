@@ -28,6 +28,12 @@ public:
     telePong::PongGame         superPong;
     telePong::Calibrator       pongCalibrator;
     telePong::TouchHandler     touchHandler;
-    ofRectangle  mPadA, mPadB;
+
+    ofxOscReceiver              screenControl;
+    ofRectangle                 mPadA, mPadB;
+    ofRectangle                 worldDimension;
+    
+    int                     screenScale;
+    ofPoint                 screenShift;
 };
 
