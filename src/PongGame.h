@@ -30,6 +30,7 @@ public:
     void                    update();
     void                    draw();
     void                    init();
+    void                    startBall();
     void                    rescaleBounds();
     void                    rescaleBounds( ofRectangle bounds );
     void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }

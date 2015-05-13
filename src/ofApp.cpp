@@ -11,6 +11,7 @@ void ofApp::setup(){
     int     portControl = 4444;
     screenScale  = 0.5;
     screenShift  = ofPoint(0, 0 );
+    screenShift.x = 5;
     
 //    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
 //    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
@@ -61,10 +62,35 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if(key == 'f')
-    {
-        ofToggleFullscreen();
-        rescalePong();
+
+    switch (key) {
+        case 'f':
+            ofToggleFullscreen();
+            rescalePong();
+        case 's':
+            superPong.startBall();
+            break;
+        case '+':
+            screenScale += 0.01;
+            break;
+        case '-':
+            screenScale -= 0.01;
+            break;
+        case OF_KEY_LEFT:
+            screenShift.x -= 2;
+            break;
+        case OF_KEY_RIGHT:
+            screenShift.x += 2;
+            break;
+        case OF_KEY_UP:
+            screenShift.y -= 2;
+            break;
+        case OF_KEY_DOWN:
+            screenShift.y += 2;
+            break;
+            
+        default:
+            break;
     }
 
 }

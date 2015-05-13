@@ -36,11 +36,18 @@ void PongGame::update()
 void PongGame::draw()
 {
     ofNoFill();
-    ofSetColor( 100, 100, 100);
+    ofSetColor( 255, 255, 255);
     paddleLeft_->draw();
     paddleRight_->draw();
     ofFill();
     ball_->draw();
+}
+    
+void PongGame::startBall()
+{
+    float  signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    float  signY = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    ball_->setVelocity( signX * ofRandom( speedRestriction_/2.0, speedRestriction_ ) , signY * ofRandom( 0, speedRestriction_ ) );
 }
 
 void PongGame::init()
