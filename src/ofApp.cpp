@@ -28,6 +28,8 @@ void ofApp::setup(){
     touchHandler.setup( portTuio, mBoundary );
     superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
+
+	ofxSpout::init("telePong", ofGetWidth(), ofGetHeight(), true);
 }
 
 //--------------------------------------------------------------
@@ -42,6 +44,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+	ofxSpout::initSender();
+
     ofClear(0,0,0);
 
     ofSetColor(255, 255, 255 );
@@ -56,6 +61,8 @@ void ofApp::draw(){
     ofPopMatrix();
 
     touchHandler.drawVerbose();
+
+	ofxSpout::sendTexture();
 }
 
 

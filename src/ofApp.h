@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxTuio.h"
+#include "ofxSpout.h"
 
 #include "PongGame.h"
 #include "PongHelpers.h"

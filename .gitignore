@@ -167,7 +167,6 @@ telePong.sdf
 telePong.sln
 telePong.vcxproj
 telePong.vcxproj.filters
-/bin/*.dll
 /bin/telePong.lib
 /bin/telePong.exe
 /bin/telePong.exp
@@ -178,3 +177,11 @@ telePong.vcxproj.filters
 /bin/telePong_debug.lib
 telePong.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 telePong.xcodeproj/project.xcworkspace/xcshareddata/telePong.xccheckout
+/bin/ssleay32.dll
+/bin/Assimp32.dll
+/bin/fmodex.dll
+/bin/fmodexL.dll
+/bin/FreeImage.dll
+/bin/FreeType-6.dll
+/bin/glut32.dll
+/bin/libeay32.dll
