@@ -9,9 +9,8 @@ void ofApp::setup(){
     
     int     portTuio    = 3333;
     int     portControl = 4444;
-    screenScale  = 0.5;
+    screenScale  = 1;
     screenShift  = ofPoint(0, 0 );
-    screenShift.x = 5;
     
 //    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
 //    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
