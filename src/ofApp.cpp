@@ -15,8 +15,6 @@ void ofApp::setup(){
     mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
     
-    std::vector<ofRectangle>    mBund;
-    std::vector<ofRectangle*>   mBundPntr;
     mBoundary.paddels.push_back( &mPadA );
     mBoundary.paddels.push_back( &mPadB );
     

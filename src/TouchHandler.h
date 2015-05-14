@@ -13,6 +13,7 @@
 #include "PongHelpers.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
+#include <set>
 
 
 namespace telePong
@@ -26,7 +27,21 @@ namespace telePong
 //    virtual int     getID()     = 0;
 //    virtual bool    isSet()     = 0;
 //};
+
+enum stateOfArea
+{
+    Paddle,
+    ActiveArea,
+    invalidArea
+};
     
+struct ActivePoint
+{
+    int             sessionID;
+    ofPoint         position;
+    stateOfArea     state;
+};
+
     
 class TuioTouch
 {
@@ -63,6 +78,7 @@ public:
     void                drawVerbose();
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
     BoundaryType       &getBoundaries()                     { return boundaries_; }
+    stateOfArea         getActivePointState( ofPoint aPoint );
 
 private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor );
@@ -76,7 +92,7 @@ private:
     vector<TuioTouch>   touchVector_;
     vector<ofPoint>     positions_;
     bool                verboseText;
-    
+    list<ActivePoint>   activePoints_;
 };
     
 }   // namespace telePong

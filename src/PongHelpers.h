@@ -10,10 +10,11 @@
 #define telePong_PongHelpers_h
 
 #include "ofMain.h"
+#include <set>
 
 namespace telePong
 {
-    
+    using namespace std;
 
 struct BoundaryType
 {
@@ -23,9 +24,10 @@ struct BoundaryType
 //        panels      = vector<ofRectangle>(2);
 //    }
     
-    std::vector<ofRectangle>     activeArea;
+    std::vector<ofRectangle*>    activeArea;
     std::vector<ofRectangle*>    paddels;
 };
+    
     
 }   // namespace telePong
 

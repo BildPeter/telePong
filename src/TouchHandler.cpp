@@ -87,6 +87,13 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
             }
         }
     }
+    
+    ofPoint         pos = ofPoint( tuioCursor.getX(), tuioCursor.getY() );
+    ActivePoint     aPoint;
+    aPoint.sessionID    = tuioCursor.getSessionId();
+    aPoint.state        = getActivePointState( pos );
+    aPoint.position     = pos;
+    activePoints_.push_back(aPoint);
 }
  
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
@@ -101,6 +108,15 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
                 if ( verboseText ) {   cout << "event UNset: " << tuioCursor.getSessionId() << "\n"; }
             }
         }
+    }
+    
+    for ( auto i = activePoints_.begin(); i!= activePoints_.end();)
+    {
+        if (i->sessionID == tuioCursor.getSessionId() ) {
+            activePoints_.erase(i);
+        }
+        else
+            ++i;
     }
 }
 
@@ -121,6 +137,26 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             }
         }
     }
+    
+    for ( ActivePoint &point  : activePoints_)
+    {
+        if ( point.sessionID == tuioCursor.getSessionId() )
+            point.state = getActivePointState( ofPoint( tuioCursor.getX(), tuioCursor.getY() ) );
+    }
+}
+    
+stateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
+{
+    stateOfArea state    = invalidArea;
+    for ( ofRectangle *actArea : boundaries_.activeArea )
+    {
+        if ( actArea->inside( aPoint ) )  { state = ActiveArea; }
+    }
+    for ( ofRectangle *paddleArea : boundaries_.paddels )
+    {
+        if ( paddleArea->inside( aPoint ) )  { state = Paddle; }
+    }
+    return state;
 }
     
 }   // namespace telePong

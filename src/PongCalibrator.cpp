@@ -21,8 +21,8 @@ void Calibrator::setPaddelSize( ofRectangle &sizeLeft, ofRectangle &sizeRight)
 
 void Calibrator::setActiveArea( ofRectangle areaLeft, ofRectangle areaRight )
 {
-    boundaries_.activeArea.push_back( areaLeft );
-    boundaries_.activeArea.push_back( areaRight );
+    boundaries_.activeArea.push_back( &areaLeft );
+    boundaries_.activeArea.push_back( &areaRight );
 }
     
 }   // namespace telePong

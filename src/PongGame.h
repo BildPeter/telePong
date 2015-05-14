@@ -35,8 +35,6 @@ public:
     void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
     vector<ofRectangle*>    &getPaddels()                                   { return boundaries_->paddels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
-
-    shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     
 private:
     void updatePositions();
@@ -44,6 +42,7 @@ private:
     void catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
     void resetBall(         shared_ptr< ofxBox2dRect > mBall );
     
+    shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     BoundaryType                           *boundaries_;
 
     shared_ptr< ofxBox2dRect >              ball_;
