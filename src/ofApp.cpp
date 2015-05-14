@@ -11,11 +11,7 @@ void ofApp::setup(){
     int     portControl = 4444;
     screenScale  = 1;
     screenShift  = ofPoint(0, 0 );
-    
-//    pongCalibrator.setPaddelSize( ofRectangle( 100, ofGetWindowHeight()/2, 50,200 ), ofRectangle( ofGetWindowWidth()-100, ofGetWindowHeight()/2, 50,200 ) );
-//    pongCalibrator.setPaddelSize( ofRectangle( 300, ofGetWindowHeight()/2, 300,300 ), ofRectangle( ofGetWindowWidth()-200, ofGetWindowHeight()/2, 300,300 ) );
-//    pongCalibrator.setPaddelSize( mPadA, mPadA );
-    
+        
     mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
     
@@ -34,7 +30,6 @@ void ofApp::setup(){
 void ofApp::update(){
     
     touchHandler.update();
-//    worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() * screenScale, (float)ofGetWindowHeight() * screenScale );
     worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
     superPong.rescaleBounds(worldDimension);
     superPong.update();
@@ -102,22 +97,10 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
     
-//    touchHandler.getBoundaries().paddels[0].y = y;
-//    superPong.paddleLeft_->setPosition( touchHandler.getBoundaries().paddels[0].x, touchHandler.getBoundaries().paddels[0].y );
-    
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-//    touchHandler.getBoundaries().paddels[1].y = y;
-//    superPong.paddleRight_->setPosition( touchHandler.getBoundaries().paddels[1].x, touchHandler.getBoundaries().paddels[1].y );
-    
-    if ( touchHandler.getBoundaries().paddels[0]->inside( ofPoint(x,y) ) )
-    {
-        touchHandler.getBoundaries().paddels[0]->setY( y );
-        cout << "pos: " << ofPoint(x,y) << "\n";
-    }
 }
 
 //--------------------------------------------------------------
@@ -149,9 +132,4 @@ void ofApp::rescalePong(){
     
     mPadA.setFromCenter( 70 , ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowHeight()-70, ofGetWindowHeight()/2, 50,100 );
-    //        mBoundary.paddels[ 0 ] = &mPadA;
-    //        mBoundary.paddels[ 1 ] = mPadB
-    
-    //        superPong.setBoundaries( );
-
 }
