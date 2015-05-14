@@ -32,10 +32,12 @@ public:
     telePong::BoundaryType      mBoundary;
     
     ofxOscReceiver              screenControl;
-    ofRectangle                 mPadA, mPadB;
     ofRectangle                 worldDimension;
     
     float                       screenScale;
     ofPoint                     screenShift;
+    
+    // --- TMP
+    ofRectangle                 mPadA, mPadB, mRestrictA, mRestrictB;
 };
 

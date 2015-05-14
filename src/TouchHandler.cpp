@@ -52,6 +52,30 @@ void TouchHandler::drawVerbose()
     ofRect( *boundaries_.paddels[1] );
 }
 
+void TouchHandler::drawPointStates(){
+    for ( auto &aPoint : activePoints_ )
+    {
+        ofFill();
+        switch (aPoint.state) {
+            case InvalidArea:
+                ofSetColor( ofColor::red );
+                break;
+                
+            case ActiveArea:
+                ofSetColor( ofColor::green );
+                break;
+                
+            case Paddle:
+                ofSetColor( ofColor::yellow );
+                break;
+                
+            default:
+                break;
+        }
+        ofCircle( aPoint.position, 10 );
+    }
+}
+    
 bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
 {
     // TODO transform coordinates
@@ -72,14 +96,14 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
     if ( verboseText ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
     // ---  cursors will only be usefull, if they are inside the box from the start
+    ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     
     for ( auto & mTouch : touchVector_ )
     {
         if ( !mTouch.isSet() )
         {
-            ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
             for (int i = 0; i < boundaries_.paddels.size(); i++) {
-                if ( boundaries_.paddels[i]->inside( point ) )
+                if ( boundaries_.paddels[i]->inside( tPoint ) )
                 {
                     mTouch.setEvent( tuioCursor, boundaries_.paddels[i]->getCenter(), i );
                     if ( verboseText ) { cout << "event set: " << mTouch.getSessionID() << "\n"; }
@@ -88,11 +112,11 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
         }
     }
     
-    ofPoint         pos = ofPoint( tuioCursor.getX(), tuioCursor.getY() );
-    ActivePoint     aPoint;
+    ActivePoint           aPoint;
     aPoint.sessionID    = tuioCursor.getSessionId();
-    aPoint.state        = getActivePointState( pos );
-    aPoint.position     = pos;
+    aPoint.state        = getActivePointState( tPoint );
+    aPoint.side         = getActivePointSide( tPoint );
+    aPoint.position     = tPoint;
     activePoints_.push_back(aPoint);
 }
  
@@ -110,27 +134,26 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
         }
     }
     
-    for ( auto i = activePoints_.begin(); i!= activePoints_.end();)
+    for ( auto i = activePoints_.begin(); i!= activePoints_.end(); ++i)
     {
         if (i->sessionID == tuioCursor.getSessionId() ) {
             activePoints_.erase(i);
         }
-        else
-            ++i;
     }
 }
 
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
+    ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
+
     for ( auto &mTouch : touchVector_ )
     {
         if ( mTouch.isSet() )
         {
-            ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
-            if ( boundaries_.paddels[ mTouch.getPaddleID() ]->inside( point ) )
+            if ( boundaries_.paddels[ mTouch.getPaddleID() ]->inside( tPoint ) )
             {
-                boundaries_.paddels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
-                if ( verboseText ) { cout << "pos: " << point << "\n"; }
+                boundaries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (boundaries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
+                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
             } else
             {
                 mTouch.unsetEvent();
@@ -141,13 +164,17 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     for ( ActivePoint &point  : activePoints_)
     {
         if ( point.sessionID == tuioCursor.getSessionId() )
-            point.state = getActivePointState( ofPoint( tuioCursor.getX(), tuioCursor.getY() ) );
+        {
+            point.position  = tPoint;
+            point.state     = getActivePointState( tPoint );
+            point.side      = getActivePointSide( tPoint );
+        }
     }
 }
     
-stateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
+StateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
 {
-    stateOfArea state    = invalidArea;
+    StateOfArea state    = InvalidArea;
     for ( ofRectangle *actArea : boundaries_.activeArea )
     {
         if ( actArea->inside( aPoint ) )  { state = ActiveArea; }
@@ -158,5 +185,23 @@ stateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
     }
     return state;
 }
+    
+Side   TouchHandler::getActivePointSide( ofPoint aPoint )
+{
+    Side mSide;
+    if ( boundaries_.activeArea[0]->inside( aPoint ) )
+    {
+        mSide = left;
+    }else if (boundaries_.activeArea[1]->inside( aPoint ) )
+    {
+        mSide = right;
+    }else
+    {
+        mSide = middle;
+    }
+    
+    return mSide;
+}
+    
     
 }   // namespace telePong

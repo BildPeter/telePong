@@ -28,19 +28,6 @@ namespace telePong
 //    virtual bool    isSet()     = 0;
 //};
 
-enum stateOfArea
-{
-    Paddle,
-    ActiveArea,
-    invalidArea
-};
-    
-struct ActivePoint
-{
-    int             sessionID;
-    ofPoint         position;
-    stateOfArea     state;
-};
 
     
 class TuioTouch
@@ -76,10 +63,14 @@ public:
     void                setBoundray( BoundaryType    boundary )     { boundaries_     = boundary; }
     void                update();
     void                drawVerbose();
+    void                drawPointStates();
+    
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
+    list<ActivePoint>  &getActivePoints()                   { return activePoints_; }
     BoundaryType       &getBoundaries()                     { return boundaries_; }
-    stateOfArea         getActivePointState( ofPoint aPoint );
-
+    StateOfArea         getActivePointState( ofPoint aPoint );
+    Side                getActivePointSide( ofPoint aPoint );
+    
 private:
     void	tuioAdded(      ofxTuioCursor & tuioCursor );
     void	tuioRemoved(    ofxTuioCursor & tuioCursor );

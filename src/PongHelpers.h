@@ -18,16 +18,32 @@ namespace telePong
 
 struct BoundaryType
 {
-//    BoundaryType()
-//    {
-//        activeArea  = vector<ofRectangle>(2);
-//        panels      = vector<ofRectangle>(2);
-//    }
-    
     std::vector<ofRectangle*>    activeArea;
     std::vector<ofRectangle*>    paddels;
 };
     
+enum StateOfArea
+{
+    Paddle,
+    ActiveArea,
+    InvalidArea
+};
+
+enum Side
+{
+    left,
+    right,
+    middle
+};
+
+struct ActivePoint
+{
+    int             sessionID;
+    ofPoint         position;
+    StateOfArea     state;
+    Side            side;
+};
+
     
 }   // namespace telePong
 

@@ -35,6 +35,8 @@ public:
     void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
     vector<ofRectangle*>    &getPaddels()                                   { return boundaries_->paddels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
+    void                    setAttractionLeft( int x, int y, float amount );
+    void                    setAttractionRight( int x, int y, float amount );
     
 private:
     void updatePositions();
@@ -50,7 +52,7 @@ private:
     ofRectangle                             worldRect_;
     int                                     ballRadius_;
     int                                     speedRestriction_;
-
+    list<ActivePoint>                      *activePoints_;
 };
 
 }   // namespace telePong

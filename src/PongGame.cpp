@@ -10,17 +10,34 @@
 
 namespace telePong
 {
+    
+void PongGame::setAttractionRight( int x, int y, float amount )
+{
+    paddleRight_->addAttractionPoint(boundaries_->paddels[1]->getX(), y, amount);
+}
 
+void PongGame::setAttractionLeft( int x, int y, float amount )
+{
+    paddleLeft_->addAttractionPoint(boundaries_->paddels[0]->getX(), y, amount);
+}
+
+    
 void PongGame::updatePositions()
 {
     // TODO Global width/height
     
-    paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
-                                boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
+//    paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
+//                                boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
+//    
+//    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
+//                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
     
-    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
-                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
-
+    
+    
+    paddleRight_->setDamping(0.95);
+    paddleRight_->setRotation(0);
+    paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
+    boundaries_->paddels[1]->setPosition( paddleRight_->getPosition() );
 }
     
 void PongGame::update()
@@ -64,12 +81,13 @@ void PongGame::init()
     cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
     world_->createBounds( worldRect_ );
 
-    paddleLeft_->isFixed();
-    paddleRight_->isFixed();
+//    paddleLeft_->isFixed();
+//    paddleRight_->isFixed();
+    paddleRight_->setPhysics(3, 0, 100);
     paddleLeft_->setup(   world_->getWorld(), *boundaries_->paddels[0] );
     paddleRight_->setup(  world_->getWorld(), *boundaries_->paddels[1] );
     
-    ball_->setPhysics(3, 1, 0.1);
+    ball_->setPhysics(0.1, 1, 0.1);
     ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
 }
 

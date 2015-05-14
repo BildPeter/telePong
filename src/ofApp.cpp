@@ -14,14 +14,20 @@ void ofApp::setup(){
         
     mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
+    mRestrictA.set(0, 0, 200, ofGetWindowHeight() );
+    mRestrictB.set(ofGetWindowWidth() - 200, 0, 200, ofGetWindowHeight() );
     
     mBoundary.paddels.push_back( &mPadA );
     mBoundary.paddels.push_back( &mPadB );
+    mBoundary.activeArea.push_back( &mRestrictA );
+    mBoundary.activeArea.push_back( &mRestrictB );
     
     screenControl.setup( portControl );
     touchHandler.setup( portTuio, mBoundary );
     superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
+    
+// ----- TMP
 }
 
 //--------------------------------------------------------------
@@ -31,6 +37,9 @@ void ofApp::update(){
     worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
     superPong.rescaleBounds(worldDimension);
     superPong.update();
+    
+// ----- TMP
+    superPong.setAttractionRight( mouseX  , mouseY, 20 );
 }
 
 //--------------------------------------------------------------
@@ -45,10 +54,12 @@ void ofApp::draw(){
         ofScale( screenScale, screenScale );
         ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
         superPong.draw();
+        touchHandler.drawPointStates();
     }
     ofPopMatrix();
 
     touchHandler.drawVerbose();
+    // ----- TMP
 }
 
 
@@ -84,7 +95,6 @@ void ofApp::keyPressed(int key){
         default:
             break;
     }
-
 }
 
 //--------------------------------------------------------------
@@ -94,7 +104,7 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    
+//    superPong.setAttraction( x  , y );
 }
 
 //--------------------------------------------------------------
@@ -103,7 +113,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    
+  
 }
 
 //--------------------------------------------------------------
