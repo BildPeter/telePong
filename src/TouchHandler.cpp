@@ -28,7 +28,7 @@ void    TouchHandler::setup( int port, BoundaryType    boundary )
 {
     boundaries_     = boundary;
     oscPort_        = port;
-    touchVector_    = vector<TuioTouch>( boundaries_.panels.size() );
+    touchVector_    = vector<TuioTouch>( boundaries_.paddels.size() );
     
     tuioClient_.start( oscPort_ );
     
@@ -47,10 +47,11 @@ void TouchHandler::update()
 void TouchHandler::drawVerbose()
 {
     tuioClient_.drawCursors();
+    tuioClient_.drawObjects();
     ofNoFill();
     ofSetColor( ofColor::red );
-    ofRect( *boundaries_.panels[0] );
-    ofRect( *boundaries_.panels[1] );
+    ofRect( *boundaries_.paddels[0] );
+    ofRect( *boundaries_.paddels[1] );
 }
 
 bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
@@ -60,13 +61,13 @@ bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
     bool        isIn    = false;
     
     
-    for ( auto &panel :  boundaries_.panels )
+    for ( auto &paddel :  boundaries_.paddels )
     {
-        isIn = ( isIn || panel->
+        isIn = ( isIn || paddel->
                 inside( point ) );
     }
         
-    return ( boundaries_.panels[0]->inside( point ) || boundaries_.panels[1]->inside( point )  );
+    return ( boundaries_.paddels[0]->inside( point ) || boundaries_.paddels[1]->inside( point )  );
 }
     
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
@@ -79,10 +80,10 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
         if ( !mTouch.isSet() )
         {
             ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
-            for (int i = 0; i < boundaries_.panels.size(); i++) {
-                if ( boundaries_.panels[i]->inside( point ) )
+            for (int i = 0; i < boundaries_.paddels.size(); i++) {
+                if ( boundaries_.paddels[i]->inside( point ) )
                 {
-                    mTouch.setEvent( tuioCursor, boundaries_.panels[i]->getCenter(), i );
+                    mTouch.setEvent( tuioCursor, boundaries_.paddels[i]->getCenter(), i );
                     cout << "event set: " << mTouch.getSessionID() << "\n";
                 }
             }
@@ -112,9 +113,9 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
         if ( mTouch.isSet() )
         {
             ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
-            if ( boundaries_.panels[ mTouch.getPaddleID() ]->inside( point ) )
+            if ( boundaries_.paddels[ mTouch.getPaddleID() ]->inside( point ) )
             {
-                boundaries_.panels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.panels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
+                boundaries_.paddels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
                 cout << "pos: " << point << "\n";
             } else
             {

@@ -24,7 +24,7 @@ struct BoundaryType
 //    }
     
     std::vector<ofRectangle>     activeArea;
-    std::vector<ofRectangle*>     panels;
+    std::vector<ofRectangle*>    paddels;
 };
     
 }   // namespace telePong

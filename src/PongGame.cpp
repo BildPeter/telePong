@@ -15,11 +15,11 @@ void PongGame::updatePositions()
 {
     // TODO Global width/height
     
-    paddleLeft_->setPosition(   boundaries_->panels[0]->getX() + (boundaries_->panels[0]->width/2) ,
-                                boundaries_->panels[0]->getY() + (boundaries_->panels[0]->height/2) );
+    paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
+                                boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
     
-    paddleRight_->setPosition(  boundaries_->panels[1]->getX()  + (boundaries_->panels[1]->width/2) ,
-                                boundaries_->panels[1]->getY()  + (boundaries_->panels[1]->height/2) );
+    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
+                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
 
 }
     
@@ -28,7 +28,7 @@ void PongGame::update()
     world_->update();
     updatePositions();
     
-    restrictSpeed( ball_, 30 );
+    restrictSpeed( ball_, 30, 5 );
     catchBugVertical( ball_, 0.7 );
     resetBall( ball_ );
 }
@@ -52,8 +52,8 @@ void PongGame::startBall()
 
 void PongGame::init()
 {
-    world_       = shared_ptr<ofxBox2d>( new ofxBox2d );
-    ball_        = shared_ptr<ofxBox2dCircle>( new  ofxBox2dCircle );
+    world_       = shared_ptr< ofxBox2d >( new ofxBox2d );
+    ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
@@ -67,21 +67,32 @@ void PongGame::init()
     
     paddleLeft_->isFixed();
     paddleRight_->isFixed();
-    paddleLeft_->setup(   world_->getWorld(), *boundaries_->panels[0] );
-    paddleRight_->setup(  world_->getWorld(), *boundaries_->panels[1] );
+    paddleLeft_->setup(   world_->getWorld(), *boundaries_->paddels[0] );
+    paddleRight_->setup(  world_->getWorld(), *boundaries_->paddels[1] );
+    
     //    noStroke();
     
     ball_->setPhysics(3, 1, 0.1);
-    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_ );
+    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
 }
 
-void PongGame::restrictSpeed( shared_ptr< ofxBox2dCircle > mball_, int maxSpeed )
+void PongGame::restrictSpeed( shared_ptr< ofxBox2dRect > mball_, int maxSpeed, int maxRotSpeed )
 {
     if ( mball_->getVelocity().length() > maxSpeed)
         mball_->setVelocity( mball_->getVelocity().normalize()* maxSpeed );
+
+    if (mball_->getAngularVelocity() >= maxRotSpeed )
+    {
+        mball_->setAngularVelocity( maxRotSpeed );
+    }
+    if (mball_->getAngularVelocity() <= -maxRotSpeed )
+    {
+        mball_->setAngularVelocity( -maxRotSpeed );
+    }
+    
 }
 
-void PongGame::catchBugVertical( shared_ptr< ofxBox2dCircle > mball, double tolerance )
+void PongGame::catchBugVertical( shared_ptr< ofxBox2dRect > mball, double tolerance )
 {
     
     if ( ( ( mball->getVelocity().x <= tolerance ) && ( mball->getVelocity().x >= (-tolerance) ) ) && ( mball->getVelocity().y > 0.01 ) )
@@ -93,16 +104,17 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dCircle > mball, double tole
     }
 }
 
-void PongGame::resetBall( shared_ptr< ofxBox2dCircle > mBall )
+void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
 {
     int     distanceFromBorder = 5;
     
-    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getRadius()*2) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getRadius()*2) - distanceFromBorder ) )
+    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getWidth()*2) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getWidth()*2) - distanceFromBorder ) )
     {
         mBall->setPosition( ofVec2f( worldRect_.getCenter().x, worldRect_.getCenter().y ) );
         mBall->setVelocity( ofVec2f::zero() );
         mBall->setRotation( 0 );
+        mBall->setAngularVelocity( 0 );
     }
 }
 

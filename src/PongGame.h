@@ -34,20 +34,20 @@ public:
     void                    rescaleBounds();
     void                    rescaleBounds( ofRectangle bounds );
     void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
-    vector<ofRectangle*>    &getPanels()                                     { return boundaries_->panels; }
+    vector<ofRectangle*>    &getPaddels()                                   { return boundaries_->paddels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
 
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     
 private:
     void updatePositions();
-    void restrictSpeed(     shared_ptr< ofxBox2dCircle > mBall, int maxSpeed );
-    void catchBugVertical(  shared_ptr< ofxBox2dCircle > mBall, double tolerance  );
-    void resetBall(         shared_ptr< ofxBox2dCircle > mBall );
+    void restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxSpeed, int maxRotSpeed );
+    void catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
+    void resetBall(         shared_ptr< ofxBox2dRect > mBall );
     
     BoundaryType                           *boundaries_;
 
-    shared_ptr< ofxBox2dCircle >            ball_;
+    shared_ptr< ofxBox2dRect >              ball_;
     shared_ptr< ofxBox2d >                  world_;
     ofRectangle                             worldRect_;
     int                                     ballRadius_;

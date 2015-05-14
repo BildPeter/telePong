@@ -20,9 +20,9 @@ void ofApp::setup(){
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
     
     std::vector<ofRectangle>    mBund;
-    std::vector<ofRectangle*>    mBundPntr;
-    mBoundary.panels.push_back( &mPadA );
-    mBoundary.panels.push_back( &mPadB );
+    std::vector<ofRectangle*>   mBundPntr;
+    mBoundary.paddels.push_back( &mPadA );
+    mBoundary.paddels.push_back( &mPadB );
     
     screenControl.setup( portControl );
     touchHandler.setup( portTuio, mBoundary );
@@ -102,20 +102,20 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
     
-//    touchHandler.getBoundaries().panels[0].y = y;
-//    superPong.paddleLeft_->setPosition( touchHandler.getBoundaries().panels[0].x, touchHandler.getBoundaries().panels[0].y );
+//    touchHandler.getBoundaries().paddels[0].y = y;
+//    superPong.paddleLeft_->setPosition( touchHandler.getBoundaries().paddels[0].x, touchHandler.getBoundaries().paddels[0].y );
     
     
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-//    touchHandler.getBoundaries().panels[1].y = y;
-//    superPong.paddleRight_->setPosition( touchHandler.getBoundaries().panels[1].x, touchHandler.getBoundaries().panels[1].y );
+//    touchHandler.getBoundaries().paddels[1].y = y;
+//    superPong.paddleRight_->setPosition( touchHandler.getBoundaries().paddels[1].x, touchHandler.getBoundaries().paddels[1].y );
     
-    if ( touchHandler.getBoundaries().panels[0]->inside( ofPoint(x,y) ) )
+    if ( touchHandler.getBoundaries().paddels[0]->inside( ofPoint(x,y) ) )
     {
-        touchHandler.getBoundaries().panels[0]->setY( y );
+        touchHandler.getBoundaries().paddels[0]->setY( y );
         cout << "pos: " << ofPoint(x,y) << "\n";
     }
 }
@@ -149,8 +149,8 @@ void ofApp::rescalePong(){
     
     mPadA.setFromCenter( 70 , ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowHeight()-70, ofGetWindowHeight()/2, 50,100 );
-    //        mBoundary.panels[ 0 ] = &mPadA;
-    //        mBoundary.panels[ 1 ] = mPadB
+    //        mBoundary.paddels[ 0 ] = &mPadA;
+    //        mBoundary.paddels[ 1 ] = mPadB
     
     //        superPong.setBoundaries( );
 
