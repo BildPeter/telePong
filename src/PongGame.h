@@ -24,7 +24,6 @@ public:
         ballRadius_         = 30;
         speedRestriction_   = 10;
         worldRect_          = ofGetWindowRect();
-//        worldRect_          = ofRectangle( ofGetWindowRect().getPosition() , ofGetWindowWidth() + (ballRadius_*4), ofGetWindowHeight() );
     }
     ~PongGame();
     void                    update();

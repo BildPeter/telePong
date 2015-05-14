@@ -40,8 +40,6 @@ void    TouchHandler::setup( int port, BoundaryType    boundary )
 void TouchHandler::update()
 {
     tuioClient_.getMessage();
-    
-//    cout << "POS x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n";
 }
     
 void TouchHandler::drawVerbose()
@@ -72,7 +70,7 @@ bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
     
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
-    cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n";
+    if ( verboseText ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
     // ---  cursors will only be usefull, if they are inside the box from the start
     
     for ( auto & mTouch : touchVector_ )
@@ -84,7 +82,7 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
                 if ( boundaries_.paddels[i]->inside( point ) )
                 {
                     mTouch.setEvent( tuioCursor, boundaries_.paddels[i]->getCenter(), i );
-                    cout << "event set: " << mTouch.getSessionID() << "\n";
+                    if ( verboseText ) { cout << "event set: " << mTouch.getSessionID() << "\n"; }
                 }
             }
         }
@@ -100,7 +98,7 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
             if (mTouch.getSessionID() == tuioCursor.getSessionId() )
             {
                 mTouch.unsetEvent();
-                cout << "event UNset: " << tuioCursor.getSessionId() << "\n";
+                if ( verboseText ) {   cout << "event UNset: " << tuioCursor.getSessionId() << "\n"; }
             }
         }
     }
@@ -116,7 +114,7 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             if ( boundaries_.paddels[ mTouch.getPaddleID() ]->inside( point ) )
             {
                 boundaries_.paddels[ mTouch.getPaddleID() ]->setY( point.y - (boundaries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
-                cout << "pos: " << point << "\n";
+                if ( verboseText ) { cout << "pos: " << point << "\n"; }
             } else
             {
                 mTouch.unsetEvent();

@@ -53,7 +53,8 @@ class TouchHandler{
 public:
     TouchHandler()
     {
-        oscPort_ = 3333;
+        oscPort_        = 3333;
+        verboseText     = false;
     }
 
     void                setup( int port, BoundaryType    boundary );
@@ -74,6 +75,7 @@ private:
     int                 oscPort_;
     vector<TuioTouch>   touchVector_;
     vector<ofPoint>     positions_;
+    bool                verboseText;
     
 };
     

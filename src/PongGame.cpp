@@ -64,13 +64,10 @@ void PongGame::init()
     cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
     world_->createBounds( worldRect_ );
 
-    
     paddleLeft_->isFixed();
     paddleRight_->isFixed();
     paddleLeft_->setup(   world_->getWorld(), *boundaries_->paddels[0] );
     paddleRight_->setup(  world_->getWorld(), *boundaries_->paddels[1] );
-    
-    //    noStroke();
     
     ball_->setPhysics(3, 1, 0.1);
     ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
