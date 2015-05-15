@@ -32,8 +32,8 @@ public:
     void                    startBall();
     void                    rescaleBounds();
     void                    rescaleBounds( ofRectangle bounds );
-    void                    setBoundaries( BoundaryType    *boundary )      { boundaries_ = boundary; }
-    vector<ofRectangle*>    &getPaddels()                                   { return boundaries_->paddels; }
+    void                    setBoundaries( GeometryType    *geometry )      { geometries_ = geometry; }
+    vector<ofRectangle*>    &getPaddels()                                   { return geometries_->paddels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
     void                    setAttractionLeft( int x, int y, float amount );
     void                    setAttractionRight( int x, int y, float amount );
@@ -46,7 +46,7 @@ private:
     void resetBall(         shared_ptr< ofxBox2dRect > mBall );
     
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
-    BoundaryType                           *boundaries_;
+    GeometryType                           *geometries_;
 
     shared_ptr< ofxBox2dRect >              ball_;
     shared_ptr< ofxBox2d >                  world_;

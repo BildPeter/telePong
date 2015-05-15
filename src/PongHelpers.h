@@ -16,7 +16,7 @@ namespace telePong
 {
     using namespace std;
 
-struct BoundaryType
+struct GeometryType
 {
     std::vector<ofRectangle*>    activeArea;
     std::vector<ofRectangle*>    paddels;
@@ -42,6 +42,7 @@ struct CursorPoint
     ofPoint         position;
     StateOfArea     state;
     Side            side;
+    float           shiftY;
 };
     
 }   // namespace telePong

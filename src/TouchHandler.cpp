@@ -13,22 +13,22 @@ using namespace std;
 namespace telePong
 {
     
-void   TuioTouch::setEvent( ofxTuioCursor &cursor, ofPoint boundaryCenter, int paddleID )
+void   TuioTouch::setEvent( ofxTuioCursor &cursor, ofPoint geometryCenter, int paddleID )
 {
     eventCursor_    = &cursor;
     cursorIsSet_    = true;
     paddleID_       = paddleID;
-    shiftY_         = -( ofGetWindowHeight() * eventCursor_->getY() ) + boundaryCenter.y;
+    shiftY_         = -( ofGetWindowHeight() * eventCursor_->getY() ) + geometryCenter.y;
 }
     
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
     
-void    TouchHandler::setup( int port, BoundaryType    boundary )
+void    TouchHandler::setup( int port, GeometryType    geometry )
 {
-    boundaries_     = boundary;
-    oscPort_        = port;
-    touchVector_    = vector<TuioTouch>( boundaries_.paddels.size() );
+    geometries_         = geometry;
+    oscPort_            = port;
+    touchInsidePaddle_  = vector<TuioTouch>( geometries_.paddels.size() );
     
     tuioClient_.start( oscPort_ );
     
@@ -36,23 +36,26 @@ void    TouchHandler::setup( int port, BoundaryType    boundary )
     ofAddListener(tuioClient_.cursorRemoved,this,&TouchHandler::tuioRemoved);
     ofAddListener(tuioClient_.cursorUpdated,this,&TouchHandler::tuioUpdated);
 }
-
+// ---------------------------------------------------------------------------
+    
 void TouchHandler::update()
 {
     tuioClient_.getMessage();
 }
     
+    // ---------------------------------------------------------------------------
 void TouchHandler::drawVerbose()
 {
     tuioClient_.drawCursors();
     tuioClient_.drawObjects();
     ofNoFill();
     ofSetColor( ofColor::red );
-    ofRect( *boundaries_.paddels[0] );
-    ofRect( *boundaries_.paddels[1] );
+    ofRect( *geometries_.paddels[0] );
+    ofRect( *geometries_.paddels[1] );
     drawPointStates();
 }
-
+// ---------------------------------------------------------------------------
+    
 void TouchHandler::drawPointStates(){
     ofFill();
     for ( auto aPoint : getActiveCursors() ){
@@ -68,11 +71,11 @@ void TouchHandler::drawPointStates(){
                 break;
                 
             case ActiveArea:
-                ofSetColor( ofColor::green );
+                ofSetColor( ofColor::yellow );
                 break;
                 
             case Paddle:
-                ofSetColor( ofColor::yellow );
+                ofSetColor( ofColor::green );
                 break;
                 
             default:
@@ -81,64 +84,71 @@ void TouchHandler::drawPointStates(){
         ofCircle( aPoint.position, 10 );
     }
 }
+// ---------------------------------------------------------------------------
     
-bool    TouchHandler::isInBoundary( ofxTuioCursor &tuioCursor )
+bool    TouchHandler::isInGeometry( ofxTuioCursor &tuioCursor )
 {
     // TODO transform coordinates
     ofPoint     point   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     bool        isIn    = false;
     
     
-    for ( auto &paddel :  boundaries_.paddels )
+    for ( auto &paddel :  geometries_.paddels )
     {
         isIn = ( isIn || paddel->
                 inside( point ) );
     }
         
-    return ( boundaries_.paddels[0]->inside( point ) || boundaries_.paddels[1]->inside( point )  );
+    return ( geometries_.paddels[0]->inside( point ) || geometries_.paddels[1]->inside( point )  );
 }
-    
+// ---------------------------------------------------------------------------
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
     if ( verboseText ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
+ 
     // ---  cursors will only be usefull, if they are inside the box from the start
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     
-    for ( auto & mTouch : touchVector_ )
-    {
-        if ( !mTouch.isSet() )
-        {
-            for (int i = 0; i < boundaries_.paddels.size(); i++) {
-                if ( boundaries_.paddels[i]->inside( tPoint ) )
-                {
-                    mTouch.setEvent( tuioCursor, boundaries_.paddels[i]->getCenter(), i );
-                    if ( verboseText ) { cout << "event set: " << mTouch.getSessionID() << "\n"; }
-                }
-            }
-        }
-    }
+//    for ( auto & mTouch : touchInsidePaddle_ )
+//    {
+//        if ( !mTouch.isSet() )
+//        {
+//            for (int i = 0; i < geometries_.paddels.size(); i++) {
+//                if ( geometries_.paddels[i]->inside( tPoint ) )
+//                {
+//                    mTouch.setEvent( tuioCursor, geometries_.paddels[i]->getCenter(), i );
+//                    if ( verboseText ) { cout << "event set: " << mTouch.getSessionID() << "\n"; }
+//                }
+//            }
+//        }
+//    }
     
     CursorPoint           aPoint;
     aPoint.sessionID    = tuioCursor.getSessionId();
     aPoint.state        = getCursorPointState( tPoint );
     aPoint.side         = getCursorPointSide( tPoint );
     aPoint.position     = tPoint;
+    aPoint.shiftY       = getShift( tuioCursor, aPoint);
     cursorPoints_.push_back(aPoint);
+    
+    calculateClosestActiveCursors();
 }
  
+// ---------------------------------------------------------------------------
+    
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 {
-    for ( auto & mTouch : touchVector_ )
-    {
-        if ( mTouch.isSet() )
-        {
-            if (mTouch.getSessionID() == tuioCursor.getSessionId() )
-            {
-                mTouch.unsetEvent();
-                if ( verboseText ) {   cout << "event UNset: " << tuioCursor.getSessionId() << "\n"; }
-            }
-        }
-    }
+//    for ( auto & mTouch : touchInsidePaddle_ )
+//    {
+//        if ( mTouch.isSet() )
+//        {
+//            if (mTouch.getSessionID() == tuioCursor.getSessionId() )
+//            {
+//                mTouch.unsetEvent();
+//                if ( verboseText ) {   cout << "event UNset: " << tuioCursor.getSessionId() << "\n"; }
+//            }
+//        }
+//    }
     
     for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
     {
@@ -146,27 +156,33 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
             cursorPoints_.erase(i);
         }
     }
+    
+    calculateClosestActiveCursors();
 }
 
+// ---------------------------------------------------------------------------
+    
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
 
-    for ( auto &mTouch : touchVector_ )
-    {
-        if ( mTouch.isSet() )
-        {
-            if ( boundaries_.paddels[ mTouch.getPaddleID() ]->inside( tPoint ) )
-            {
-                boundaries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (boundaries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
-                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
-            } else
-            {
-                mTouch.unsetEvent();
-            }
-        }
-    }
+//    for ( auto &mTouch : touchInsidePaddle_ )
+//    {
+//        if ( mTouch.isSet() )
+//        {
+//            if ( geometries_.activeArea[ mTouch.getPaddleID() ]->inside( tPoint ) )
+//            {
+//                geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
+//                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
+//            } else
+//            {
+//                mTouch.unsetEvent();
+//            }
+//        }
+//    }
     
+    
+    // --- Update the cursors and theirs states
     for ( CursorPoint &point  : cursorPoints_)
     {
         if ( point.sessionID == tuioCursor.getSessionId() )
@@ -174,31 +190,36 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             point.position  = tPoint;
             point.state     = getCursorPointState( tPoint );
             point.side      = getCursorPointSide( tPoint );
+            point.shiftY    = getShift( tuioCursor, point );
         }
     }
+    calculateClosestActiveCursors();
+//    geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
 }
+    
+// ---------------------------------------------------------------------------
     
 StateOfArea TouchHandler::getCursorPointState( ofPoint aPoint )
 {
     StateOfArea state    = InvalidArea;
-    for ( ofRectangle *actArea : boundaries_.activeArea )
+    for ( ofRectangle *actArea : geometries_.activeArea )
     {
         if ( actArea->inside( aPoint ) )  { state = ActiveArea; }
     }
-    for ( ofRectangle *paddleArea : boundaries_.paddels )
+    for ( ofRectangle *paddleArea : geometries_.paddels )
     {
         if ( paddleArea->inside( aPoint ) )  { state = Paddle; }
     }
     return state;
 }
-    
+    // ---------------------------------------------------------------------------
 Side   TouchHandler::getCursorPointSide( ofPoint aPoint )
 {
     Side mSide;
-    if ( boundaries_.activeArea[0]->inside( aPoint ) )
+    if ( geometries_.activeArea[0]->inside( aPoint ) )
     {
         mSide = left;
-    }else if (boundaries_.activeArea[1]->inside( aPoint ) )
+    }else if (geometries_.activeArea[1]->inside( aPoint ) )
     {
         mSide = right;
     }else
@@ -209,7 +230,9 @@ Side   TouchHandler::getCursorPointSide( ofPoint aPoint )
     return mSide;
 }
     
-list<CursorPoint>  TouchHandler::getActiveCursors()
+// ---------------------------------------------------------------------------
+    
+void    TouchHandler::calculateClosestActiveCursors()
 {
     CursorPoint             mLeft;
     CursorPoint             mRight;
@@ -217,7 +240,7 @@ list<CursorPoint>  TouchHandler::getActiveCursors()
     mRight.position         = ofPoint(0,0);
     float distanceLeft      = 400000;
     float distanceRight     = 400000;
-    list< CursorPoint >     result;
+    activeCursors_.clear();
     
     
     for ( auto &mCursor : cursorPoints_){
@@ -226,7 +249,7 @@ list<CursorPoint>  TouchHandler::getActiveCursors()
             if (mCursor.state == Paddle ) {
                 mLeft = mCursor;
             }else if ( mCursor.state == ActiveArea ){
-                float currentDistance = mCursor.position.distance(  boundaries_.paddels[0]->position );
+                float currentDistance = mCursor.position.distance(  geometries_.paddels[0]->position );
                 if ( currentDistance < distanceLeft ) {
                     distanceLeft = currentDistance;
                     mLeft = mCursor;
@@ -238,7 +261,7 @@ list<CursorPoint>  TouchHandler::getActiveCursors()
             if (mCursor.state == Paddle ) {
                 mRight = mCursor;
             }else if ( mCursor.state == ActiveArea ){
-                float currentDistance = mCursor.position.distance(  boundaries_.paddels[1]->position );
+                float currentDistance = mCursor.position.distance(  geometries_.paddels[1]->position );
                 if ( currentDistance < distanceRight ) {
                     distanceRight = currentDistance;
                     mRight = mCursor;
@@ -247,13 +270,25 @@ list<CursorPoint>  TouchHandler::getActiveCursors()
         }
     }
     if ( mLeft.position != ofPoint(0,0) ) {
-        result.push_back( mLeft );
+        activeCursors_.push_back( mLeft );
     }
     if ( mRight.position != ofPoint(0,0) ) {
-        result.push_back( mRight );
+        activeCursors_.push_back( mRight );
     }
-    
-    return result;
+}
+    // ---------------------------------------------------------------------------
+float TouchHandler::getShift( ofxTuioCursor & tuioCursor, CursorPoint const &aPoint )
+{
+    float _shift;
+    if ( (aPoint.state == Paddle)&&(aPoint.side == left ) ) {
+        _shift  = -( ofGetWindowHeight() * tuioCursor.getY() ) + geometries_.paddels[0]->y;
+    }else
+    if ( (aPoint.state == Paddle)&&(aPoint.side == right ) ) {
+        _shift  = -( ofGetWindowHeight() * tuioCursor.getY() ) + geometries_.paddels[1]->y;
+    }else
+        _shift = 0;
+
+    return _shift;
 }
     
 }   // namespace telePong

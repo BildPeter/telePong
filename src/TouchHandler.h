@@ -33,7 +33,7 @@ namespace telePong
 class TuioTouch
 {
 public:
-    void                setEvent( ofxTuioCursor &cursor, ofPoint boundaryCenter, int paddleID );
+    void                setEvent( ofxTuioCursor &cursor, ofPoint geometryCenter, int paddleID );
     
     void                unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
     int                 getSessionID()                      { return eventCursor_->getSessionId(); }
@@ -59,16 +59,17 @@ public:
         verboseText     = false;
     }
 
-    void                setup( int port, BoundaryType    boundary );
-    void                setBoundray( BoundaryType    boundary )     { boundaries_     = boundary; }
+    void                setup( int port, GeometryType    geometry );
+    void                setBoundray( GeometryType    geometry )     { geometries_     = geometry; }
     void                update();
     void                drawVerbose();
     void                drawPointStates();
     
-    vector<TuioTouch>  &getTouches()                        { return touchVector_; }
+    vector<TuioTouch>  &getTouches()                        { return touchInsidePaddle_; }
     list<CursorPoint>  &getCursorPoints()                   { return cursorPoints_; }
-    list<CursorPoint>   getActiveCursors();
-    BoundaryType       &getBoundaries()                     { return boundaries_; }
+    void                calculateClosestActiveCursors();
+    list<CursorPoint>   getActiveCursors()                  { return activeCursors_; }
+    GeometryType       &getBoundaries()                     { return geometries_; }
     
 
     
@@ -76,18 +77,19 @@ private:
     void                    tuioAdded(      ofxTuioCursor & tuioCursor );
     void                    tuioRemoved(    ofxTuioCursor & tuioCursor );
     void                    tuioUpdated(    ofxTuioCursor & tuioCursor );
-    bool                    isInBoundary(   ofxTuioCursor & tuioCursor );
+    bool                    isInGeometry(   ofxTuioCursor & tuioCursor );
     StateOfArea             getCursorPointState( ofPoint aPoint );
     Side                    getCursorPointSide( ofPoint aPoint );
+    float                   getShift( ofxTuioCursor & tuioCursor, CursorPoint const &aPoint );
     
     ofxTuioClient           tuioClient_;
-    BoundaryType            boundaries_;
+    GeometryType            geometries_;
     int                     oscPort_;
-    vector<TuioTouch>       touchVector_;
+    vector<TuioTouch>       touchInsidePaddle_;
     vector<ofPoint>         positions_;
     bool                    verboseText;
     list<CursorPoint>       cursorPoints_;
-    
+    list<CursorPoint>       activeCursors_;
 };
     
 }   // namespace telePong

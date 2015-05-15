@@ -17,13 +17,13 @@ void ofApp::setup(){
     mRestrictA.set(0, 0, 200, ofGetWindowHeight() );
     mRestrictB.set(ofGetWindowWidth() - 200, 0, 200, ofGetWindowHeight() );
     
-    mBoundary.paddels.push_back( &mPadA );
-    mBoundary.paddels.push_back( &mPadB );
-    mBoundary.activeArea.push_back( &mRestrictA );
-    mBoundary.activeArea.push_back( &mRestrictB );
+    mGeometry.paddels.push_back( &mPadA );
+    mGeometry.paddels.push_back( &mPadB );
+    mGeometry.activeArea.push_back( &mRestrictA );
+    mGeometry.activeArea.push_back( &mRestrictB );
     
     screenControl.setup( portControl );
-    touchHandler.setup( portTuio, mBoundary );
+    touchHandler.setup( portTuio, mGeometry );
     superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
     

@@ -17,12 +17,12 @@ namespace telePong
 
 class   Calibrator{
 public:
-    BoundaryType            getBoundaries() { return boundaries_; }
+    GeometryType            getBoundaries() { return boundaries_; }
     void                    setPaddelSize( ofRectangle &sizeLeft, ofRectangle &sizeRight );
     void                    setActiveArea( ofRectangle areaLeft, ofRectangle areaRight );
     
 private:
-    BoundaryType            boundaries_;
+    GeometryType            boundaries_;
 };
     
 }   // namespace telePong

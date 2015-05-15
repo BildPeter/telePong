@@ -29,7 +29,7 @@ public:
     telePong::PongGame          superPong;
     telePong::Calibrator        pongCalibrator;
     telePong::TouchHandler      touchHandler;
-    telePong::BoundaryType      mBoundary;
+    telePong::GeometryType      mGeometry;
     
     ofxOscReceiver              screenControl;
     ofRectangle                 worldDimension;
