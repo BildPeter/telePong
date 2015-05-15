@@ -30,26 +30,34 @@ void PongGame::updatePositions()
 //    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
 //                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
     
-//    for( auto actPoint : activeCursors_ )
-//    {
-//        if( actPoint.side == left ){
-//            if ( actPoint.state == Paddle ) {
-//                paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
-//                                         boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
-//            }else{
-//                setAttractionLeft(actPoint.position.x, actPoint.position.y, 20 );
-//                paddleLeft_->setDamping(0.95);
-//                paddleLeft_->setRotation(0);
-//                paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
-//                boundaries_->paddels[0]->setPosition( paddleLeft_->getPosition() );
-//            }
-//        }
-//    }
+    for( auto actPoint : activeCursors_ )
+    {
+        if( actPoint.side == left ){
+            if ( actPoint.state == Paddle ) {
+                paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
+                                         boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
+            }else{
+                setAttractionLeft(actPoint.position.x, actPoint.position.y, 20 );
+                paddleLeft_->setDamping(0.95);
+                paddleLeft_->setRotation(0);
+                paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
+                boundaries_->paddels[0]->setPosition( paddleLeft_->getPosition() );
+            }
+        }
+        if( actPoint.side == right ){
+            if ( actPoint.state == Paddle ) {
+                paddleRight_->setPosition(   boundaries_->paddels[1]->getX() + (boundaries_->paddels[1]->width/2) ,
+                                         boundaries_->paddels[1]->getY() + (boundaries_->paddels[1]->height/2) );
+            }else{
+                setAttractionRight(actPoint.position.x, actPoint.position.y, 20 );
+                paddleRight_->setDamping(0.95);
+                paddleRight_->setRotation(0);
+                paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
+                boundaries_->paddels[1]->setPosition( paddleRight_->getPosition() );
+            }
+        }
+    }
     
-    paddleRight_->setDamping(0.95);
-    paddleRight_->setRotation(0);
-    paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
-    boundaries_->paddels[1]->setPosition( paddleRight_->getPosition() );
 }
     
 void PongGame::update()
@@ -96,6 +104,7 @@ void PongGame::init()
 //    paddleLeft_->isFixed();
 //    paddleRight_->isFixed();
     paddleRight_->setPhysics(3, 0, 100);
+    paddleLeft_->setPhysics(3, 0, 100);
     paddleLeft_->setup(   world_->getWorld(), *boundaries_->paddels[0] );
     paddleRight_->setup(  world_->getWorld(), *boundaries_->paddels[1] );
     
