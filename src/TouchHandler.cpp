@@ -13,22 +13,10 @@ using namespace std;
 namespace telePong
 {
     
-void   TuioTouch::setEvent( ofxTuioCursor &cursor, ofPoint geometryCenter, int paddleID )
-{
-    eventCursor_    = &cursor;
-    cursorIsSet_    = true;
-    paddleID_       = paddleID;
-    shiftY_         = -( ofGetWindowHeight() * eventCursor_->getY() ) + geometryCenter.y;
-}
-    
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-    
 void    TouchHandler::setup( int port, GeometryType    geometry )
 {
     geometries_         = geometry;
     oscPort_            = port;
-    touchInsidePaddle_  = vector<TuioTouch>( geometries_.paddels.size() );
     
     tuioClient_.start( oscPort_ );
     
@@ -168,15 +156,6 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) );
         }
     }
-    
-    //    for ( auto &mTouch : touchInsidePaddle_ )
-    //    {
-    //        if ( mTouch.isSet() )
-    //        {
-    //            if ( geometries_.activeArea[ mTouch.getPaddleID() ]->inside( tPoint ) )
-    //            {
-    //                geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
-    //                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
 }
     
 // ---------------------------------------------------------------------------

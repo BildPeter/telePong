@@ -110,8 +110,6 @@ void PongGame::init()
     cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
     world_->createBounds( worldRect_ );
 
-//    paddleLeft_->isFixed();
-//    paddleRight_->isFixed();
     paddleRight_->setPhysics(3, 0, 100);
     paddleLeft_->setPhysics(3, 0, 100);
     paddleLeft_->setup(   world_->getWorld(), *geometries_->paddels[0] );

@@ -18,38 +18,6 @@
 
 namespace telePong
 {
-
-//class ITouch
-//{
-//public:
-//    virtual float   getX()      = 0;
-//    virtual float   getY()      = 0;
-//    virtual int     getID()     = 0;
-//    virtual bool    isSet()     = 0;
-//};
-
-
-    
-class TuioTouch
-{
-public:
-    void                setEvent( ofxTuioCursor &cursor, ofPoint geometryCenter, int paddleID );
-    
-    void                unsetEvent()                        { eventCursor_ = 0;         cursorIsSet_ = false; }
-    int                 getSessionID()                      { return eventCursor_->getSessionId(); }
-    int                 getPaddleID()                       { return paddleID_; }
-    float               getShiftY()                         { return shiftY_; }
-    float               getX()                              { return eventCursor_->getX(); }
-    float               getY()                              { return eventCursor_->getY(); }
-    bool                isSet()                             { return cursorIsSet_; }
-    
-private:
-    ofxTuioCursor  *eventCursor_;
-    bool            cursorIsSet_;
-    float           shiftY_;
-    int             paddleID_;
-};
-    
     
 class TouchHandler{
 public:
@@ -65,7 +33,6 @@ public:
     void                drawVerbose();
     void                drawPointStates();
     
-    vector<TuioTouch>  &getTouches()                        { return touchInsidePaddle_; }
     list<CursorPoint>  &getCursorPoints()                   { return cursorPoints_; }
     void                calculateClosestActiveCursors();
     list<CursorPoint>   getActiveCursors()                  { return activeCursors_; }
@@ -85,7 +52,6 @@ private:
     ofxTuioClient           tuioClient_;
     GeometryType            geometries_;
     int                     oscPort_;
-    vector<TuioTouch>       touchInsidePaddle_;
     vector<ofPoint>         positions_;
     bool                    verboseText;
     list<CursorPoint>       cursorPoints_;
