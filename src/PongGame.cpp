@@ -71,21 +71,21 @@ void PongGame::updatePositions()
     
 void PongGame::update()
 {
-    world_->update();
-    updatePositions();
-    
-    restrictSpeed( ball_, 30, 5 );
-    catchBugVertical( ball_, 0.7 );
-    resetBall( ball_ );
+    if (stateOfGame_ != GameOver) {
+        world_->update();
+        updatePositions();
+        restrictSpeed( ball_, 30, 5 );
+        catchBugVertical( ball_, 0.7 );
+        resetBall( ball_ );
+    }
 }
 
 void PongGame::draw()
 {
-    ofNoFill();
+    ofFill();
     ofSetColor( 255, 255, 255);
     paddleLeft_->draw();
     paddleRight_->draw();
-    ofFill();
     ball_->draw();
 }
     
