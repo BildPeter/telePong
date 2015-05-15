@@ -50,12 +50,18 @@ void TouchHandler::drawVerbose()
     ofSetColor( ofColor::red );
     ofRect( *boundaries_.paddels[0] );
     ofRect( *boundaries_.paddels[1] );
+    drawPointStates();
 }
 
 void TouchHandler::drawPointStates(){
-    for ( auto &aPoint : activePoints_ )
+    ofFill();
+    for ( auto aPoint : getActiveCursors() ){
+        ofSetColor( ofColor::blue );
+        ofCircle( aPoint.position, 15 );
+    }
+    
+    for ( auto &aPoint : cursorPoints_ )
     {
-        ofFill();
         switch (aPoint.state) {
             case InvalidArea:
                 ofSetColor( ofColor::red );
@@ -112,12 +118,12 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
         }
     }
     
-    ActivePoint           aPoint;
+    CursorPoint           aPoint;
     aPoint.sessionID    = tuioCursor.getSessionId();
-    aPoint.state        = getActivePointState( tPoint );
-    aPoint.side         = getActivePointSide( tPoint );
+    aPoint.state        = getCursorPointState( tPoint );
+    aPoint.side         = getCursorPointSide( tPoint );
     aPoint.position     = tPoint;
-    activePoints_.push_back(aPoint);
+    cursorPoints_.push_back(aPoint);
 }
  
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
@@ -134,10 +140,10 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
         }
     }
     
-    for ( auto i = activePoints_.begin(); i!= activePoints_.end(); ++i)
+    for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
     {
         if (i->sessionID == tuioCursor.getSessionId() ) {
-            activePoints_.erase(i);
+            cursorPoints_.erase(i);
         }
     }
 }
@@ -161,18 +167,18 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
         }
     }
     
-    for ( ActivePoint &point  : activePoints_)
+    for ( CursorPoint &point  : cursorPoints_)
     {
         if ( point.sessionID == tuioCursor.getSessionId() )
         {
             point.position  = tPoint;
-            point.state     = getActivePointState( tPoint );
-            point.side      = getActivePointSide( tPoint );
+            point.state     = getCursorPointState( tPoint );
+            point.side      = getCursorPointSide( tPoint );
         }
     }
 }
     
-StateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
+StateOfArea TouchHandler::getCursorPointState( ofPoint aPoint )
 {
     StateOfArea state    = InvalidArea;
     for ( ofRectangle *actArea : boundaries_.activeArea )
@@ -186,7 +192,7 @@ StateOfArea TouchHandler::getActivePointState( ofPoint aPoint )
     return state;
 }
     
-Side   TouchHandler::getActivePointSide( ofPoint aPoint )
+Side   TouchHandler::getCursorPointSide( ofPoint aPoint )
 {
     Side mSide;
     if ( boundaries_.activeArea[0]->inside( aPoint ) )
@@ -203,5 +209,51 @@ Side   TouchHandler::getActivePointSide( ofPoint aPoint )
     return mSide;
 }
     
+list<CursorPoint>  TouchHandler::getActiveCursors()
+{
+    CursorPoint             mLeft;
+    CursorPoint             mRight;
+    mLeft.position          = ofPoint(0,0);
+    mRight.position         = ofPoint(0,0);
+    float distanceLeft      = 400000;
+    float distanceRight     = 400000;
+    list< CursorPoint >     result;
+    
+    
+    for ( auto &mCursor : cursorPoints_){
+        if (mCursor.side == left )
+        {
+            if (mCursor.state == Paddle ) {
+                mLeft = mCursor;
+            }else if ( mCursor.state == ActiveArea ){
+                float currentDistance = mCursor.position.distance(  boundaries_.paddels[0]->position );
+                if ( currentDistance < distanceLeft ) {
+                    distanceLeft = currentDistance;
+                    mLeft = mCursor;
+                }
+            }
+        }
+        if (mCursor.side == right )
+        {
+            if (mCursor.state == Paddle ) {
+                mRight = mCursor;
+            }else if ( mCursor.state == ActiveArea ){
+                float currentDistance = mCursor.position.distance(  boundaries_.paddels[1]->position );
+                if ( currentDistance < distanceRight ) {
+                    distanceRight = currentDistance;
+                    mRight = mCursor;
+                }
+            }
+        }
+    }
+    if ( mLeft.position != ofPoint(0,0) ) {
+        result.push_back( mLeft );
+    }
+    if ( mRight.position != ofPoint(0,0) ) {
+        result.push_back( mRight );
+    }
+    
+    return result;
+}
     
 }   // namespace telePong

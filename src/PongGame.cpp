@@ -25,14 +25,26 @@ void PongGame::setAttractionLeft( int x, int y, float amount )
 void PongGame::updatePositions()
 {
     // TODO Global width/height
-    
-//    paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
-//                                boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
-//    
+
+//
 //    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
 //                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
     
-    
+//    for( auto actPoint : activeCursors_ )
+//    {
+//        if( actPoint.side == left ){
+//            if ( actPoint.state == Paddle ) {
+//                paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
+//                                         boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
+//            }else{
+//                setAttractionLeft(actPoint.position.x, actPoint.position.y, 20 );
+//                paddleLeft_->setDamping(0.95);
+//                paddleLeft_->setRotation(0);
+//                paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
+//                boundaries_->paddels[0]->setPosition( paddleLeft_->getPosition() );
+//            }
+//        }
+//    }
     
     paddleRight_->setDamping(0.95);
     paddleRight_->setRotation(0);

@@ -36,10 +36,11 @@ void ofApp::update(){
     touchHandler.update();
     worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
     superPong.rescaleBounds(worldDimension);
+    superPong.setActivePoints( touchHandler.getActiveCursors() );
     superPong.update();
     
 // ----- TMP
-    superPong.setAttractionRight( mouseX  , mouseY, 20 );
+
 }
 
 //--------------------------------------------------------------
@@ -54,7 +55,6 @@ void ofApp::draw(){
         ofScale( screenScale, screenScale );
         ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
         superPong.draw();
-        touchHandler.drawPointStates();
     }
     ofPopMatrix();
 

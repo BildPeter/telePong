@@ -66,24 +66,28 @@ public:
     void                drawPointStates();
     
     vector<TuioTouch>  &getTouches()                        { return touchVector_; }
-    list<ActivePoint>  &getActivePoints()                   { return activePoints_; }
+    list<CursorPoint>  &getCursorPoints()                   { return cursorPoints_; }
+    list<CursorPoint>   getActiveCursors();
     BoundaryType       &getBoundaries()                     { return boundaries_; }
-    StateOfArea         getActivePointState( ofPoint aPoint );
-    Side                getActivePointSide( ofPoint aPoint );
+    
+
     
 private:
-    void	tuioAdded(      ofxTuioCursor & tuioCursor );
-    void	tuioRemoved(    ofxTuioCursor & tuioCursor );
-    void	tuioUpdated(    ofxTuioCursor & tuioCursor );
-    bool    isInBoundary(   ofxTuioCursor & tuioCursor );
+    void                    tuioAdded(      ofxTuioCursor & tuioCursor );
+    void                    tuioRemoved(    ofxTuioCursor & tuioCursor );
+    void                    tuioUpdated(    ofxTuioCursor & tuioCursor );
+    bool                    isInBoundary(   ofxTuioCursor & tuioCursor );
+    StateOfArea             getCursorPointState( ofPoint aPoint );
+    Side                    getCursorPointSide( ofPoint aPoint );
     
-    ofxTuioClient       tuioClient_;
-    BoundaryType        boundaries_;
-    int                 oscPort_;
-    vector<TuioTouch>   touchVector_;
-    vector<ofPoint>     positions_;
-    bool                verboseText;
-    list<ActivePoint>   activePoints_;
+    ofxTuioClient           tuioClient_;
+    BoundaryType            boundaries_;
+    int                     oscPort_;
+    vector<TuioTouch>       touchVector_;
+    vector<ofPoint>         positions_;
+    bool                    verboseText;
+    list<CursorPoint>       cursorPoints_;
+    
 };
     
 }   // namespace telePong

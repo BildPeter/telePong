@@ -36,16 +36,14 @@ enum Side
     middle
 };
 
-struct ActivePoint
+struct CursorPoint
 {
     int             sessionID;
     ofPoint         position;
     StateOfArea     state;
     Side            side;
 };
-
     
 }   // namespace telePong
-
 
 #endif
