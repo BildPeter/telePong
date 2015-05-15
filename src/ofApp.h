@@ -6,6 +6,7 @@
 #include "PongGame.h"
 #include "PongHelpers.h"
 #include "PongCalibrator.h"
+#include "PongIntermediate.h"
 #include "TouchHandler.h"
 
 class ofApp : public ofBaseApp{
@@ -26,18 +27,20 @@ public:
     void gotMessage(ofMessage msg);
     void rescalePong();
     
-    telePong::PongGame          superPong;
-    telePong::Calibrator        pongCalibrator;
-    telePong::TouchHandler      touchHandler;
-    telePong::GeometryType      mGeometry;
+    telePong::PongGame              superPong;
+    telePong::IntermediateControl   controlIntermediate;
+    telePong::Calibrator            pongCalibrator;
+    telePong::TouchHandler          touchHandler;
+    telePong::GeometryType          mGeometry;
+    telePong::GameState             globalGameState;
     
-    ofxOscReceiver              screenControl;
-    ofRectangle                 worldDimension;
+    ofxOscReceiver                  screenControl;
+    ofRectangle                     worldDimension;
     
-    float                       screenScale;
-    ofPoint                     screenShift;
+    float                           screenScale;
+    ofPoint                         screenShift;
     
     // --- TMP
-    ofRectangle                 mPadA, mPadB, mRestrictA, mRestrictB;
+    ofRectangle                     mPadA, mPadB, mRestrictA, mRestrictB;
 };
 

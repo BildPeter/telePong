@@ -33,9 +33,9 @@ public:
     void                drawVerbose();
     void                drawPointStates();
     
-    list<CursorPoint>  &getCursorPoints()                   { return cursorPoints_; }
+    list<CursorPoint>  &getCursorAll()                   { return cursorPoints_; }
     void                calculateClosestActiveCursors();
-    list<CursorPoint>   getActiveCursors()                  { return activeCursors_; }
+    list<CursorPoint>   getCursorActive()                  { return activeCursors_; }
     GeometryType       &getBoundaries()                     { return geometries_; }
     
 

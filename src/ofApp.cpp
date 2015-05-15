@@ -27,6 +27,11 @@ void ofApp::setup(){
     superPong.setBoundaries( &touchHandler.getBoundaries() );
     superPong.init();
     
+
+    controlIntermediate.setGameStateGlobal( globalGameState );
+    controlIntermediate.setCircleRadius( 100 );
+    controlIntermediate.init();
+    
 // ----- TMP
 }
 
@@ -35,8 +40,9 @@ void ofApp::update(){
     
     touchHandler.update();
     worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
+    controlIntermediate.update( worldDimension, touchHandler.getCursorAll() );
     superPong.rescaleBounds(worldDimension);
-    superPong.setActivePoints( touchHandler.getActiveCursors() );
+    superPong.setActivePoints( touchHandler.getCursorActive() );
     superPong.update();
     
 // ----- TMP
@@ -55,6 +61,7 @@ void ofApp::draw(){
         ofScale( screenScale, screenScale );
         ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
         superPong.draw();
+        controlIntermediate.draw();
     }
     ofPopMatrix();
 
@@ -72,6 +79,9 @@ void ofApp::keyPressed(int key){
             rescalePong();
         case 's':
             superPong.startBall();
+            break;
+        case 'a':
+            globalGameState = telePong::AutoGame;
             break;
         case '+':
             screenScale += 0.01;

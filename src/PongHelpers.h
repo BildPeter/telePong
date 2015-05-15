@@ -45,6 +45,8 @@ struct CursorPoint
     float           shiftY;
 };
     
+enum GameState{ Idle, AutoGame, Starting, Playing, GameOver };
+    
 }   // namespace telePong
 
 #endif

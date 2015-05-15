@@ -50,7 +50,7 @@ void TouchHandler::drawVerbose()
     
 void TouchHandler::drawPointStates(){
     ofFill();
-    for ( auto aPoint : getActiveCursors() ){
+    for ( auto aPoint : getCursorActive() ){
         ofSetColor( ofColor::blue );
         ofCircle( aPoint.position, 15 );
     }

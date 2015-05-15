@@ -18,8 +18,6 @@ namespace telePong
 
 class PongGame {
     
-enum GameState{ AutoGame, Playing, GameOver };
-    
 public:
     PongGame()
     {
