@@ -21,19 +21,6 @@ void IntermediateControl::init()
     fontVerdana.setLetterSpacing(1.035);
 }
     
-void IntermediateControl::draw()
-{
-    switch (*stateOfGame_) {
-        case AutoGame:
-            drawAutoGame();
-            break;
-            
-        default:
-            break;
-    }
-}
-
-    
 void IntermediateControl::update( ofRectangle world, list<CursorPoint> cursorList )
 {
     worldDimension_  = world;
@@ -43,20 +30,31 @@ void IntermediateControl::update( ofRectangle world, list<CursorPoint> cursorLis
         case AutoGame:
             updateAutoGame();
             break;
+        case PlayerConfirmation:
+            updatePlayerConfirmation();
+            break;
             
         default:
             break;
     }
 }
-
-void IntermediateControl::drawAutoGame()
+ 
+void IntermediateControl::draw()
 {
-    ofSetColor( ofColor::red );
-    ofFill();
-    ofCircle( circleCenter_, circleRadius_ );
-    ofSetColor( ofColor::white );
-    fontVerdana.drawString("Touch Me!", circleCenter_.x - 85, circleCenter_.y +10 );
+    switch (*stateOfGame_) {
+        case AutoGame:
+            drawAutoGame();
+            break;
+        case PlayerConfirmation:
+            drawPlayerConfirmation();
+            break;
+            
+        default:
+            break;
+    }
 }
+    
+// ------------------------------------------------------------------------
 
 void IntermediateControl::updateAutoGame()
 {
@@ -67,5 +65,28 @@ void IntermediateControl::updateAutoGame()
         }
     }
 }
+    
+void IntermediateControl::drawAutoGame()
+{
+    ofSetColor( ofColor::red );
+    ofFill();
+    ofCircle( circleCenter_, circleRadius_ );
+    ofSetColor( ofColor::white );
+    fontVerdana.drawString("Touch Me!", circleCenter_.x - 85, circleCenter_.y +10 );
+}
+    
+// ------------------------------------------------------------------------
+
+void IntermediateControl::updatePlayerConfirmation()
+{
+    
+}
+    
+void IntermediateControl::drawPlayerConfirmation()
+{
+}
+
+    
+// ------------------------------------------------------------------------
     
 }   // namespace telePong

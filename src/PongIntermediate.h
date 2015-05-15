@@ -28,7 +28,9 @@ public:
     
 private:
     void                drawAutoGame();
+    void                drawPlayerConfirmation();
     void                updateAutoGame();
+    void                updatePlayerConfirmation();
     list<CursorPoint>   cursorsAll_;
     GameState          *stateOfGame_;
     ofPoint             circleCenter_;
