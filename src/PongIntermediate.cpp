@@ -14,6 +14,11 @@ namespace telePong
 void IntermediateControl::init()
 {
     circleCenter_ = ofGetWindowRect().getCenter();
+    ofTrueTypeFont::setGlobalDpi(72);
+    
+    fontVerdana.loadFont("verdana.ttf", 30, true, true);
+    fontVerdana.setLineHeight(34.0f);
+    fontVerdana.setLetterSpacing(1.035);
 }
     
 void IntermediateControl::draw()
@@ -31,7 +36,7 @@ void IntermediateControl::draw()
     
 void IntermediateControl::update( ofRectangle world, list<CursorPoint> cursorList )
 {
-    worldDimension_     = world;
+    worldDimension_  = world;
     cursorsAll_      = cursorList;
     
     switch (*stateOfGame_) {
@@ -49,7 +54,8 @@ void IntermediateControl::drawAutoGame()
     ofSetColor( ofColor::red );
     ofFill();
     ofCircle( circleCenter_, circleRadius_ );
-    
+    ofSetColor( ofColor::white );
+    fontVerdana.drawString("Touch Me!", circleCenter_.x - 85, circleCenter_.y +10 );
 }
 
 void IntermediateControl::updateAutoGame()

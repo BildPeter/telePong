@@ -34,6 +34,7 @@ private:
     ofPoint             circleCenter_;
     float               circleRadius_;
     ofRectangle         worldDimension_;
+    ofTrueTypeFont      fontVerdana;
 };
     
 }   // namespace telePong
