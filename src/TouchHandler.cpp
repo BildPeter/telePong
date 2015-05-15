@@ -42,6 +42,7 @@ void    TouchHandler::setup( int port, GeometryType    geometry )
 void TouchHandler::update()
 {
     tuioClient_.getMessage();
+    
 }
     
 // ---------------------------------------------------------------------------
@@ -153,7 +154,6 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
             point.position  = tPoint;
             point.state     = getCursorPointState( tPoint );
             point.side      = getCursorPointSide( tPoint );
-            point.shiftY    = getShift( tuioCursor, point );
         }
     }
     calculateClosestActiveCursors();
@@ -162,10 +162,10 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     for ( auto cursor : activeCursors_ )
     {
         if ( cursor.side == left ) {
-            geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) + cursor.shiftY );
+            geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) );
         }
         if ( cursor.side == right ) {
-            geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) + cursor.shiftY );
+            geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) );
         }
     }
     
