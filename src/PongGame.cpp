@@ -24,12 +24,9 @@ void PongGame::setAttractionLeft( int x, int y, float amount )
     
 void PongGame::updatePositions()
 {
+    bool isLeftSet  = false;
+    bool isRightSet = false;
     // TODO Global width/height
-
-//
-//    paddleRight_->setPosition(  boundaries_->paddels[1]->getX()  + (boundaries_->paddels[1]->width/2) ,
-//                                boundaries_->paddels[1]->getY()  + (boundaries_->paddels[1]->height/2) );
-    
     for( auto actPoint : activeCursors_ )
     {
         if( actPoint.side == left ){
@@ -43,6 +40,7 @@ void PongGame::updatePositions()
                 paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
                 boundaries_->paddels[0]->setPosition( paddleLeft_->getPosition() );
             }
+            isLeftSet = true;
         }
         if( actPoint.side == right ){
             if ( actPoint.state == Paddle ) {
@@ -55,9 +53,18 @@ void PongGame::updatePositions()
                 paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
                 boundaries_->paddels[1]->setPosition( paddleRight_->getPosition() );
             }
+            isRightSet = true;
         }
     }
     
+    if (!isLeftSet) {
+        paddleLeft_->setPosition(   boundaries_->paddels[0]->getX() + (boundaries_->paddels[0]->width/2) ,
+                                 boundaries_->paddels[0]->getY() + (boundaries_->paddels[0]->height/2) );
+    }
+    if (!isRightSet) {
+        paddleRight_->setPosition(   boundaries_->paddels[1]->getX() + (boundaries_->paddels[1]->width/2) ,
+                                  boundaries_->paddels[1]->getY() + (boundaries_->paddels[1]->height/2) );
+    }
 }
     
 void PongGame::update()
