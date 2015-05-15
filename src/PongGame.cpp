@@ -11,14 +11,14 @@
 namespace telePong
 {
     
-void PongGame::setAttractionRight( int x, int y, float amount )
+void PongGame::setAttractionRight( int y, float amount )
 {
-    paddleRight_->addAttractionPoint(geometries_->paddels[1]->getX(), y, amount);
+    paddleRight_->addAttractionPoint(geometries_->paddels[1]->getX()+ geometries_->paddels[1]->width/2, y, amount);
 }
 
-void PongGame::setAttractionLeft( int x, int y, float amount )
+void PongGame::setAttractionLeft( int y, float amount )
 {
-    paddleLeft_->addAttractionPoint(geometries_->paddels[0]->getX(), y, amount);
+    paddleLeft_->addAttractionPoint(geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2, y, amount);
 }
 
     
@@ -31,39 +31,41 @@ void PongGame::updatePositions()
     {
         if( actPoint.side == left ){
             if ( actPoint.state == Paddle ) {
-                paddleLeft_->setPosition(   geometries_->paddels[0]->getX() + (geometries_->paddels[0]->width/2) ,
-                                         geometries_->paddels[0]->getY() + (geometries_->paddels[0]->height/2) );
+                paddleLeft_->setPosition( geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2,
+                                          geometries_->paddels[0]->getY() + geometries_->paddels[0]->height/2 - actPoint.shiftY);
             }else{
-                setAttractionLeft(actPoint.position.x, actPoint.position.y, 20 );
+                setAttractionLeft( actPoint.position.y, 20 );
                 paddleLeft_->setDamping(0.95);
                 paddleLeft_->setRotation(0);
                 paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
-                geometries_->paddels[0]->setPosition( paddleLeft_->getPosition() );
+                geometries_->paddels[0]->setPosition( geometries_->paddels[0]->getX(),
+                                                      paddleLeft_->getPosition().y - (geometries_->paddels[0]->height/2) );
             }
             isLeftSet = true;
         }
         if( actPoint.side == right ){
             if ( actPoint.state == Paddle ) {
-                paddleRight_->setPosition(   geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
-                                         geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
+                paddleRight_->setPosition( geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
+                                           geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
             }else{
-                setAttractionRight(actPoint.position.x, actPoint.position.y, 20 );
+                setAttractionRight( actPoint.position.y, 20 );
                 paddleRight_->setDamping(0.95);
                 paddleRight_->setRotation(0);
                 paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
-                geometries_->paddels[1]->setPosition( paddleRight_->getPosition() );
-            }
+                geometries_->paddels[1]->setPosition( geometries_->paddels[1]->getX(),
+                                                     paddleRight_->getPosition().y - (geometries_->paddels[1]->height/2) );            }
             isRightSet = true;
         }
     }
-    
+
+    // -- If the cursor leaves or disappears. Stop the movement
     if (!isLeftSet) {
-        paddleLeft_->setPosition(   geometries_->paddels[0]->getX() + (geometries_->paddels[0]->width/2) ,
-                                 geometries_->paddels[0]->getY() + (geometries_->paddels[0]->height/2) );
+        paddleLeft_->setPosition( geometries_->paddels[0]->getX() + (geometries_->paddels[0]->width/2) ,
+                                  geometries_->paddels[0]->getY() + (geometries_->paddels[0]->height/2) );
     }
     if (!isRightSet) {
-        paddleRight_->setPosition(   geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
-                                  geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
+        paddleRight_->setPosition( geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
+                                   geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
     }
 }
     
@@ -149,10 +151,10 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dRect > mball, double tolera
 
 void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
 {
-    int     distanceFromBorder = 5;
+    int     distanceFromBorder = 0;
     
-    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getWidth()*2) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getWidth()*2) - distanceFromBorder ) )
+    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getWidth()) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
     {
         mBall->setPosition( ofVec2f( worldRect_.getCenter().x, worldRect_.getCenter().y ) );
         mBall->setVelocity( ofVec2f::zero() );

@@ -36,6 +36,7 @@ void    TouchHandler::setup( int port, GeometryType    geometry )
     ofAddListener(tuioClient_.cursorRemoved,this,&TouchHandler::tuioRemoved);
     ofAddListener(tuioClient_.cursorUpdated,this,&TouchHandler::tuioUpdated);
 }
+
 // ---------------------------------------------------------------------------
     
 void TouchHandler::update()
@@ -43,7 +44,8 @@ void TouchHandler::update()
     tuioClient_.getMessage();
 }
     
-    // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+    
 void TouchHandler::drawVerbose()
 {
     tuioClient_.drawCursors();
@@ -54,6 +56,7 @@ void TouchHandler::drawVerbose()
     ofRect( *geometries_.paddels[1] );
     drawPointStates();
 }
+    
 // ---------------------------------------------------------------------------
     
 void TouchHandler::drawPointStates(){
@@ -84,6 +87,7 @@ void TouchHandler::drawPointStates(){
         ofCircle( aPoint.position, 10 );
     }
 }
+    
 // ---------------------------------------------------------------------------
     
 bool    TouchHandler::isInGeometry( ofxTuioCursor &tuioCursor )
@@ -101,27 +105,14 @@ bool    TouchHandler::isInGeometry( ofxTuioCursor &tuioCursor )
         
     return ( geometries_.paddels[0]->inside( point ) || geometries_.paddels[1]->inside( point )  );
 }
+    
 // ---------------------------------------------------------------------------
+    
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
     if ( verboseText ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
  
-    // ---  cursors will only be usefull, if they are inside the box from the start
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
-    
-//    for ( auto & mTouch : touchInsidePaddle_ )
-//    {
-//        if ( !mTouch.isSet() )
-//        {
-//            for (int i = 0; i < geometries_.paddels.size(); i++) {
-//                if ( geometries_.paddels[i]->inside( tPoint ) )
-//                {
-//                    mTouch.setEvent( tuioCursor, geometries_.paddels[i]->getCenter(), i );
-//                    if ( verboseText ) { cout << "event set: " << mTouch.getSessionID() << "\n"; }
-//                }
-//            }
-//        }
-//    }
     
     CursorPoint           aPoint;
     aPoint.sessionID    = tuioCursor.getSessionId();
@@ -138,18 +129,6 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
     
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 {
-//    for ( auto & mTouch : touchInsidePaddle_ )
-//    {
-//        if ( mTouch.isSet() )
-//        {
-//            if (mTouch.getSessionID() == tuioCursor.getSessionId() )
-//            {
-//                mTouch.unsetEvent();
-//                if ( verboseText ) {   cout << "event UNset: " << tuioCursor.getSessionId() << "\n"; }
-//            }
-//        }
-//    }
-    
     for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
     {
         if (i->sessionID == tuioCursor.getSessionId() ) {
@@ -165,22 +144,6 @@ void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
 {
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetWindowHeight() * tuioCursor.getY() );
-
-//    for ( auto &mTouch : touchInsidePaddle_ )
-//    {
-//        if ( mTouch.isSet() )
-//        {
-//            if ( geometries_.activeArea[ mTouch.getPaddleID() ]->inside( tPoint ) )
-//            {
-//                geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
-//                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
-//            } else
-//            {
-//                mTouch.unsetEvent();
-//            }
-//        }
-//    }
-    
     
     // --- Update the cursors and theirs states
     for ( CursorPoint &point  : cursorPoints_)
@@ -194,7 +157,26 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
         }
     }
     calculateClosestActiveCursors();
-//    geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
+
+    
+    for ( auto cursor : activeCursors_ )
+    {
+        if ( cursor.side == left ) {
+            geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) + cursor.shiftY );
+        }
+        if ( cursor.side == right ) {
+            geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) + cursor.shiftY );
+        }
+    }
+    
+    //    for ( auto &mTouch : touchInsidePaddle_ )
+    //    {
+    //        if ( mTouch.isSet() )
+    //        {
+    //            if ( geometries_.activeArea[ mTouch.getPaddleID() ]->inside( tPoint ) )
+    //            {
+    //                geometries_.paddels[ mTouch.getPaddleID() ]->setY( tPoint.y - (geometries_.paddels[ mTouch.getPaddleID() ]->height/2) + mTouch.getShiftY() );
+    //                if ( verboseText ) { cout << "pos: " << tPoint << "\n"; }
 }
     
 // ---------------------------------------------------------------------------
@@ -212,7 +194,9 @@ StateOfArea TouchHandler::getCursorPointState( ofPoint aPoint )
     }
     return state;
 }
-    // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+    
 Side   TouchHandler::getCursorPointSide( ofPoint aPoint )
 {
     Side mSide;
@@ -276,7 +260,9 @@ void    TouchHandler::calculateClosestActiveCursors()
         activeCursors_.push_back( mRight );
     }
 }
-    // ---------------------------------------------------------------------------
+    
+// ---------------------------------------------------------------------------
+    
 float TouchHandler::getShift( ofxTuioCursor & tuioCursor, CursorPoint const &aPoint )
 {
     float _shift;

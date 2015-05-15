@@ -35,15 +35,15 @@ public:
     void                    setBoundaries( GeometryType    *geometry )      { geometries_ = geometry; }
     vector<ofRectangle*>    &getPaddels()                                   { return geometries_->paddels; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
-    void                    setAttractionLeft( int x, int y, float amount );
-    void                    setAttractionRight( int x, int y, float amount );
+    void                    setAttractionLeft( int y, float amount );
+    void                    setAttractionRight( int y, float amount );
     void                    setActivePoints( list<CursorPoint> cursorList ) { activeCursors_ = cursorList; }
     
 private:
-    void updatePositions();
-    void restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxSpeed, int maxRotSpeed );
-    void catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
-    void resetBall(         shared_ptr< ofxBox2dRect > mBall );
+    void                    updatePositions();
+    void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxSpeed, int maxRotSpeed );
+    void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
+    void                    resetBall(         shared_ptr< ofxBox2dRect > mBall );
     
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     GeometryType                           *geometries_;
