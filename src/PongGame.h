@@ -28,11 +28,10 @@ public:
     ~PongGame();
     void                    update();
     void                    draw();
-    void                    init();
+    void                    setup( GeometryType *geometry );
     void                    startBall();
     void                    rescaleBounds();
     void                    rescaleBounds( ofRectangle bounds );
-    void                    setBoundaries( GeometryType    *geometry )      { geometries_       = geometry; }
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
     void                    setActivePoints( list<CursorPoint> cursorList ) { activeCursors_    = cursorList; }
     void                    setGameState( GameState state )                 { stateOfGame_      = state; }

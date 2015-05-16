@@ -96,8 +96,9 @@ void PongGame::startBall()
     ball_->setVelocity( signX * ofRandom( speedRestriction_/2.0, speedRestriction_ ) , signY * ofRandom( 0, speedRestriction_ ) );
 }
 
-void PongGame::init()
+void PongGame::setup( GeometryType *geometry )
 {
+    geometries_  = geometry;
     world_       = shared_ptr< ofxBox2d >( new ofxBox2d );
     ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
