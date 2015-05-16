@@ -38,6 +38,7 @@ public:
     void                    toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
     int                     getRound()                              { return roundOfGame_;}
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
+    WinnerType              getWinner()                             { return winnerFinal; }
     
 private:
     void                    rescaleBounds( ofRectangle bounds );
@@ -62,6 +63,7 @@ private:
     int                                     speedBallMax_, speedBallMin_;
     int                                     speedFactorPerRound;
     int                                     pointsLeft, pointsRight;
+    WinnerType                              winnerLast, winnerFinal;
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame_;

@@ -144,6 +144,8 @@ void PongGame::nextRound()
         if (verboseText_) { cout <<"GameState: RoundCountDown\n"; }
     }else
     {
+        if (pointsRight>pointsLeft) { winnerFinal = Right; }
+        else                        { winnerFinal = Left; }
         resetGame();
         *stateOfGame_   = GameOver;
         if (verboseText_) { cout <<"GameState: GameOver\n"; }
@@ -159,9 +161,11 @@ void PongGame::resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall )
     {
         if (mBall->getPosition().x < (*geometries_).world.getCenter().x) {
             pointsRight++;
+            winnerLast = Right;
             if (verboseText_) { cout << "point for right\t" <<pointsLeft<<":"<<pointsRight<<"\n"; }
         }else{
             pointsLeft++;
+            winnerLast = Left;
             if (verboseText_) { cout << "point for left\t" <<pointsLeft<<":"<<pointsRight<<"\n"; }
         }
         
@@ -179,8 +183,15 @@ void PongGame::resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall )
     
 void PongGame::startBall()
 {
-    float  signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
     float  signY = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    float  signX;
+    if (winnerLast == Right) {
+        signX = -1;
+    }else if (winnerLast == Left ){
+        signX = 1;
+    }else if (winnerLast == None){
+        signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    }
     ball_->setVelocity( signX * ofRandom( speedBallMin_, speedBallMax_/3 ) ,
                         signY * ofRandom( 0, speedBallMax_ ) );
 }
@@ -192,6 +203,7 @@ void PongGame::resetGame()
     setBallSpeed( 5, 10 );
     pointsLeft          = 0;
     pointsRight         = 0;
+    winnerLast          = None;
 }
 
 

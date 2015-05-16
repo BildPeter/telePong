@@ -47,6 +47,7 @@ struct CursorPoint
 };
     
 enum GameState{ Idle, AutoGame, PlayerConfirmation, RoundCountDown, Playing, GameOver };
+enum WinnerType{ None, Left, Right };
     
 struct CountDown
 {
