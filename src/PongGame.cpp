@@ -21,6 +21,15 @@ void PongGame::setup( GeometryType *geometry, GameState &state )
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
+    isPlaying           = false;
+    tweenDuration       = 4000;
+    tweenDelay          = 0;
+    tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
+    ofTrueTypeFont::setGlobalDpi(72);
+    fontVerdana.loadFont("verdana.ttf", 30, true, true);
+    fontVerdana.setLineHeight(34.0f);
+    fontVerdana.setLetterSpacing(1.035);
+    
     world_->init();
     world_->setGravity(0, 0);
     world_->setFPS( ofGetFrameRate() );
@@ -49,8 +58,25 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
         restrictSpeed( ball_, 30, 5 );
         catchBugVertical( ball_, 0.7 );
         resetBall( ball_ );
+        updateStartingGame();
     }
 }
+    
+void PongGame::updateStartingGame()
+{
+    if( !isPlaying )
+    {
+        if ( !tweenlinear.isCompleted() ) {
+            tweenCountDown = tweenlinear.update();
+            cout << tweenCountDown << "\n";
+        }else
+        {
+            startBall();
+            isPlaying = true;
+        }
+    }
+}
+    
 
 void PongGame::draw()
 {
@@ -59,6 +85,11 @@ void PongGame::draw()
     paddleLeft_->draw();
     paddleRight_->draw();
     ball_->draw();
+    if ( (!isPlaying)&&( *stateOfGame_ == Playing ) ) {
+        ofSetColor( ofColor::white );
+        fontVerdana.drawString( "Round "+ofToString(roundOfGame)+"\n"+ofToString(tweenCountDown),
+                               geometries_->world.getCenter().x, geometries_->world.getCenter().y +50);
+    }
 }
     
 // ----------------------------------------------------------------------
@@ -137,6 +168,8 @@ void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
         mBall->setAngularVelocity( 0 );
 
         nextRound();
+        isPlaying = false;
+        tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
         if (verboseText_) {cout<<"Round: " << roundOfGame +1<<"\n";};
     }
 }

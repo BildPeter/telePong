@@ -17,8 +17,8 @@ void IntermediateControl::setup( GeometryType *geometry )
     circleRadius_   = 150;
     circleCenter_   = ofGetWindowRect().getCenter();
     geometries_     = geometry;
-    ofTrueTypeFont::setGlobalDpi(72);
     
+    ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
     fontVerdana.setLetterSpacing(1.035);

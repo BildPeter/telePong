@@ -12,6 +12,7 @@
 #include <iostream>
 #include "PongHelpers.h"
 #include "ofxBox2d.h"
+#include "ofxTween.h"
 
 namespace telePong
 {
@@ -25,6 +26,8 @@ public:
         speedRestriction_   = 10;
         roundOfGame         = 0;
         verboseText_        = false;
+
+
     }
     ~PongGame();
     void                    setup( GeometryType *geometry, GameState &state );
@@ -45,6 +48,8 @@ private:
     void                    resetBall(         shared_ptr< ofxBox2dRect > mBall );
     void                    nextRound();
     
+    void                    updateStartingGame();
+    
     bool                                    verboseText_;
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     GeometryType                           *geometries_;
@@ -55,6 +60,15 @@ private:
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame;
+
+    ofxTween            tweenlinear;
+    ofxEasingLinear 	easinglinear;
+    ofTrueTypeFont      fontVerdana;
+    int                 tweenDuration;
+    int                 tweenDelay;
+    bool                isPlaying;
+    int                 tweenCountDown;
+    
 };
 
 }   // namespace telePong
