@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "PongHelpers.h"
+#include "ofxTween.h"
 #include "ofMain.h"
 
 namespace telePong
@@ -30,9 +31,12 @@ public:
 private:
     void                drawAutoGame();
     void                drawPlayerConfirmation();
+    void                drawGameOver();
     void                updateAutoGame();
     void                updatePlayerConfirmation();
+    void                updateGameOver();
     void                resetPlayerConfirmation();
+    void                resetGameOver();
     
     bool                isPlayerOneConfirmed;
     bool                isPlayerTwoConfirmed;
@@ -45,6 +49,16 @@ private:
     ofTrueTypeFont      fontVerdana;
     GeometryType       *geometries_;
     bool                verboseText_;
+    
+    
+    // --- Tweens
+    ofxTween            tweenGameOver;
+    ofxEasingLinear 	easingGameOver;
+    int                 tweenDurationGameOver;
+    int                 tweenDelayGameOver;
+    int                 countDownNumber;
+    
+
 };
     
 }   // namespace telePong

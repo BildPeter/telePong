@@ -83,6 +83,15 @@ void ofApp::keyPressed(int key){
         case 'a':
             globalGameState = telePong::AutoGame;
             break;
+        case 'c':
+            globalGameState = telePong::PlayerConfirmation;
+            break;
+        case 'p':
+            globalGameState = telePong::Playing;
+            break;
+        case 'g':
+            globalGameState = telePong::GameOver;
+            break;
         case '+':
             screenScale += 0.01;
             break;

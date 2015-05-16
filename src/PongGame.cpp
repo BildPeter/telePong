@@ -21,10 +21,12 @@ void PongGame::setup( GeometryType *geometry, GameState &state )
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
+    maxRoundsGame       = 2;
     isPlaying           = false;
     tweenDuration       = 4000;
     tweenDelay          = 0;
     tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
+    tweenlinear.start();
     ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
@@ -145,7 +147,7 @@ void PongGame::updatePositions()
     
 void PongGame::nextRound()
 {
-    if (roundOfGame == 5) {
+    if (roundOfGame == maxRoundsGame) {
         roundOfGame     = 0;
         *stateOfGame_   = GameOver;
         if (verboseText_) { cout <<"GameState: GameOver\n"; }
@@ -170,6 +172,7 @@ void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
         nextRound();
         isPlaying = false;
         tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
+        tweenlinear.start();
         if (verboseText_) {cout<<"Round: " << roundOfGame +1<<"\n";};
     }
 }

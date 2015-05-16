@@ -18,12 +18,16 @@ void IntermediateControl::setup( GeometryType *geometry )
     circleCenter_   = ofGetWindowRect().getCenter();
     geometries_     = geometry;
     
+    tweenDurationGameOver   = 4000;
+    tweenDelayGameOver      = 0;
+    
     ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
     fontVerdana.setLetterSpacing(1.035);
     
     resetPlayerConfirmation();
+    resetGameOver();
 }
     
 void IntermediateControl::update( list<CursorPoint> cursorList )
@@ -36,6 +40,9 @@ void IntermediateControl::update( list<CursorPoint> cursorList )
             break;
         case PlayerConfirmation:
             updatePlayerConfirmation();
+            break;
+        case GameOver:
+            updateGameOver();
             break;
             
         default:
@@ -52,6 +59,10 @@ void IntermediateControl::draw()
         case PlayerConfirmation:
             drawPlayerConfirmation();
             break;
+        case GameOver:
+            drawGameOver();
+            break;
+
             
         default:
             break;
@@ -136,7 +147,45 @@ void IntermediateControl::resetPlayerConfirmation()
     isPlayerOneConfirmed = false;
     isPlayerTwoConfirmed = false;
 }
+// ------------------------------------------------------------------------
+    
+void IntermediateControl::updateGameOver()
+{
+    if ( countDownNumber )
+    {
+        countDownNumber = tweenGameOver.update();
+        for ( auto &cursor : cursorsAll_ )
+        {
+            if (cursor.position.distance( circleCenter_ ) < circleRadius_ ) {
+                *stateOfGame_ = Playing;
+                if(verboseText_) { cout << "GameState: Playing\n";}
+            }
+        }
+    }else
+    {
+        *stateOfGame_ = AutoGame;
+        resetGameOver();
+    }
+}
 
+void IntermediateControl::drawGameOver()
+{
+    ofSetColor( ofColor::green );
+    ofFill();
+    ofCircle( circleCenter_, circleRadius_ );
+    ofSetColor( ofColor::white );
+    fontVerdana.drawString("GameOver\nTouch to play again" + ofToString(countDownNumber), circleCenter_.x - 85, circleCenter_.y +10 );
+}
+    
+void IntermediateControl::resetGameOver()
+{
+    countDownNumber = 50;
+    tweenGameOver.setParameters(10,easingGameOver,ofxTween::easeOut,5,0,tweenDurationGameOver,tweenDelayGameOver);
+    tweenGameOver.start();
+    tweenGameOver.update();
+}
+    
+    
     
 // ------------------------------------------------------------------------
     

@@ -60,6 +60,7 @@ private:
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame;
+    int                                     maxRoundsGame;
 
     ofxTween            tweenlinear;
     ofxEasingLinear 	easinglinear;
