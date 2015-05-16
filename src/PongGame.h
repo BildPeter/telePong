@@ -46,7 +46,7 @@ private:
     void                    updatePositions();
     void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxRotSpeed );
     void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
-    void                    resetBall(         shared_ptr< ofxBox2dRect > mBall );
+    void                    resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall );
     void                    nextRound();
     void                    resetGame();
     
@@ -61,6 +61,7 @@ private:
     int                                     ballRadius_;
     int                                     speedBallMax_, speedBallMin_;
     int                                     speedFactorPerRound;
+    int                                     pointsLeft, pointsRight;
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame_;

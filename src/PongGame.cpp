@@ -69,7 +69,7 @@ void PongGame::updateGameMovement()
     updatePositions();
     restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
-    resetBall( ball_ );
+    resetBallAtBoundary( ball_ );
 }
 
     
@@ -150,18 +150,27 @@ void PongGame::nextRound()
     }
 }
 
-void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
+void PongGame::resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall )
 {
     int     distanceFromBorder = 0;
     
     if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) + distanceFromBorder )
         ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
     {
+        if (mBall->getPosition().x < (*geometries_).world.getCenter().x) {
+            pointsRight++;
+            if (verboseText_) { cout << "point for right\t" <<pointsLeft<<":"<<pointsRight<<"\n"; }
+        }else{
+            pointsLeft++;
+            if (verboseText_) { cout << "point for left\t" <<pointsLeft<<":"<<pointsRight<<"\n"; }
+        }
+        
         mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
         mBall->setVelocity( ofVec2f::zero() );
         mBall->setRotation( 0 );
         mBall->setAngularVelocity( 0 );
 
+        
         nextRound();
         if (verboseText_) {cout<<"Round: " << roundOfGame_ +1<<"\n";};
     }
@@ -181,6 +190,8 @@ void PongGame::resetGame()
     roundOfGame_        = 1;
     speedFactorPerRound = 1;
     setBallSpeed( 5, 10 );
+    pointsLeft          = 0;
+    pointsRight         = 0;
 }
 
 
