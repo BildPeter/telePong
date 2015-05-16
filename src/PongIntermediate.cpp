@@ -17,6 +17,7 @@ void IntermediateControl::setup( GeometryType *geometry )
     circleRadius_           = 150;
     circleCenter_           = ofGetWindowRect().getCenter();
     geometries_             = geometry;
+    rasterPoints_           = 4;
 
     countDownPlaying.isSet  = false;
     countDownPlaying.max    = 5;

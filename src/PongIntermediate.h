@@ -48,7 +48,7 @@ private:
     bool                isPlayerTwoConfirmed;
     
 
-    insigned int        rasterPoints_;
+    unsigned int        rasterPoints_;
     list<CursorPoint>   cursorsAll_;
     GameState          *stateOfGame_;
     ofPoint             circleCenter_;

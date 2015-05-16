@@ -7,6 +7,7 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_NOTICE);
     ofEnableSmoothing();
     ofEnableAlphaBlending();
+    globalGameState = telePong::Idle;
     
     int     portTuio    = 3333;
     int     portControl = 4444;
@@ -106,10 +107,10 @@ void ofApp::keyPressed(int key){
             globalGameState = telePong::GameOver;
             break;
         case '+':
-            screenScale += 0.01;
+            controlIntermediate.increaseRasterPointsIdle();
             break;
         case '-':
-            screenScale -= 0.01;
+            controlIntermediate.decreaseRasterPointsIdle();
             break;
         case OF_KEY_LEFT:
             screenShift.x -= 2;
