@@ -190,7 +190,7 @@ void PongGame::startBall()
         signX = -1;
     }else if (winnerLast == Left ){
         signX = 1;
-    }else if (winnerLast == None){
+    }else{
         signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
     }
     ball_->setVelocity( signX * ofRandom( speedBallMin_, speedBallMax_/3 ) ,

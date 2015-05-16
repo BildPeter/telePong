@@ -116,48 +116,25 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 }
  
 // ---------------------------------------------------------------------------
-
-struct isIdEqual{
-    int ID_ = 0;
-    bool operator()( CursorPoint &cursor ) { return ID_  == cursor.sessionID; }
-};
-
     
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 {
-//    isIdEqual   myID;
-//    myID.ID_ = tuioCursor.getSessionId();
-//    
-//    cursorPoints_.remove_if( isIdEqual() );
-    
-//    cursorPoints_->
-    
-//    for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
-//    {
-//        if (i->sessionID == tuioCursor.getSessionId() ) {
-//            cursorPoints_.erase(i);
-//        }
-//    }
-    
-//    for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); )
-//    {
-//        if (i->sessionID == tuioCursor.getSessionId() ) {
-//            cursorPoints_.erase(i++);
-//        }
-//    }
-    
-    auto i = cursorPoints_.begin();
-    while (i != cursorPoints_.end())
+
+	auto i = cursorPoints_.begin();
+	while(i!=cursorPoints_.end()){
+		if ( i->sessionID == tuioCursor.getSessionId() ) {
+			cursorPoints_.erase(i++);
+		} else {
+			++i;
+		}
+	}
+
+    /*for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
     {
-        if (i->sessionID == tuioCursor.getSessionId())
-        {
-            cursorPoints_.erase(i++);  // alternatively, i = items.erase(i);
+        if (i->sessionID == tuioCursor.getSessionId() ) {
+            cursorPoints_.erase(i++);
         }
-        else
-        {
-            ++i;
-        }
-    }
+    }*/
     
     calculateClosestActiveCursors();
 }

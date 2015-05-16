@@ -167,7 +167,6 @@ telePong.sdf
 telePong.sln
 telePong.vcxproj
 telePong.vcxproj.filters
-/bin/*.dll
 /bin/telePong.lib
 /bin/telePong.exe
 /bin/telePong.exp
@@ -330,3 +329,12 @@ bin/telePong.app/Contents/MacOS/libfmodex.dylib
 bin/telePong.app/Contents/MacOS/telePong
 bin/telePong.app/Contents/PkgInfo
 bin/telePong.app/Contents/Resources/icon.icns
+/bin/libeay32.dll
+/bin/Assimp32.dll
+/bin/fmodex.dll
+/bin/fmodexL.dll
+/bin/FreeImage.dll
+/bin/FreeType-6.dll
+/bin/glut32.dll
+/bin/Zlib.dll
+/bin/ssleay32.dll

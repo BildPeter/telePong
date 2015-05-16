@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxTuio.h"
+#ifdef _WIN32
+	#include "ofxSpout.h"
+#endif
 
 #include "PongGame.h"
 #include "PongHelpers.h"
