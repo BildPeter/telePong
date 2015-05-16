@@ -24,7 +24,7 @@ public:
     {
         ballRadius_         = 30;
         speedRestriction_   = 10;
-        roundOfGame         = 0;
+        roundOfGame_        = 1;
         verboseText_        = false;
 
 
@@ -37,6 +37,8 @@ public:
     void                    rescaleBounds();
     void                    setSpeedRestriction( int speed )        { speedRestriction_ = speed; }
     void                    toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
+    int                     getRound()                              { return roundOfGame_;}
+    void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
     
 private:
     void                    rescaleBounds( ofRectangle bounds );
@@ -49,6 +51,7 @@ private:
     void                    nextRound();
     
     void                    updateStartingGame();
+    void                    updateGameMovement();
     
     bool                                    verboseText_;
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
@@ -59,17 +62,17 @@ private:
     int                                     speedRestriction_;
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
-    int                                     roundOfGame;
+    int                                     roundOfGame_;
     int                                     maxRoundsGame;
-
+    bool                                    startBall_;
+    
     ofTrueTypeFont      fontVerdana;
     
-    ofxTween            tweenlinear;
-    ofxEasingLinear 	easinglinear;
-    int                 tweenDuration;
-    int                 tweenDelay;
-    bool                isPlaying;
-    int                 tweenCountDown;
+//    ofxTween            tweenlinear;
+//    ofxEasingLinear 	easinglinear;
+//    int                 tweenDuration;
+//    int                 tweenDelay;
+//    int                 tweenCountDown;
     
 };
 

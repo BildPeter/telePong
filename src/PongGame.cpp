@@ -22,11 +22,6 @@ void PongGame::setup( GeometryType *geometry, GameState &state )
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
     maxRoundsGame       = 2;
-    isPlaying           = false;
-    tweenDuration       = 4000;
-    tweenDelay          = 0;
-    tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
-    tweenlinear.start();
     ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
@@ -54,30 +49,29 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
     activeCursors_ = activeCursors;
     rescaleBounds( bounds );
     
+    if (*stateOfGame_ == RoundCountDown) {
+        updateGameMovement();
+        startBall_ = true;
+    }
+    
     if ( *stateOfGame_ == Playing ) {
-        world_->update();
-        updatePositions();
-        restrictSpeed( ball_, 30, 5 );
-        catchBugVertical( ball_, 0.7 );
-        resetBall( ball_ );
-        updateStartingGame();
+        if (startBall_) {
+            startBall();
+            startBall_ = false;
+        }
+        updateGameMovement();
     }
 }
     
-void PongGame::updateStartingGame()
+void PongGame::updateGameMovement()
 {
-    if( !isPlaying )
-    {
-        if ( !tweenlinear.isCompleted() ) {
-            tweenCountDown = tweenlinear.update();
-            cout << tweenCountDown << "\n";
-        }else
-        {
-            startBall();
-            isPlaying = true;
-        }
-    }
+    world_->update();
+    updatePositions();
+    restrictSpeed( ball_, 30, 5 );
+    catchBugVertical( ball_, 0.7 );
+    resetBall( ball_ );
 }
+
     
 
 void PongGame::draw()
@@ -87,11 +81,6 @@ void PongGame::draw()
     paddleLeft_->draw();
     paddleRight_->draw();
     ball_->draw();
-    if ( (!isPlaying)&&( *stateOfGame_ == Playing ) ) {
-        ofSetColor( ofColor::white );
-        fontVerdana.drawString( "Round "+ofToString(roundOfGame)+"\n"+ofToString(tweenCountDown),
-                               geometries_->world.getCenter().x, geometries_->world.getCenter().y +50);
-    }
 }
     
 // ----------------------------------------------------------------------
@@ -147,13 +136,15 @@ void PongGame::updatePositions()
     
 void PongGame::nextRound()
 {
-    if (roundOfGame == maxRoundsGame) {
-        roundOfGame     = 0;
+    if (roundOfGame_ > maxRoundsGame) {
+        roundOfGame_    = 1;
         *stateOfGame_   = GameOver;
         if (verboseText_) { cout <<"GameState: GameOver\n"; }
     }else
     {
-        roundOfGame++;
+        roundOfGame_++;
+        *stateOfGame_   = RoundCountDown;
+        if (verboseText_) { cout <<"GameState: RoundCountDown\n"; }
     }
 }
 
@@ -170,10 +161,7 @@ void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
         mBall->setAngularVelocity( 0 );
 
         nextRound();
-        isPlaying = false;
-        tweenlinear.setParameters(0,easinglinear,ofxTween::easeOut,4,1,tweenDuration,tweenDelay);
-        tweenlinear.start();
-        if (verboseText_) {cout<<"Round: " << roundOfGame +1<<"\n";};
+        if (verboseText_) {cout<<"Round: " << roundOfGame_ +1<<"\n";};
     }
 }
 
@@ -208,6 +196,7 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dRect > mball, double tolera
     
     if ( ( ( mball->getVelocity().x <= tolerance ) && ( mball->getVelocity().x >= (-tolerance) ) ) && ( mball->getVelocity().y > 0.01 ) )
     {
+        mball->setRotation( 45 );
         if ( mball->getVelocity().x >= 0 )
             mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( tolerance*3, speedRestriction_ ), mball->getVelocity().y ) );
         else

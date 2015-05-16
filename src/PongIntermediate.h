@@ -22,21 +22,23 @@ class IntermediateControl{
 public:
     void                setup( GeometryType *geometry );
     void                draw();
-    void                update( list<CursorPoint> cursorList );
+    void                update( list<CursorPoint> cursorList, int round );
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
     void                setCircleRadius( float radius )         { circleRadius_ = radius; }
     void                toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
     
 private:
-    void                drawAutoGame();
-    void                drawPlayerConfirmation();
-    void                drawRoundCountDown();
-    void                drawGameOver();
     void                updateAutoGame();
     void                updatePlayerConfirmation();
     void                updateRoundCountDown();
     void                updateGameOver();
+
+    void                drawAutoGame();
+    void                drawPlayerConfirmation();
+    void                drawRoundCountDown();
+    void                drawGameOver();
+
     void                resetPlayerConfirmation();
     void                resetGameOver();
     
@@ -51,6 +53,7 @@ private:
     ofTrueTypeFont      fontVerdana;
     GeometryType       *geometries_;
     bool                verboseText_;
+    int                 roundOfGame_;
     
     CountDown           countDownGameOver;
     CountDown           countDownPlaying;

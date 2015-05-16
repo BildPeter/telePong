@@ -12,7 +12,7 @@ void ofApp::setup(){
     int     portControl = 4444;
     screenScale  = 1;
     screenShift  = ofPoint(0, 0 );
-        
+    
     mPadA.setFromCenter( 70, ofGetWindowHeight()/2, 50,100 );
     mPadB.setFromCenter( ofGetWindowWidth()-70, ofGetWindowHeight()/2, 50,100 );
     mRestrictA.set(0, 0, 200, ofGetWindowHeight() );
@@ -41,7 +41,7 @@ void ofApp::update(){
     
     touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
     touchHandler.update();
-    controlIntermediate.update( touchHandler.getCursorAll() );
+    controlIntermediate.update( touchHandler.getCursorAll(), superPong.getRound() );
     superPong.update( touchHandler.getGeometry().world, touchHandler.getCursorActive() );
     
 // ----- TMP
