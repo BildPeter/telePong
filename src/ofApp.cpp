@@ -25,20 +25,22 @@ void ofApp::setup(){
     mGeometry.world = ofRectangle( screenShift, 760 , 760 );
     
     screenControl.setup( portControl );
-    touchHandler.setup( portTuio, mGeometry );
+    touchHandler.setup( portTuio, mGeometry, globalGameState );
     controlIntermediate.setGameStateGlobal( globalGameState );
     controlIntermediate.setup( &touchHandler.getGeometry() );
-    superPong.setup( &touchHandler.getGeometry() );
+    superPong.setup( &touchHandler.getGeometry(), globalGameState );
     
+//    touchHandler.toggleTextVerbose();
     controlIntermediate.toggleTextVerbose();
+    superPong.toggleTextVerbose();
 // ----- TMP
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    touchHandler.update();
     touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
+    touchHandler.update();
     controlIntermediate.update( touchHandler.getCursorAll() );
     superPong.update( touchHandler.getGeometry().world, touchHandler.getCursorActive() );
     
@@ -68,6 +70,7 @@ void ofApp::draw(){
 
 
 //--------------------------------------------------------------
+
 void ofApp::keyPressed(int key){
 
     switch (key) {
@@ -142,6 +145,8 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+
 void ofApp::rescalePong(){
     superPong.rescaleBounds();
     

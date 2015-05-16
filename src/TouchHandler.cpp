@@ -13,10 +13,11 @@ using namespace std;
 namespace telePong
 {
     
-void    TouchHandler::setup( int port, GeometryType    geometry )
+void    TouchHandler::setup( int port, GeometryType    geometry, GameState &state )
 {
     geometries_         = geometry;
     oscPort_            = port;
+    stateOfGame_        = &state;
     
     tuioClient_.start( oscPort_ );
     
@@ -99,7 +100,7 @@ bool    TouchHandler::isInGeometry( ofxTuioCursor &tuioCursor )
     
 void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
 {
-    if ( verboseText ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
+    if ( verboseText_ ) {   cout << "ADD x: " << tuioCursor.getX() << "\ty: " << tuioCursor.getY() << "\n"; }
  
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     
@@ -146,14 +147,15 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     }
     calculateClosestActiveCursors();
 
-    
-    for ( auto cursor : activeCursors_ )
-    {
-        if ( cursor.side == left ) {
-            geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) );
-        }
-        if ( cursor.side == right ) {
-            geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) );
+    if (*stateOfGame_ == Playing) {
+        for ( auto cursor : activeCursors_ )
+        {
+            if ( cursor.side == left ) {
+                geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) );
+            }
+            if ( cursor.side == right ) {
+                geometries_.paddels[ 1 ]->setY( cursor.position.y - (geometries_.paddels[ 1 ]->height/2) );
+            }
         }
     }
 }

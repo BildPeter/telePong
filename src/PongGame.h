@@ -23,16 +23,17 @@ public:
     {
         ballRadius_         = 30;
         speedRestriction_   = 10;
+        roundOfGame         = 0;
+        verboseText_        = false;
     }
     ~PongGame();
+    void                    setup( GeometryType *geometry, GameState &state );
     void                    update( ofRectangle bounds, list<CursorPoint> activeCursors );
     void                    draw();
-    void                    setup( GeometryType *geometry );
     void                    startBall();
     void                    rescaleBounds();
-    void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
-    void                    setGameState( GameState state )                 { stateOfGame_      = state; }
-    GameState               getGameState()                                  { return stateOfGame_; }
+    void                    setSpeedRestriction( int speed )        { speedRestriction_ = speed; }
+    void                    toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
     
 private:
     void                    rescaleBounds( ofRectangle bounds );
@@ -42,7 +43,9 @@ private:
     void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxSpeed, int maxRotSpeed );
     void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
     void                    resetBall(         shared_ptr< ofxBox2dRect > mBall );
+    void                    nextRound();
     
+    bool                                    verboseText_;
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
     GeometryType                           *geometries_;
     shared_ptr< ofxBox2dRect >              ball_;
@@ -50,7 +53,8 @@ private:
     int                                     ballRadius_;
     int                                     speedRestriction_;
     list<CursorPoint>                       activeCursors_;
-    GameState                               stateOfGame_;
+    GameState                              *stateOfGame_;
+    int                                     roundOfGame;
 };
 
 }   // namespace telePong

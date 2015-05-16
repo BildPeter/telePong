@@ -24,10 +24,10 @@ public:
     TouchHandler()
     {
         oscPort_        = 3333;
-        verboseText     = false;
+        verboseText_     = false;
     }
 
-    void                setup( int port, GeometryType    geometry );
+    void                setup( int port, GeometryType    geometry, GameState &state );
     void                update();
     void                drawVerbose();
     void                drawPointStates();
@@ -38,6 +38,7 @@ public:
     void                calculateClosestActiveCursors();
     list<CursorPoint>   getCursorActive()                   { return activeCursors_; }
     GeometryType       &getGeometry()                       { return geometries_; }
+    void                toggleTextVerbose()                 { verboseText_ = verboseText_?false:true;}
     
 private:
     void                    tuioAdded(      ofxTuioCursor & tuioCursor );
@@ -52,9 +53,10 @@ private:
     GeometryType            geometries_;
     int                     oscPort_;
     vector<ofPoint>         positions_;
-    bool                    verboseText;
+    bool                    verboseText_;
     list<CursorPoint>       cursorPoints_;
     list<CursorPoint>       activeCursors_;
+    GameState              *stateOfGame_;
 };
     
 }   // namespace telePong

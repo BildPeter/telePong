@@ -25,7 +25,7 @@ public:
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
     void                setCircleRadius( float radius )         { circleRadius_ = radius; }
-    void                toggleTextVerbose()                     { textVerbose_ = textVerbose_?false:true;}
+    void                toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
     
 private:
     void                drawAutoGame();
@@ -44,7 +44,7 @@ private:
     ofRectangle         worldDimension_;
     ofTrueTypeFont      fontVerdana;
     GeometryType       *geometries_;
-    bool                textVerbose_;
+    bool                verboseText_;
 };
     
 }   // namespace telePong

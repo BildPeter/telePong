@@ -13,7 +13,7 @@ namespace telePong
 
 void IntermediateControl::setup( GeometryType *geometry )
 {
-    textVerbose_    = false;
+    verboseText_    = false;
     circleRadius_   = 150;
     circleCenter_   = ofGetWindowRect().getCenter();
     geometries_     = geometry;
@@ -66,7 +66,7 @@ void IntermediateControl::updateAutoGame()
     {
         if (cursor.position.distance( circleCenter_ ) < circleRadius_ ) {
             *stateOfGame_ = PlayerConfirmation;
-            if(textVerbose_) { cout << "GameState: PlayerConfirmation\n";}
+            if(verboseText_) { cout << "GameState: PlayerConfirmation\n";}
         }
     }
 }
@@ -98,7 +98,7 @@ void IntermediateControl::updatePlayerConfirmation()
     if ( isPlayerTwoConfirmed && isPlayerOneConfirmed) {
         resetPlayerConfirmation();
         *stateOfGame_ = Playing;
-        if(textVerbose_) { cout << "GameState: Playing\n";}
+        if(verboseText_) { cout << "GameState: Playing\n";}
     }
 }
     

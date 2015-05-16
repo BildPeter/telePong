@@ -10,18 +10,59 @@
 
 namespace telePong
 {
-    
-void PongGame::setAttractionRight( int y, float amount )
+
+void PongGame::setup( GeometryType *geometry, GameState &state )
 {
-    paddleRight_->addAttractionPoint(geometries_->paddels[1]->getX()+ geometries_->paddels[1]->width/2, y, amount);
+    geometries_  = geometry;
+    stateOfGame_ = &state;
+    
+    world_       = shared_ptr< ofxBox2d >( new ofxBox2d );
+    ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );
+    paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
+    paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
+    
+    world_->init();
+    world_->setGravity(0, 0);
+    world_->setFPS( ofGetFrameRate() );
+    world_->registerGrabbing();
+    cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
+    world_->createBounds( geometries_->world );
+    
+    paddleRight_->setPhysics(3, 0, 100);
+    paddleLeft_->setPhysics(3, 0, 100);
+    paddleLeft_->setup(   world_->getWorld(), *geometries_->paddels[0] );
+    paddleRight_->setup(  world_->getWorld(), *geometries_->paddels[1] );
+    
+    ball_->setPhysics(0.1, 1, 0.1);
+    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
+    updatePositions();
 }
 
-void PongGame::setAttractionLeft( int y, float amount )
+void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
 {
-    paddleLeft_->addAttractionPoint(geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2, y, amount);
+    activeCursors_ = activeCursors;
+    rescaleBounds( bounds );
+    
+    if ( *stateOfGame_ == Playing ) {
+        world_->update();
+        updatePositions();
+        restrictSpeed( ball_, 30, 5 );
+        catchBugVertical( ball_, 0.7 );
+        resetBall( ball_ );
+    }
 }
 
+void PongGame::draw()
+{
+    ofFill();
+    ofSetColor( 255, 255, 255);
+    paddleLeft_->draw();
+    paddleRight_->draw();
+    ball_->draw();
+}
     
+// ----------------------------------------------------------------------
+
 void PongGame::updatePositions()
 {
     bool isLeftSet  = false;
@@ -69,59 +110,46 @@ void PongGame::updatePositions()
     }
 }
     
-void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
-{
-    activeCursors_ = activeCursors;
-    rescaleBounds( bounds );
+// ----------------------------------------------------------------------
     
-    if (stateOfGame_ != GameOver) {
-        world_->update();
-        updatePositions();
-        restrictSpeed( ball_, 30, 5 );
-        catchBugVertical( ball_, 0.7 );
-        resetBall( ball_ );
+void PongGame::nextRound()
+{
+    if (roundOfGame == 5) {
+        roundOfGame     = 0;
+        *stateOfGame_   = GameOver;
+        if (verboseText_) { cout <<"GameState: GameOver\n"; }
+    }else
+    {
+        roundOfGame++;
     }
 }
 
-void PongGame::draw()
+void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
 {
-    ofFill();
-    ofSetColor( 255, 255, 255);
-    paddleLeft_->draw();
-    paddleRight_->draw();
-    ball_->draw();
+    int     distanceFromBorder = 0;
+    
+    if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
+    {
+        mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
+        mBall->setVelocity( ofVec2f::zero() );
+        mBall->setRotation( 0 );
+        mBall->setAngularVelocity( 0 );
+
+        nextRound();
+        if (verboseText_) {cout<<"Round: " << roundOfGame +1<<"\n";};
+    }
 }
+
     
 void PongGame::startBall()
 {
     float  signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
     float  signY = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
-    ball_->setVelocity( signX * ofRandom( speedRestriction_/2.0, speedRestriction_ ) , signY * ofRandom( 0, speedRestriction_ ) );
+    ball_->setVelocity( signX * ofRandom( speedRestriction_/4.0, speedRestriction_/2 ) , signY * ofRandom( 0, speedRestriction_ ) );
 }
 
-void PongGame::setup( GeometryType *geometry )
-{
-    geometries_  = geometry;
-    world_       = shared_ptr< ofxBox2d >( new ofxBox2d );
-    ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );
-    paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
-    paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
-    
-    world_->init();
-    world_->setGravity(0, 0);
-    world_->setFPS( ofGetFrameRate() );
-    world_->registerGrabbing();
-    cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
-    world_->createBounds( geometries_->world );
 
-    paddleRight_->setPhysics(3, 0, 100);
-    paddleLeft_->setPhysics(3, 0, 100);
-    paddleLeft_->setup(   world_->getWorld(), *geometries_->paddels[0] );
-    paddleRight_->setup(  world_->getWorld(), *geometries_->paddels[1] );
-    
-    ball_->setPhysics(0.1, 1, 0.1);
-    ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
-}
 
 void PongGame::restrictSpeed( shared_ptr< ofxBox2dRect > mball_, int maxSpeed, int maxRotSpeed )
 {
@@ -151,29 +179,30 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dRect > mball, double tolera
     }
 }
 
-void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
-{
-    int     distanceFromBorder = 0;
     
-    if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
-    {
-        mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
-        mBall->setVelocity( ofVec2f::zero() );
-        mBall->setRotation( 0 );
-        mBall->setAngularVelocity( 0 );
-    }
+void PongGame::setAttractionRight( int y, float amount )
+{
+    paddleRight_->addAttractionPoint(geometries_->paddels[1]->getX()+ geometries_->paddels[1]->width/2, y, amount);
 }
 
+void PongGame::setAttractionLeft( int y, float amount )
+{
+    paddleLeft_->addAttractionPoint(geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2, y, amount);
+}
+    
+
+    
 void PongGame::rescaleBounds()
 {
     world_->createBounds();
+    updatePositions();
 }
     
 void PongGame::rescaleBounds( ofRectangle bounds )
 {
     (*geometries_).world = bounds;
     world_->createBounds( (*geometries_).world );
+    updatePositions();
 }
 
 PongGame::~PongGame()
