@@ -60,6 +60,9 @@ void IntermediateControl::update( list<CursorPoint> cursorList, int round, Winne
 void IntermediateControl::draw()
 {
     switch (*stateOfGame_) {
+        case Idle:
+            drawIdle();
+            break;
         case AutoGame:
             drawAutoGame();
             break;
@@ -75,6 +78,18 @@ void IntermediateControl::draw()
             
         default:
             break;
+    }
+}
+// ------------------------------------------------------------------------
+void IntermediateControl::drawIdle()
+{
+    ofSetColor( ofColor::red);
+    ofFill();
+    for (int mX = 0; mX < rasterPoints_; mX++) {
+        for (int mY = 0; mY < rasterPoints_; mY++) {
+            ofCircle(   (geometries_->world.getWidth()/rasterPoints_)*mX,
+                        (geometries_->world.getHeight()/rasterPoints_)*mY, 5);
+        }
     }
 }
     

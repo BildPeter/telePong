@@ -42,6 +42,7 @@ void PongGame::setup( GeometryType *geometry, GameState &state )
     ball_->setPhysics(0.1, 1, 0.1);
     ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
     updatePositions();
+    resetGame();
 }
 
 void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
