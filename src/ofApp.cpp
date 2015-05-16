@@ -29,6 +29,10 @@ void ofApp::setup(){
     controlIntermediate.setGameStateGlobal( globalGameState );
     controlIntermediate.setup( &touchHandler.getGeometry() );
     superPong.setup( &touchHandler.getGeometry(), globalGameState );
+
+    #ifdef _WIN32
+		ofxSpout::init("telePong", ofGetWidth(), ofGetHeight(), true);
+    #endif
     
 //    touchHandler.toggleTextVerbose();
     controlIntermediate.toggleTextVerbose();
@@ -50,6 +54,11 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+	#ifdef _WIN32
+		ofxSpout::initSender();
+	#endif
+
     ofClear(0,0,0);
 
     ofSetColor(255, 255, 255 );
@@ -66,6 +75,10 @@ void ofApp::draw(){
 
     touchHandler.drawVerbose();
     // ----- TMP
+
+	#ifdef _WIN32
+		ofxSpout::sendTexture();
+	#endif
 }
 
 

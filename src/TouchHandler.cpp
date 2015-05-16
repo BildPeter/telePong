@@ -119,12 +119,22 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
     
 void TouchHandler::tuioRemoved(ofxTuioCursor &tuioCursor)
 {
-    for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
+
+	auto i = cursorPoints_.begin();
+	while(i!=cursorPoints_.end()){
+		if ( i->sessionID == tuioCursor.getSessionId() ) {
+			cursorPoints_.erase(i++);
+		} else {
+			++i;
+		}
+	}
+
+    /*for ( auto i = cursorPoints_.begin(); i!= cursorPoints_.end(); ++i)
     {
         if (i->sessionID == tuioCursor.getSessionId() ) {
-            cursorPoints_.erase(i);
+            cursorPoints_.erase(i++);
         }
-    }
+    }*/
     
     calculateClosestActiveCursors();
 }
