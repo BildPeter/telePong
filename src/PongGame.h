@@ -22,11 +22,11 @@ public:
     PongGame()
     {
         ballRadius_         = 30;
-        speedRestriction_   = 10;
+        speedBallMax_       = 10;
+        speedBallMin_       = 5;
+        speedFactorPerRound = 1;
         roundOfGame_        = 1;
         verboseText_        = false;
-
-
     }
     ~PongGame();
     void                    setup( GeometryType *geometry, GameState &state );
@@ -34,7 +34,7 @@ public:
     void                    draw();
     void                    startBall();
     void                    rescaleBounds();
-    void                    setSpeedRestriction( int speed )        { speedRestriction_ = speed; }
+    void                    setBallSpeed( int min, int max )        { speedBallMin_= min; speedBallMax_ = max; }
     void                    toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
     int                     getRound()                              { return roundOfGame_;}
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
@@ -44,10 +44,11 @@ private:
     void                    setAttractionLeft( int y, float amount );
     void                    setAttractionRight( int y, float amount );
     void                    updatePositions();
-    void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxSpeed, int maxRotSpeed );
+    void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxRotSpeed );
     void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
     void                    resetBall(         shared_ptr< ofxBox2dRect > mBall );
     void                    nextRound();
+    void                    resetGame();
     
     void                    updateStartingGame();
     void                    updateGameMovement();
@@ -58,7 +59,8 @@ private:
     shared_ptr< ofxBox2dRect >              ball_;
     shared_ptr< ofxBox2d >                  world_;
     int                                     ballRadius_;
-    int                                     speedRestriction_;
+    int                                     speedBallMax_, speedBallMin_;
+    int                                     speedFactorPerRound;
     list<CursorPoint>                       activeCursors_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame_;

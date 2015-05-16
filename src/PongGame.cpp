@@ -21,7 +21,7 @@ void PongGame::setup( GeometryType *geometry, GameState &state )
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
-    maxRoundsGame       = 2;
+    maxRoundsGame       = 5;
     ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
@@ -67,7 +67,7 @@ void PongGame::updateGameMovement()
 {
     world_->update();
     updatePositions();
-    restrictSpeed( ball_, 30, 5 );
+    restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
     resetBall( ball_ );
 }
@@ -136,15 +136,17 @@ void PongGame::updatePositions()
     
 void PongGame::nextRound()
 {
-    if (roundOfGame_ > maxRoundsGame) {
-        roundOfGame_    = 1;
-        *stateOfGame_   = GameOver;
-        if (verboseText_) { cout <<"GameState: GameOver\n"; }
-    }else
-    {
+    if (roundOfGame_ < maxRoundsGame) {
         roundOfGame_++;
+        speedFactorPerRound = roundOfGame_ + 1;
+        setBallSpeed( 5 + speedFactorPerRound, 10 + 2*speedFactorPerRound);
         *stateOfGame_   = RoundCountDown;
         if (verboseText_) { cout <<"GameState: RoundCountDown\n"; }
+    }else
+    {
+        resetGame();
+        *stateOfGame_   = GameOver;
+        if (verboseText_) { cout <<"GameState: GameOver\n"; }
     }
 }
 
@@ -170,16 +172,25 @@ void PongGame::startBall()
 {
     float  signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
     float  signY = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
-    ball_->setVelocity( signX * ofRandom( speedRestriction_/4.0, speedRestriction_/2 ) , signY * ofRandom( 0, speedRestriction_ ) );
+    ball_->setVelocity( signX * ofRandom( speedBallMin_, speedBallMax_/3 ) ,
+                        signY * ofRandom( 0, speedBallMax_ ) );
+}
+
+void PongGame::resetGame()
+{
+    roundOfGame_        = 1;
+    speedFactorPerRound = 1;
+    setBallSpeed( 5, 10 );
 }
 
 
-
-void PongGame::restrictSpeed( shared_ptr< ofxBox2dRect > mball_, int maxSpeed, int maxRotSpeed )
+void PongGame::restrictSpeed( shared_ptr< ofxBox2dRect > mball_, int maxRotSpeed )
 {
-    if ( mball_->getVelocity().length() > maxSpeed)
-        mball_->setVelocity( mball_->getVelocity().normalize()* maxSpeed );
-
+    if ( mball_->getVelocity().length() > speedBallMax_)
+        mball_->setVelocity( mball_->getVelocity().normalize()* speedBallMax_ );
+    if ( mball_->getVelocity().length() < speedBallMin_)
+        mball_->setVelocity( mball_->getVelocity().normalize()* speedBallMin_ );
+    
     if (mball_->getAngularVelocity() >= maxRotSpeed )
     {
         mball_->setAngularVelocity( maxRotSpeed );
@@ -198,9 +209,9 @@ void PongGame::catchBugVertical( shared_ptr< ofxBox2dRect > mball, double tolera
     {
         mball->setRotation( 45 );
         if ( mball->getVelocity().x >= 0 )
-            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( tolerance*3, speedRestriction_ ), mball->getVelocity().y ) );
+            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( tolerance*3, speedBallMax_ ), mball->getVelocity().y ) );
         else
-            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( -tolerance*3, -speedRestriction_ ), mball->getVelocity().y ) );
+            mball->setVelocity( mball->getVelocity() + ofVec2f( ofRandom( -tolerance*3, -speedBallMax_ ), mball->getVelocity().y ) );
     }
 }
 
