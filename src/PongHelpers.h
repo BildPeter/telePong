@@ -18,8 +18,9 @@ namespace telePong
 
 struct GeometryType
 {
-    std::vector<ofRectangle*>    activeArea;
-    std::vector<ofRectangle*>    paddels;
+    std::vector<ofRectangle*>   activeArea;
+    std::vector<ofRectangle*>   paddels;
+    ofRectangle                 world;
 };
     
 enum StateOfArea

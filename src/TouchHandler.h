@@ -28,17 +28,16 @@ public:
     }
 
     void                setup( int port, GeometryType    geometry );
-    void                setBoundray( GeometryType    geometry )     { geometries_     = geometry; }
     void                update();
     void                drawVerbose();
     void                drawPointStates();
     
-    list<CursorPoint>  &getCursorAll()                   { return cursorPoints_; }
-    void                calculateClosestActiveCursors();
-    list<CursorPoint>   getCursorActive()                  { return activeCursors_; }
-    GeometryType       &getBoundaries()                     { return geometries_; }
+    void                setWorld( ofRectangle world )      { geometries_.world = world; }
     
-
+    list<CursorPoint>  &getCursorAll()                      { return cursorPoints_; }
+    void                calculateClosestActiveCursors();
+    list<CursorPoint>   getCursorActive()                   { return activeCursors_; }
+    GeometryType       &getGeometry()                       { return geometries_; }
     
 private:
     void                    tuioAdded(      ofxTuioCursor & tuioCursor );

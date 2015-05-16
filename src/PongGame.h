@@ -23,7 +23,6 @@ public:
     {
         ballRadius_         = 30;
         speedRestriction_   = 10;
-        worldRect_          = ofGetWindowRect();
     }
     ~PongGame();
     void                    update();
@@ -50,7 +49,6 @@ private:
     GeometryType                           *geometries_;
     shared_ptr< ofxBox2dRect >              ball_;
     shared_ptr< ofxBox2d >                  world_;
-    ofRectangle                             worldRect_;
     int                                     ballRadius_;
     int                                     speedRestriction_;
     list<CursorPoint>                       activeCursors_;

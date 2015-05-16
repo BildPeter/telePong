@@ -6,6 +6,7 @@ void ofApp::setup(){
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
     ofEnableSmoothing();
+    ofEnableAlphaBlending();
     
     int     portTuio    = 3333;
     int     portControl = 4444;
@@ -21,17 +22,15 @@ void ofApp::setup(){
     mGeometry.paddels.push_back( &mPadB );
     mGeometry.activeArea.push_back( &mRestrictA );
     mGeometry.activeArea.push_back( &mRestrictB );
+    mGeometry.world = ofRectangle( screenShift, 760 , 760 );
     
     screenControl.setup( portControl );
     touchHandler.setup( portTuio, mGeometry );
-    superPong.setBoundaries( &touchHandler.getBoundaries() );
-    superPong.init();
-    
-
     controlIntermediate.setGameStateGlobal( globalGameState );
-    controlIntermediate.setCircleRadius( 100 );
-    controlIntermediate.init();
+    controlIntermediate.setup( &touchHandler.getGeometry() );
+    superPong.setup( &touchHandler.getGeometry() );
     
+    controlIntermediate.toggleTextVerbose();
 // ----- TMP
 }
 
@@ -39,9 +38,9 @@ void ofApp::setup(){
 void ofApp::update(){
     
     touchHandler.update();
-    worldDimension = ofRectangle( screenShift, (float)ofGetWindowHeight() , (float)ofGetWindowHeight() );
-    controlIntermediate.update( worldDimension, touchHandler.getCursorAll() );
-    superPong.rescaleBounds(worldDimension);
+    touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
+    controlIntermediate.update( touchHandler.getCursorAll() );
+    superPong.rescaleBounds( worldDimension );
     superPong.setActivePoints( touchHandler.getCursorActive() );
     superPong.update();
     
@@ -59,7 +58,7 @@ void ofApp::draw(){
     {
         ofTranslate( screenShift );
         ofScale( screenScale, screenScale );
-        ofRect(5, 5, ofGetWindowHeight() - 10, ofGetWindowHeight() - 10 );
+        ofRect(5, 5, worldDimension.getWidth() - 10, worldDimension.getHeight() - 10 );
         superPong.draw();
         controlIntermediate.draw();
     }

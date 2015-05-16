@@ -109,7 +109,7 @@ void PongGame::setup( GeometryType *geometry )
     world_->setFPS( ofGetFrameRate() );
     world_->registerGrabbing();
     cout << "world position; " <<ofGetWindowRect().getPosition() << "\n";
-    world_->createBounds( worldRect_ );
+    world_->createBounds( geometries_->world );
 
     paddleRight_->setPhysics(3, 0, 100);
     paddleLeft_->setPhysics(3, 0, 100);
@@ -152,10 +152,10 @@ void PongGame::resetBall( shared_ptr< ofxBox2dRect > mBall )
 {
     int     distanceFromBorder = 0;
     
-    if (     ( mBall->getPosition().x < worldRect_.getMinX() + (mBall->getWidth()) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > worldRect_.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
+    if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) + distanceFromBorder )
+        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
     {
-        mBall->setPosition( ofVec2f( worldRect_.getCenter().x, worldRect_.getCenter().y ) );
+        mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
         mBall->setVelocity( ofVec2f::zero() );
         mBall->setRotation( 0 );
         mBall->setAngularVelocity( 0 );
@@ -169,8 +169,8 @@ void PongGame::rescaleBounds()
     
 void PongGame::rescaleBounds( ofRectangle bounds )
 {
-    worldRect_ = bounds;
-    world_->createBounds( worldRect_ );
+    (*geometries_).world = bounds;
+    world_->createBounds( (*geometries_).world );
 }
 
 PongGame::~PongGame()
