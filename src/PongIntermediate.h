@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include "PongHelpers.h"
-#include "ofxTween.h"
 #include "ofMain.h"
 
 namespace telePong

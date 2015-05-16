@@ -12,7 +12,6 @@
 #include <iostream>
 #include "PongHelpers.h"
 #include "ofxBox2d.h"
-#include "ofxTween.h"
 
 namespace telePong
 {
@@ -67,13 +66,6 @@ private:
     bool                                    startBall_;
     
     ofTrueTypeFont      fontVerdana;
-    
-//    ofxTween            tweenlinear;
-//    ofxEasingLinear 	easinglinear;
-//    int                 tweenDuration;
-//    int                 tweenDelay;
-//    int                 tweenCountDown;
-    
 };
 
 }   // namespace telePong
