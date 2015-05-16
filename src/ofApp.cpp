@@ -40,9 +40,7 @@ void ofApp::update(){
     touchHandler.update();
     touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
     controlIntermediate.update( touchHandler.getCursorAll() );
-    superPong.rescaleBounds( worldDimension );
-    superPong.setActivePoints( touchHandler.getCursorActive() );
-    superPong.update();
+    superPong.update( touchHandler.getGeometry().world, touchHandler.getCursorActive() );
     
 // ----- TMP
 
@@ -58,7 +56,7 @@ void ofApp::draw(){
     {
         ofTranslate( screenShift );
         ofScale( screenScale, screenScale );
-        ofRect(5, 5, worldDimension.getWidth() - 10, worldDimension.getHeight() - 10 );
+        ofRect(5, 5, touchHandler.getGeometry().world.getWidth() - 10, touchHandler.getGeometry().world.getHeight() - 10 );
         superPong.draw();
         controlIntermediate.draw();
     }

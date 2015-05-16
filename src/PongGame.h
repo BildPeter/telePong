@@ -25,19 +25,17 @@ public:
         speedRestriction_   = 10;
     }
     ~PongGame();
-    void                    update();
+    void                    update( ofRectangle bounds, list<CursorPoint> activeCursors );
     void                    draw();
     void                    setup( GeometryType *geometry );
     void                    startBall();
     void                    rescaleBounds();
-    void                    rescaleBounds( ofRectangle bounds );
     void                    setSpeedRestriction( int speed )                { speedRestriction_ = speed; }
-    void                    setActivePoints( list<CursorPoint> cursorList ) { activeCursors_    = cursorList; }
     void                    setGameState( GameState state )                 { stateOfGame_      = state; }
-
     GameState               getGameState()                                  { return stateOfGame_; }
     
 private:
+    void                    rescaleBounds( ofRectangle bounds );
     void                    setAttractionLeft( int y, float amount );
     void                    setAttractionRight( int y, float amount );
     void                    updatePositions();

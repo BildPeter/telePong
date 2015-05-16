@@ -69,8 +69,11 @@ void PongGame::updatePositions()
     }
 }
     
-void PongGame::update()
+void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
 {
+    activeCursors_ = activeCursors;
+    rescaleBounds( bounds );
+    
     if (stateOfGame_ != GameOver) {
         world_->update();
         updatePositions();
