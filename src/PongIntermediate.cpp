@@ -32,10 +32,11 @@ void IntermediateControl::setup( GeometryType *geometry )
     resetGameOver();
 }
     
-void IntermediateControl::update( list<CursorPoint> cursorList, int round )
+void IntermediateControl::update( list<CursorPoint> cursorList, int round, WinnerType winner )
 {
     cursorsAll_     = cursorList;
     roundOfGame_    = round;
+    winner_         = winner;
     
     switch (*stateOfGame_) {
         case AutoGame:
@@ -220,6 +221,12 @@ void IntermediateControl::drawGameOver()
     ofCircle( circleCenter_, circleRadius_ );
     ofSetColor( ofColor::white );
     fontVerdana.drawString("GameOver\nPlay again?\n" + ofToString(countDownGameOver.currentValue), circleCenter_.x - 85, circleCenter_.y +10 );
+    if (winner_ == Left) {
+        fontVerdana.drawString("WINNER\n", circleCenter_.x - 200, circleCenter_.y +10 );
+    }else if (winner_ == Right)
+    {
+        fontVerdana.drawString("WINNER\n", circleCenter_.x + 200, circleCenter_.y +10 );
+    }
 }
     
 void IntermediateControl::resetGameOver()

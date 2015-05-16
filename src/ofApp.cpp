@@ -41,7 +41,7 @@ void ofApp::update(){
     
     touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
     touchHandler.update();
-    controlIntermediate.update( touchHandler.getCursorAll(), superPong.getRound() );
+    controlIntermediate.update( touchHandler.getCursorAll(), superPong.getRound(), superPong.getWinner() );
     superPong.update( touchHandler.getGeometry().world, touchHandler.getCursorActive() );
     
 // ----- TMP
