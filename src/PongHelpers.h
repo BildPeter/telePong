@@ -46,7 +46,16 @@ struct CursorPoint
     float           shiftY;
 };
     
-enum GameState{ Idle, AutoGame, PlayerConfirmation, Playing, GameOver };
+enum GameState{ Idle, AutoGame, PlayerConfirmation, RoundCountDown, Playing, GameOver };
+    
+struct CountDown
+{
+    int max;
+    int currentValue;
+    int initialValue;
+    int isSet;
+};
+
     
 }   // namespace telePong
 

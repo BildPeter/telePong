@@ -13,13 +13,11 @@ namespace telePong
 
 void IntermediateControl::setup( GeometryType *geometry )
 {
-    verboseText_    = false;
-    circleRadius_   = 150;
-    circleCenter_   = ofGetWindowRect().getCenter();
-    geometries_     = geometry;
-    
-    tweenDurationGameOver   = 4000;
-    tweenDelayGameOver      = 0;
+    verboseText_            = false;
+    circleRadius_           = 150;
+    circleCenter_           = ofGetWindowRect().getCenter();
+    geometries_             = geometry;
+    countDownGameOver.max   = 7;
     
     ofTrueTypeFont::setGlobalDpi(72);
     fontVerdana.loadFont("verdana.ttf", 30, true, true);
@@ -40,6 +38,8 @@ void IntermediateControl::update( list<CursorPoint> cursorList )
             break;
         case PlayerConfirmation:
             updatePlayerConfirmation();
+            break;
+        case Playing:
             break;
         case GameOver:
             updateGameOver();
@@ -151,14 +151,20 @@ void IntermediateControl::resetPlayerConfirmation()
     
 void IntermediateControl::updateGameOver()
 {
-    if ( countDownNumber )
+    if (!countDownGameOver.isSet) {
+        countDownGameOver.initialValue  = ofGetElapsedTimef();
+        countDownGameOver.isSet         = true;
+    }
+    countDownGameOver.currentValue = countDownGameOver.max - ( ofGetElapsedTimef() - countDownGameOver.initialValue );
+    
+    if ( countDownGameOver.currentValue )
     {
-        countDownNumber = tweenGameOver.update();
         for ( auto &cursor : cursorsAll_ )
         {
             if (cursor.position.distance( circleCenter_ ) < circleRadius_ ) {
                 *stateOfGame_ = Playing;
                 if(verboseText_) { cout << "GameState: Playing\n";}
+                resetGameOver();
             }
         }
     }else
@@ -174,15 +180,12 @@ void IntermediateControl::drawGameOver()
     ofFill();
     ofCircle( circleCenter_, circleRadius_ );
     ofSetColor( ofColor::white );
-    fontVerdana.drawString("GameOver\nTouch to play again" + ofToString(countDownNumber), circleCenter_.x - 85, circleCenter_.y +10 );
+    fontVerdana.drawString("GameOver\nTouch to play again" + ofToString(countDownGameOver.currentValue), circleCenter_.x - 85, circleCenter_.y +10 );
 }
     
 void IntermediateControl::resetGameOver()
 {
-    countDownNumber = 50;
-    tweenGameOver.setParameters(10,easingGameOver,ofxTween::easeOut,5,0,tweenDurationGameOver,tweenDelayGameOver);
-    tweenGameOver.start();
-    tweenGameOver.update();
+    countDownGameOver.isSet = false;
 }
     
     

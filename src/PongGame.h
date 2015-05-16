@@ -62,9 +62,10 @@ private:
     int                                     roundOfGame;
     int                                     maxRoundsGame;
 
+    ofTrueTypeFont      fontVerdana;
+    
     ofxTween            tweenlinear;
     ofxEasingLinear 	easinglinear;
-    ofTrueTypeFont      fontVerdana;
     int                 tweenDuration;
     int                 tweenDelay;
     bool                isPlaying;

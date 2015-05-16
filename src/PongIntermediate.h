@@ -31,9 +31,11 @@ public:
 private:
     void                drawAutoGame();
     void                drawPlayerConfirmation();
+    void                drawRoundCountDown();
     void                drawGameOver();
     void                updateAutoGame();
     void                updatePlayerConfirmation();
+    void                updateRoundCountDown();
     void                updateGameOver();
     void                resetPlayerConfirmation();
     void                resetGameOver();
@@ -50,15 +52,8 @@ private:
     GeometryType       *geometries_;
     bool                verboseText_;
     
-    
-    // --- Tweens
-    ofxTween            tweenGameOver;
-    ofxEasingLinear 	easingGameOver;
-    int                 tweenDurationGameOver;
-    int                 tweenDelayGameOver;
-    int                 countDownNumber;
-    
-
+    CountDown           countDownGameOver;
+    CountDown           countDownPlaying;
 };
     
 }   // namespace telePong
