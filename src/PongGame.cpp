@@ -98,7 +98,7 @@ void PongGame::updatePositions()
                 paddleLeft_->setPosition( geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2,
                                           geometries_->paddels[0]->getY() + geometries_->paddels[0]->height/2 - actPoint.shiftY);
             }else{
-                setAttractionLeft( actPoint.position.y, 20 );
+                setAttractionLeft( actPoint.position.y, 40 );
                 paddleLeft_->setDamping(0.95);
                 paddleLeft_->setRotation(0);
                 paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
@@ -112,7 +112,7 @@ void PongGame::updatePositions()
                 paddleRight_->setPosition( geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
                                            geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
             }else{
-                setAttractionRight( actPoint.position.y, 20 );
+                setAttractionRight( actPoint.position.y, 40 );
                 paddleRight_->setDamping(0.95);
                 paddleRight_->setRotation(0);
                 paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
