@@ -24,7 +24,7 @@ public:
     TouchHandler()
     {
         oscPort_        = 3333;
-        verboseText_     = false;
+        verboseText_    = false;
     }
 
     void                setup( int port, GeometryType    geometry, GameState &state );
@@ -35,7 +35,6 @@ public:
     void                setWorld( ofRectangle world )      { geometries_.world = world; }
     
     list<CursorPoint>  &getCursorAll()                      { return cursorPoints_; }
-    void                calculateClosestActiveCursors();
     list<CursorPoint>   getCursorActive()                   { return activeCursors_; }
     GeometryType       &getGeometry()                       { return geometries_; }
     void                toggleTextVerbose()                 { verboseText_ = verboseText_?false:true;}
@@ -48,6 +47,7 @@ private:
     StateOfArea             getCursorPointState( ofPoint aPoint );
     Side                    getCursorPointSide( ofPoint aPoint );
     float                   getShift( ofxTuioCursor & tuioCursor, CursorPoint const &aPoint );
+    void                    calculateClosestActiveCursors();
     
     ofxTuioClient           tuioClient_;
     GeometryType            geometries_;

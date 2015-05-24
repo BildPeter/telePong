@@ -105,11 +105,12 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
     ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * tuioCursor.getX(), (float)ofGetHeight() * tuioCursor.getY() );
     
     CursorPoint           aPoint;
-    aPoint.sessionID    = tuioCursor.getSessionId();
-    aPoint.state        = getCursorPointState( tPoint );
-    aPoint.side         = getCursorPointSide( tPoint );
-    aPoint.position     = tPoint;
-    aPoint.shiftY       = getShift( tuioCursor, aPoint);
+    aPoint.sessionID        = tuioCursor.getSessionId();
+    aPoint.state            = getCursorPointState( tPoint );
+    aPoint.side             = getCursorPointSide( tPoint );
+    aPoint.position         = tPoint;
+    aPoint.shiftY           = getShift( tuioCursor, aPoint);
+    aPoint.timeLastMovement = ofGetElapsedTimef();
     cursorPoints_.push_back(aPoint);
     
     calculateClosestActiveCursors();
@@ -143,9 +144,10 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     {
         if ( point.sessionID == tuioCursor.getSessionId() )
         {
-            point.position  = tPoint;
-            point.state     = getCursorPointState( tPoint );
-            point.side      = getCursorPointSide( tPoint );
+            point.position          = tPoint;
+            point.state             = getCursorPointState( tPoint );
+            point.side              = getCursorPointSide( tPoint );
+            point.timeLastMovement  = ofGetElapsedTimef();
         }
     }
     calculateClosestActiveCursors();
@@ -171,12 +173,19 @@ StateOfArea TouchHandler::getCursorPointState( ofPoint aPoint )
     StateOfArea state    = InvalidArea;
     for ( ofRectangle *actArea : geometries_.activeArea )
     {
-        if ( actArea->inside( aPoint ) )  { state = ActiveArea; }
+        if ( actArea->inside( aPoint ) )
+            { state = ActiveArea; }
     }
-    for ( ofRectangle *paddleArea : geometries_.paddels )
+    if      (  (   (geometries_.paddels[0]->getRight()  > aPoint.x )
+                && (geometries_.paddels[0]->getTop()    < aPoint.y )
+                && (geometries_.paddels[0]->getBottom() > aPoint.y ) )
+        ||     (   (geometries_.paddels[1]->getLeft()   < aPoint.x )
+                && (geometries_.paddels[1]->getTop()    < aPoint.y )
+                && (geometries_.paddels[1]->getBottom() > aPoint.y ) ) )
     {
-        if ( paddleArea->inside( aPoint ) )  { state = Paddle; }
+        state = Paddle;
     }
+    
     return state;
 }
 
@@ -217,7 +226,7 @@ void    TouchHandler::calculateClosestActiveCursors()
     for ( auto &mCursor : cursorPoints_)
     {
         // --- Check if active cursor is not set to a paddle yet
-        if ( (mCursor.side == left ) && ( mLeft.state != Paddle ) )
+        if ( (mCursor.side == left ) && ( mLeft.state != Paddle ) && ( ( mCursor.timeLastMovement - ofGetElapsedTimef() ) < 5 ) )
         {
             if (mCursor.state == Paddle ) {
                 mLeft = mCursor;
@@ -230,7 +239,7 @@ void    TouchHandler::calculateClosestActiveCursors()
                 }
             }
         }
-        if ( (mCursor.side == right ) && ( mRight.state != Paddle ) )
+        if ( (mCursor.side == right ) && ( mRight.state != Paddle ) && ( ( mCursor.timeLastMovement - ofGetElapsedTimef() ) < 5 ) )
         {
             if (mCursor.state == Paddle ) {
                 mRight = mCursor;

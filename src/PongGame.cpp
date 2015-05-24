@@ -138,10 +138,7 @@ void PongGame::updatePositions()
 void PongGame::nextRound()
 {
     if (roundOfGame_ < maxRoundsGame) {
-        roundOfGame_++;
-        speedFactorPerRound = roundOfGame_ + 1;
-        setBallSpeed( 5 + speedFactorPerRound, 10 + 2*speedFactorPerRound);
-        *stateOfGame_   = RoundCountDown;
+        resetRound();
         if (verboseText_) { cout <<"GameState: RoundCountDown\n"; }
     }else
     {
@@ -205,6 +202,17 @@ void PongGame::resetGame()
     pointsLeft          = 0;
     pointsRight         = 0;
     winnerLast          = None;
+}
+    
+void PongGame::resetRound()
+{
+    roundOfGame_++;
+    speedFactorPerRound = roundOfGame_ + 1;
+    setBallSpeed( 5 + speedFactorPerRound, 10 + 2*speedFactorPerRound);
+    *stateOfGame_   = RoundCountDown;
+
+    geometries_->paddels[0]->setY( geometries_->activeArea[0]->getCenter().y - (geometries_->paddels[0]->height/2) );
+    geometries_->paddels[1]->setY( geometries_->activeArea[1]->getCenter().y - (geometries_->paddels[1]->height/2));
 }
 
 

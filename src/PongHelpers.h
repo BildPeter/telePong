@@ -44,6 +44,7 @@ struct CursorPoint
     StateOfArea     state;
     Side            side;
     float           shiftY;
+    float           timeLastMovement;
 };
     
 enum GameState{ Idle, AutoGame, PlayerConfirmation, RoundCountDown, Playing, GameOver };

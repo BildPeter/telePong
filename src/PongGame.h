@@ -50,6 +50,7 @@ private:
     void                    resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall );
     void                    nextRound();
     void                    resetGame();
+    void                    resetRound();
     
     void                    updateStartingGame();
     void                    updateGameMovement();
