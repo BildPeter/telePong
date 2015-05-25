@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxTuio.h"
+#include "ofxXmlSettings.h"
 #ifdef _WIN32
 	#include "ofxSpout.h"
 #endif
@@ -29,6 +30,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     void rescalePong();
+    void updateOSC();
     
     telePong::PongGame              superPong;
     telePong::IntermediateControl   controlIntermediate;
@@ -37,8 +39,9 @@ public:
     telePong::GeometryType          mGeometry;
     telePong::GameState             globalGameState;
     
-    ofxOscReceiver                  screenControl;
+    ofxOscReceiver                  screenControlOSC;
     ofRectangle                     worldDimension;
+    ofxXmlSettings                  XML;
     
     float                           screenScale;
     ofPoint                         screenShift;

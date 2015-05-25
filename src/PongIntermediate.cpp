@@ -61,8 +61,11 @@ void IntermediateControl::update( list<CursorPoint> cursorList, int round, Winne
 void IntermediateControl::draw()
 {
     switch (*stateOfGame_) {
-        case Idle:
-            drawIdle();
+//        case Idle:
+//            drawIdle();
+//            break;
+        case Calibartion:
+            drawCalibartion();
             break;
         case AutoGame:
             drawAutoGame();
@@ -82,7 +85,7 @@ void IntermediateControl::draw()
     }
 }
 // ------------------------------------------------------------------------
-void IntermediateControl::drawIdle()
+void IntermediateControl::drawCalibartion()
 {
     ofSetColor( ofColor::red);
     ofFill();

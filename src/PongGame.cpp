@@ -11,10 +11,11 @@
 namespace telePong
 {
 
-void PongGame::setup( GeometryType *geometry, GameState &state )
+void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
 {
     geometries_  = geometry;
     stateOfGame_ = &state;
+    ballRadius_  = ballSize;
     
     world_       = shared_ptr< ofxBox2d >( new ofxBox2d );
     ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );

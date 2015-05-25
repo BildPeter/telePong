@@ -21,7 +21,6 @@ class PongGame {
 public:
     PongGame()
     {
-        ballRadius_         = 30;
         speedBallMax_       = 10;
         speedBallMin_       = 5;
         speedFactorPerRound = 1;
@@ -29,13 +28,13 @@ public:
         verboseText_        = false;
     }
     ~PongGame();
-    void                    setup( GeometryType *geometry, GameState &state );
+    void                    setup( GeometryType *geometry, GameState &state, int ballSize );
     void                    update( ofRectangle bounds, list<CursorPoint> activeCursors );
     void                    draw();
     void                    startBall();
     void                    rescaleBounds();
     void                    setBallSpeed( int min, int max )        { speedBallMin_= min; speedBallMax_ = max; }
-    void                    toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
+    void                    toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
     int                     getRound()                              { return roundOfGame_;}
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
     WinnerType              getWinner()                             { return winnerFinal; }

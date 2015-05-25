@@ -36,6 +36,15 @@ void TouchHandler::update()
     
 // ---------------------------------------------------------------------------
     
+void TouchHandler::draw()
+{
+    if ( verboseText_ ) {
+        drawVerbose();
+        drawPointStates();
+    }
+}
+    
+    
 void TouchHandler::drawVerbose()
 {
     tuioClient_.drawCursors();

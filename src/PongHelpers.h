@@ -47,7 +47,17 @@ struct CursorPoint
     float           timeLastMovement;
 };
     
-enum GameState{ Idle, AutoGame, PlayerConfirmation, RoundCountDown, Playing, GameOver };
+enum GameState
+{
+    Calibartion,
+    Idle,
+    AutoGame,
+    PlayerConfirmation,
+    RoundCountDown,
+    Playing,
+    GameOver
+}
+    ;
 enum WinnerType{ None, Left, Right };
     
 struct CountDown

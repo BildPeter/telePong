@@ -25,7 +25,8 @@ public:
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
     void                setCircleRadius( float radius )         { circleRadius_ = radius; }
-    void                toggleTextVerbose()                     { verboseText_ = verboseText_?false:true;}
+    void                toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
+    void                setRasterPoints( int nr )               { rasterPoints_ = nr; }
     void                increaseRasterPointsIdle()              { rasterPoints_++; }
     void                decreaseRasterPointsIdle()              { if(rasterPoints_>0) rasterPoints_--; }
     
@@ -39,7 +40,8 @@ private:
     void                drawPlayerConfirmation();
     void                drawRoundCountDown();
     void                drawGameOver();
-    void                drawIdle();
+//    void                drawIdle();
+    void                drawCalibartion();
 
     void                resetPlayerConfirmation();
     void                resetGameOver();
