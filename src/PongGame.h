@@ -53,6 +53,7 @@ private:
     
     void                    updateStartingGame();
     void                    updateGameMovement();
+    void                    updateAutoGame();
     
     bool                                    verboseText_;
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;

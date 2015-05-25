@@ -63,6 +63,13 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
         }
         updateGameMovement();
     }
+    if ( *stateOfGame_ == AutoGame ) {
+        if (startBall_) {
+            startBall();
+            startBall_ = false;
+        }
+        updateAutoGame();
+    }
 }
     
 void PongGame::updateGameMovement()
@@ -74,7 +81,13 @@ void PongGame::updateGameMovement()
     resetBallAtBoundary( ball_ );
 }
 
-    
+void PongGame::updateAutoGame()
+{
+    world_->update();
+    restrictSpeed( ball_, 5 );
+    catchBugVertical( ball_, 0.7 );
+    resetBallAtBoundary( ball_ );
+}
 
 void PongGame::draw()
 {
