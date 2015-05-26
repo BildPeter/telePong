@@ -194,6 +194,7 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     }
 }
     
+    
 // ---------------------------------------------------------------------------
     
 StateOfArea TouchHandler::getCursorPointState( ofPoint aPoint )

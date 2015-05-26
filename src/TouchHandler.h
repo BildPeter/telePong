@@ -50,6 +50,8 @@ private:
     Side                    getCursorPointSide( ofPoint aPoint );
     float                   getShift( ofxTuioCursor & tuioCursor, CursorPoint const &aPoint );
     void                    calculateClosestActiveCursors();
+
+
     
     ofxTuioClient           tuioClient_;
     GeometryType            geometries_;

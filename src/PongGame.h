@@ -48,11 +48,14 @@ private:
     void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxRotSpeed );
     void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
     void                    resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall );
+    void                    setCursorActiveCentered();
     void                    nextRound();
     void                    resetGame();
     void                    resetRound();
+
     
     void                    updateStartingGame();
+    void                    updateRoundCountDown();
     void                    updateGameMovement();
     void                    updateAutoGame();
     
@@ -67,6 +70,7 @@ private:
     int                                     pointsLeft, pointsRight;
     WinnerType                              winnerLast, winnerFinal;
     list<CursorPoint>                       activeCursors_;
+    list<CursorPoint>                       activeCursorsCentered_;
     GameState                              *stateOfGame_;
     int                                     roundOfGame_;
     int                                     maxRoundsGame;

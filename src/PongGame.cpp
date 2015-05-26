@@ -43,16 +43,35 @@ void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
     ball_->setPhysics(0.1, 1, 0.1);
     ball_->setup( world_->getWorld(), ofGetWindowWidth()/2,ofGetWindowHeight()/2 , ballRadius_, ballRadius_ );
     updatePositions();
+    setCursorActiveCentered();
     resetGame();
 }
+    
+void PongGame::setCursorActiveCentered()
+{
+    CursorPoint             mLeft;
+    CursorPoint             mRight;
+    
+    mLeft.position      = ofPoint( geometries_->paddels[0]->position.x, ofGetHeight()/2 );
+    mRight.position     = ofPoint( geometries_->paddels[1]->position.x, ofGetHeight()/2 );
+    mLeft.side          = left;
+    mRight.side         = right;
+    mLeft.state         = Paddle;
+    mRight.state        = Paddle;
+    
+    activeCursorsCentered_.push_back(mLeft);
+    activeCursorsCentered_.push_back(mRight);
+}
+
 
 void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
 {
+    
     activeCursors_ = activeCursors;
     rescaleBounds( bounds );
     
     if (*stateOfGame_ == RoundCountDown) {
-        updateGameMovement();
+        updateRoundCountDown();
         startBall_ = true;
     }
     
@@ -79,6 +98,13 @@ void PongGame::updateGameMovement()
     restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
     resetBallAtBoundary( ball_ );
+}
+    
+void PongGame::updateRoundCountDown()
+{
+    world_->update();
+    activeCursors_ = activeCursorsCentered_;
+    updatePositions();
 }
 
 void PongGame::updateAutoGame()
@@ -294,5 +320,6 @@ PongGame::~PongGame()
     ball_.reset();
     world_.reset();
 }
+
     
 }   // namespace telePong
