@@ -27,7 +27,7 @@ public:
     void                toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
     void                setRasterPoints( int nr )               { rasterPoints_ = nr; }
     void                increaseRasterPointsIdle()              { rasterPoints_++; }
-    void                decreaseRasterPointsIdle()              { if(rasterPoints_>0) rasterPoints_--; }
+    void                decreaseRasterPointsIdle()              { if(rasterPoints_ > 0) rasterPoints_--; }
     
 private:
     void                updateAutoGame();

@@ -79,12 +79,12 @@ void TouchHandler::drawVerbose()
     
 void TouchHandler::drawPointStates(){
     ofFill();
-    for ( auto aPoint : getCursorActive() ){
+    for ( CursorPoint const &aPoint : getCursorActive() ){
         ofSetColor( ofColor::blue );
         ofCircle( aPoint.position, 15 );
     }
     
-    for ( auto &aPoint : cursorPoints_ )
+    for ( CursorPoint const &aPoint : cursorPoints_ )
     {
         switch (aPoint.state) {
             case InvalidArea:
@@ -115,7 +115,7 @@ bool    TouchHandler::isInGeometry( ofxTuioCursor &tuioCursor )
     bool        isIn    = false;
     
     
-    for ( auto &paddel :  geometries_.paddels )
+    for ( ofRectangle* paddel :  geometries_.paddels )
     {
         isIn = ( isIn || paddel->
                 inside( point ) );
@@ -137,7 +137,7 @@ void TouchHandler::tuioAdded(ofxTuioCursor &tuioCursor)
     aPoint.state            = getCursorPointState( tPoint );
     aPoint.side             = getCursorPointSide( tPoint );
     aPoint.position         = tPoint;
-    aPoint.shiftY           = getShift( tuioCursor, aPoint);
+//    aPoint.shiftY           = getShift( tuioCursor, aPoint);
     aPoint.timeLastMovement = ofGetElapsedTimef();
     cursorPoints_.push_back(aPoint);
     
@@ -181,8 +181,8 @@ void TouchHandler::tuioUpdated(ofxTuioCursor &tuioCursor)
     calculateClosestActiveCursors();
 
     // TODO Hier werden die Werte überschrieben, falls viele aktive Cursoren existieren
-    if (*stateOfGame_ == Playing) {
-        for ( auto cursor : activeCursors_ )
+    if ( *stateOfGame_ == Playing ) {
+        for ( CursorPoint &cursor : activeCursors_ )
         {
             if ( ( cursor.side == left ) && ( cursor.state == Paddle ) ) {
                 geometries_.paddels[ 0 ]->setY( cursor.position.y - (geometries_.paddels[ 0 ]->height/2) );
@@ -253,7 +253,7 @@ void    TouchHandler::calculateClosestActiveCursors()
     bool                    isLeftSet   = false;
     bool                    isRightSet  = false;
     
-    for ( auto &mCursor : cursorPoints_)
+    for ( CursorPoint &mCursor : cursorPoints_)
     {
         // --- Check if active cursor is not set to a paddle yet
         if ( (mCursor.side == left ) && ( mLeft.state != Paddle ) && ( ( mCursor.timeLastMovement - ofGetElapsedTimef() ) < 5 ) )

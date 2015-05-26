@@ -238,8 +238,6 @@ void IntermediateControl::drawRoundCountDown()
     
 void IntermediateControl::updateGameOver()
 {
-
-    
     if (!countDownGameOver.isSet) {
         countDownGameOver.initialValue  = ofGetElapsedTimef();
         countDownGameOver.isSet         = true;

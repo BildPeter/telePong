@@ -89,8 +89,8 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
     
 void PongGame::updateGameMovement()
 {
-    world_->update();
     updatePositions();
+    world_->update();
     restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
     resetBallAtBoundary( ball_ );
@@ -129,12 +129,12 @@ void PongGame::updatePositions()
     bool isLeftSet  = false;
     bool isRightSet = false;
     // TODO Global width/height
-    for( auto actPoint : activeCursors_ )
+    for( CursorPoint const &actPoint : activeCursors_ )
     {
         if( actPoint.side == left ){
             if ( actPoint.state == Paddle ) {
                 paddleLeft_->setPosition( geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2,
-                                          geometries_->paddels[0]->getY() + geometries_->paddels[0]->height/2 - actPoint.shiftY);
+                                          geometries_->paddels[0]->getY() + geometries_->paddels[0]->height/2);
             }else{
                 setAttractionLeft( actPoint.position.y, 40 );
                 paddleLeft_->setDamping(0.95);
