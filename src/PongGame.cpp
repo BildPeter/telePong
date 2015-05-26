@@ -79,10 +79,10 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
         updateGameMovement();
     }
     if ( *stateOfGame_ == AutoGame ) {
-        if (startBall_) {
-            startBall();
-            startBall_ = false;
-        }
+//        if (startBall_) {
+//            startBall();
+//            startBall_ = false;
+//        }
         updateAutoGame();
     }
     
