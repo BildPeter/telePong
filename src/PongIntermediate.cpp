@@ -35,9 +35,24 @@ void IntermediateControl::setup( GeometryType *geometry )
     countDownGameOver.max   = 10;
     
     ofTrueTypeFont::setGlobalDpi(72);
-    fontVerdana.loadFont("PRESSSTART2P.TTF", 30, true, true);
-    fontVerdana.setLineHeight(34.0f);
-    fontVerdana.setLetterSpacing(1.035);
+
+	// for information, like scores or notifications
+	arcadeSmall.loadFont("PRESSSTART2P.TTF", 46, true, true);
+    arcadeSmall.setLineHeight(49.0f);
+    arcadeSmall.setLetterSpacing(1.035);
+
+	// for rounds and announcements
+	arcadeMedium.loadFont("PRESSSTART2P.TTF", 69, true, true);
+    arcadeMedium.setLineHeight(72.0f);
+    arcadeMedium.setLetterSpacing(1.035);
+
+	arcadeLarge.loadFont("PRESSSTART2P.TTF", 189, true, true);
+    arcadeLarge.setLetterSpacing(1.035);
+
+	colWhite = ofColor::fromHex( ofHexToInt("ffffff" ) );
+	colBlue = ofColor::fromHex( ofHexToInt("64b9e4" ) );
+	colGreen = ofColor::fromHex( ofHexToInt("babd5a" ) );
+	colMagenta = ofColor::fromHex( ofHexToInt("e20074" ) );
     
     resetPlayerConfirmation();
     resetGameOver();
@@ -102,6 +117,10 @@ void IntermediateControl::drawPlaying()
 {
     ofSetColor( ofColor::white );
     bgPlaying.draw(0, 0);
+	ofSetColor( colBlue );
+	arcadeSmall.drawString("1", ofGetWidth() / 2 - 70, 100 );
+	ofSetColor( colGreen );
+	arcadeSmall.drawString("2", ofGetWidth() / 2 + 30, 100 );
 }
     
 // ------------------------------------------------------------------------
@@ -133,11 +152,11 @@ void IntermediateControl::updateAutoGame()
 void IntermediateControl::drawAutoGame()
 {
     //TODO Flux
-    ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
+    ofSetColor( colMagenta );
     ofFill();
     ofRect( rectGameOver );
-    ofSetColor( ofColor::white );
-    fontVerdana.drawString("Touch\n Me", rectGameOver.position.x, rectGameOver.position.y );
+    ofSetColor( colWhite );
+    arcadeMedium.drawString("TOUCH\n ME!", rectGameOver.position.x + 20, rectGameOver.position.y + 103 );
 }
     
 // ------------------------------------------------------------------------
@@ -164,38 +183,38 @@ void IntermediateControl::updatePlayerConfirmation()
     
 void IntermediateControl::drawPlayerConfirmation()
 {
-    ofSetColor( ofColor::white );
+    ofSetColor( colBlue );
     bgConfirmation.draw(0, 0);
     
     if (!isPlayerOneConfirmed) {
-        ofSetColor( ofColor( 0, 255, 0, 100 ) );
+        ofSetColor( colBlue );
         ofRect( *geometries_->activeArea[0] );
-        string      _text1   = "Player 1\nTouch Paddle";
+        string      _text1   = "TOUCH PADDLE\n  TO START";
         ofPushMatrix();
         {
-            ofSetColor( ofColor::white );
-            ofRectangle bounds  = fontVerdana.getStringBoundingBox(_text1, 0, 0);
+            ofSetColor( colBlue );
+            ofRectangle bounds  = arcadeSmall.getStringBoundingBox(_text1, 0, 0);
             // Rotation point in the middle
             ofTranslate(bounds.width/2, bounds.height / 2, 0);
             // Flips X -> Y & Y -> -X
             ofRotateZ( 90 );
-            fontVerdana.drawString(_text1, geometries_->world.getHeight()/2 - (bounds.width/2),
+            arcadeSmall.drawString(_text1, geometries_->world.getHeight()/2 - (bounds.width/2),
                                           -geometries_->activeArea[0]->getWidth() /2 + (bounds.height/2) + 30 );
         }
         ofPopMatrix();
     }
     if (!isPlayerTwoConfirmed) {
-        string      _text2   = "Player 2\nTouch Paddle";
-        ofSetColor( ofColor( 0, 255, 0, 100 ) );
+        string      _text2   = "TOUCH PADDLE\n  TO START";
+        ofSetColor( colGreen );
         ofRect( *geometries_->activeArea[1] );
         ofPushMatrix();
         {
-            ofSetColor( ofColor::white );
-            ofRectangle bounds  = fontVerdana.getStringBoundingBox(_text2, 0, 0);
+            ofSetColor( colGreen );
+            ofRectangle bounds  = arcadeSmall.getStringBoundingBox(_text2, 0, 0);
             ofTranslate(bounds.width/2, bounds.height / 2, 0);
             // Flips X -> -Y & Y -> X
             ofRotateZ( -90 );
-            fontVerdana.drawString(_text2, -geometries_->world.getHeight()/2 - (bounds.width/2),
+            arcadeSmall.drawString(_text2, -geometries_->world.getHeight()/2 - (bounds.width/2),
                                           + geometries_->world.getHeight() - geometries_->activeArea[1]->getWidth() - (bounds.height ) );
         }
         ofPopMatrix();
@@ -229,9 +248,18 @@ void IntermediateControl::drawRoundCountDown()
     ofSetColor( ofColor::white );
     bgCountDown.draw(0, 0);
     
-    ofSetColor( ofColor::white );
-    fontVerdana.drawString( "Round " + ofToString(roundOfGame_) + "\n\t"+ofToString(countDownPlaying.currentValue),
-                           geometries_->world.getCenter().x, geometries_->world.getCenter().y +50);
+	string roundWord;
+	switch(roundOfGame_) {
+		case 1: roundWord = " ONE"; break;
+		case 2: roundWord = " TWO"; break;
+		case 3: roundWord = "THREE"; break;
+		case 4: roundWord = "FOUR"; break;
+		case 5: roundWord = "FIVE"; break;
+	}
+    ofSetColor( colWhite );
+	arcadeMedium.drawString( "ROUND\n" + roundWord, geometries_->world.getCenter().x - 180, geometries_->world.getCenter().y - 200);
+	ofSetColor( colMagenta );
+	arcadeLarge.drawString( ofToString(countDownPlaying.currentValue), geometries_->world.getCenter().x - 80, geometries_->world.getCenter().y + 300);
 }
     
 // ------------------------------------------------------------------------
@@ -263,6 +291,7 @@ void IntermediateControl::updateGameOver()
 
 void IntermediateControl::drawGameOver()
 {
+	
     ofSetColor( ofColor::white );
     if (winner_ == Left) {
         imageGameOverLeftWins.draw(0,0);
@@ -270,8 +299,11 @@ void IntermediateControl::drawGameOver()
     {
         imageGameOverRightWins.draw(0, 0);
     }
-    ofSetColor( ofColor::fromHex( ofHexToInt("ffffff" ) ) );
-    fontVerdana.drawString("Play again?\n" + ofToString(countDownGameOver.currentValue), rectGameOver.position.x, rectGameOver.position.y );
+    ofSetColor( colWhite );
+	arcadeMedium.drawString( " PLAY \nAGAIN?", geometries_->world.getCenter().x - 180, geometries_->world.getCenter().y - 200);
+	ofSetColor( colMagenta );
+	arcadeLarge.drawString( ofToString(countDownGameOver.currentValue), geometries_->world.getCenter().x - 80, geometries_->world.getCenter().y + 300);
+	
 }
     
 void IntermediateControl::resetGameOver()

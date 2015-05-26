@@ -66,7 +66,13 @@ private:
     CountDown           countDownPlaying;
     
     // TODO Flux
-    ofTrueTypeFont      fontVerdana;
+    ofTrueTypeFont      arcadeSmall;
+	ofTrueTypeFont      arcadeMedium;
+	ofTrueTypeFont      arcadeLarge;
+	ofColor				colMagenta;
+	ofColor				colBlue;
+	ofColor				colGreen;
+	ofColor				colWhite;
     ofImage             imageGameOverLeftWins, imageGameOverRightWins;
     ofImage             bgCountDown, bgIdle, bgPlaying, bgConfirmation;
 };
