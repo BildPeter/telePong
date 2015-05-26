@@ -65,30 +65,34 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
 {
     rescaleBounds( bounds );
     
-    if (*stateOfGame_ == RoundCountDown) {
-        updateRoundCountDown();
-        startBall_ = true;
-    }
-    
-    if ( *stateOfGame_ == Playing ) {
-        activeCursors_ = activeCursors;
-        if (startBall_) {
-            startBall();
-            startBall_ = false;
+    if ( *stateOfGame_ != PlanB)
+    {
+        if (*stateOfGame_ == RoundCountDown) {
+            updateRoundCountDown();
+            startBall_ = true;
         }
-        updateGameMovement();
-    }
-    if ( *stateOfGame_ == AutoGame ) {
-        if (startBall_) {
-            startBall();
-            startBall_ = false;
+        
+        if ( *stateOfGame_ == Playing ) {
+            activeCursors_ = activeCursors;
+            if (startBall_) {
+                startBall();
+                startBall_ = false;
+            }
+            updateGameMovement();
         }
-        updateAutoGame();
-    }
-    
-    if (*stateOfGame_ == GameOver ) {
-        updateRoundCountDown();
-        startBall_ = true;
+        if ( *stateOfGame_ == AutoGame ) {
+            if (startBall_) {
+                startBall();
+                startBall_ = false;
+            }
+            activeCursors_ = activeCursors; //TODO
+            updateAutoGame();
+        }
+        
+        if (*stateOfGame_ == GameOver ) {
+            updateRoundCountDown();
+            startBall_ = true;
+        }
     }
 }
     
@@ -110,7 +114,7 @@ void PongGame::updateRoundCountDown()
 
 void PongGame::updateAutoGame()
 {
-    activeCursors_ = getActiveCursorsAutoGame();
+//    activeCursors_ = getActiveCursorsAutoGame();
     world_->update();
     restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
@@ -120,13 +124,16 @@ void PongGame::updateAutoGame()
 
 void PongGame::draw()
 {
-    ofFill();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
-    paddleLeft_->draw();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
-    paddleRight_->draw();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
-    ball_->draw();
+    if ( *stateOfGame_ != PlanB)
+    {
+        ofFill();
+        ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
+        paddleLeft_->draw();
+        ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
+        paddleRight_->draw();
+        ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
+        ball_->draw();
+    }
 }
     
 // ----------------------------------------------------------------------

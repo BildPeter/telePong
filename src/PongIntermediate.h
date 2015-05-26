@@ -40,8 +40,9 @@ private:
     void                drawRoundCountDown();
     void                drawPlaying();
     void                drawGameOver();
-//    void                drawIdle();
+    void                drawIdle();
     void                drawCalibartion();
+    void                drawPlanB();
 
     void                resetPlayerConfirmation();
     void                resetGameOver();
@@ -69,6 +70,8 @@ private:
     ofTrueTypeFont      fontVerdana;
     ofImage             imageGameOverLeftWins, imageGameOverRightWins;
     ofImage             bgCountDown, bgIdle, bgPlaying, bgConfirmation;
+    
+    ofVideoPlayer       videoPlanB;
 };
     
 }   // namespace telePong

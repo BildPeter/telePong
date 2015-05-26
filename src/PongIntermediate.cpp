@@ -41,6 +41,9 @@ void IntermediateControl::setup( GeometryType *geometry )
     
     resetPlayerConfirmation();
     resetGameOver();
+    
+    videoPlanB.loadMovie("logoloop.mp4");
+    videoPlanB.setLoopState(OF_LOOP_NORMAL);
 }
     
 void IntermediateControl::update( list<CursorPoint> cursorList, int round, WinnerType winner )
@@ -49,52 +52,67 @@ void IntermediateControl::update( list<CursorPoint> cursorList, int round, Winne
     roundOfGame_    = round;
     winner_         = winner;
     
-    switch (*stateOfGame_) {
-        case AutoGame:
-            updateAutoGame();
-            break;
-        case PlayerConfirmation:
-            updatePlayerConfirmation();
-            break;
-        case RoundCountDown:
-            updateRoundCountDown();
-            break;
-        case GameOver:
-            updateGameOver();
-            break;
-            
-        default:
-            break;
+    if ( *stateOfGame_ == PlanB)
+    {
+        videoPlanB.play();
+    }else
+    {
+        videoPlanB.stop();
+    
+        switch (*stateOfGame_) {
+            case AutoGame:
+//                updateAutoGame();
+                break;
+            case PlayerConfirmation:
+                updatePlayerConfirmation();
+                break;
+            case RoundCountDown:
+                updateRoundCountDown();
+                break;
+            case GameOver:
+                updateGameOver();
+                break;
+            case PlanB:
+                videoPlanB.play();
+                break;
+            default:
+                break;
+        }
     }
 }
  
 void IntermediateControl::draw()
 {
-    switch (*stateOfGame_) {
-//        case Idle:
-//            drawIdle();
-//            break;
-        case Calibartion:
-            drawCalibartion();
-            break;
-        case AutoGame:
-            drawAutoGame();
-            break;
-        case PlayerConfirmation:
-            drawPlayerConfirmation();
-            break;
-        case RoundCountDown:
-            drawRoundCountDown();
-            break;
-        case Playing:
-            drawPlaying();
-            break;
-        case GameOver:
-            drawGameOver();
-            break;
-            
-        default:
-            break;
+    if ( *stateOfGame_ == PlanB)
+    {
+        drawPlanB();
+    }else
+    {
+        switch (*stateOfGame_) {
+                //        case Idle:
+                //            drawIdle();
+                //            break;
+            case Calibartion:
+                drawCalibartion();
+                break;
+            case AutoGame:
+                drawAutoGame();
+                break;
+            case PlayerConfirmation:
+                drawPlayerConfirmation();
+                break;
+            case RoundCountDown:
+                drawRoundCountDown();
+                break;
+            case Playing:
+                drawPlaying();
+                break;
+            case GameOver:
+                drawGameOver();
+                break;
+            default:
+                break;
+        }
     }
 }
     
@@ -279,7 +297,13 @@ void IntermediateControl::resetGameOver()
     countDownGameOver.isSet = false;
 }
     
+// ------------------------------------------------------------------------
     
+void  IntermediateControl::drawPlanB()
+{
+    ofSetColor( ofColor::white );
+    videoPlanB.draw(0, 0);
+}
     
 // ------------------------------------------------------------------------
     

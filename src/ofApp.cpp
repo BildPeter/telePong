@@ -116,6 +116,9 @@ void ofApp::keyPressed(int key){
         case 'g':
             globalGameState = telePong::GameOver;
             break;
+        case 'b':
+            globalGameState = telePong::PlanB;
+            break;
         case 'v':
             controlIntermediate.toggleVerbose();
             touchHandler.toggleVerbose();
@@ -206,6 +209,12 @@ while(screenControlOSC.hasWaitingMessages()){
         if (m.getArgAsInt32(0))
         {
             globalGameState = telePong::AutoGame;
+        }
+    } else if ( m.getAddress() == "/pong/planb" )
+    {
+        if (m.getArgAsInt32(0))
+        {
+            globalGameState = telePong::PlanB;
         }
     } else if ( m.getAddress() == "/pong/verbose" )
     {
