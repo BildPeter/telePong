@@ -57,7 +57,6 @@ private:
 //    float               circleRadius_;
     ofRectangle         worldDimension_;
     ofRectangle         rectGameOver;
-    ofTrueTypeFont      fontVerdana;
     GeometryType       *geometries_;
     bool                verboseText_;
     int                 roundOfGame_;
@@ -66,6 +65,8 @@ private:
     CountDown           countDownGameOver;
     CountDown           countDownPlaying;
     
+    // TODO Flux
+    ofTrueTypeFont      fontVerdana;
     ofImage             imageGameOverLeftWins, imageGameOverRightWins;
     ofImage             bgCountDown, bgIdle, bgPlaying, bgConfirmation;
 };
