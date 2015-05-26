@@ -110,10 +110,12 @@ void PongGame::updateRoundCountDown()
 
 void PongGame::updateAutoGame()
 {
+    activeCursors_ = getActiveCursorsAutoGame();
     world_->update();
     restrictSpeed( ball_, 5 );
     catchBugVertical( ball_, 0.7 );
     resetBallAtBoundary( ball_ );
+    updatePositions();
 }
 
 void PongGame::draw()
@@ -324,5 +326,17 @@ PongGame::~PongGame()
     world_.reset();
 }
 
+list<CursorPoint>    PongGame::getActiveCursorsAutoGame()
+{
+    list<CursorPoint>       activeCursor;
+    CursorPoint             cursor;
+    
+    cursor.position      = ball_->getPosition();
+    cursor.side          = cursor.position.x>ofGetWindowWidth()/2? right:left ;
+    cursor.state         = ActiveArea;
+    activeCursor.push_back(cursor);
+    
+    return activeCursor;
+}
     
 }   // namespace telePong

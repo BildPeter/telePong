@@ -52,6 +52,7 @@ private:
     void                    nextRound();
     void                    resetGame();
     void                    resetRound();
+    list<CursorPoint>       getActiveCursorsAutoGame();
 
     
     void                    updateStartingGame();
