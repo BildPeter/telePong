@@ -79,8 +79,8 @@ void ofApp::draw(){
         ofTranslate( screenShift );
         ofScale( screenScale, screenScale );
         ofRect(5, 5, touchHandler.getGeometry().world.getWidth() - 10, touchHandler.getGeometry().world.getHeight() - 10 );
-        superPong.draw();
         controlIntermediate.draw();
+        superPong.draw();
     }
     ofPopMatrix();
 

@@ -15,6 +15,12 @@ void IntermediateControl::setup( GeometryType *geometry )
 {
     imageGameOverLeftWins.loadImage( "images/5_WIN_3.png" );
     imageGameOverRightWins.loadImage( "images/5_WIN_3_b.png" );
+
+    bgIdle.loadImage("images/spielfeld_idle.png");
+    bgConfirmation.loadImage("images/spielfeld_Confirmation.png");
+    bgCountDown.loadImage("images/spielfeld_countdown.png");
+    bgPlaying.loadImage("images/spielfeld_Playing.png");
+    
     
     verboseText_            = false;
     rectGameOver            = ofRectangle(ofGetWidth()/2-200, ofGetHeight()/2-100, 400, 200);
@@ -80,6 +86,9 @@ void IntermediateControl::draw()
         case RoundCountDown:
             drawRoundCountDown();
             break;
+        case Playing:
+            drawPlaying();
+            break;
         case GameOver:
             drawGameOver();
             break;
@@ -88,6 +97,13 @@ void IntermediateControl::draw()
             break;
     }
 }
+    
+void IntermediateControl::drawPlaying()
+{
+    ofSetColor( ofColor::white );
+    bgPlaying.draw(0, 0);
+}
+    
 // ------------------------------------------------------------------------
 void IntermediateControl::drawCalibartion()
 {
@@ -148,6 +164,9 @@ void IntermediateControl::updatePlayerConfirmation()
     
 void IntermediateControl::drawPlayerConfirmation()
 {
+    ofSetColor( ofColor::white );
+    bgConfirmation.draw(0, 0);
+    
     if (!isPlayerOneConfirmed) {
         ofSetColor( ofColor( 0, 255, 0, 100 ) );
         ofRect( *geometries_->activeArea[0] );
@@ -192,6 +211,7 @@ void IntermediateControl::resetPlayerConfirmation()
 // ------------------------------------------------------------------------
 void IntermediateControl::updateRoundCountDown()
 {
+    
     if (!countDownPlaying.isSet) {
         countDownPlaying.initialValue = ofGetElapsedTimef();
         countDownPlaying.isSet = true;
@@ -207,6 +227,9 @@ void IntermediateControl::updateRoundCountDown()
 void IntermediateControl::drawRoundCountDown()
 {
     ofSetColor( ofColor::white );
+    bgCountDown.draw(0, 0);
+    
+    ofSetColor( ofColor::white );
     fontVerdana.drawString( "Round " + ofToString(roundOfGame_) + "\n\t"+ofToString(countDownPlaying.currentValue),
                            geometries_->world.getCenter().x, geometries_->world.getCenter().y +50);
 }
@@ -215,6 +238,8 @@ void IntermediateControl::drawRoundCountDown()
     
 void IntermediateControl::updateGameOver()
 {
+
+    
     if (!countDownGameOver.isSet) {
         countDownGameOver.initialValue  = ofGetElapsedTimef();
         countDownGameOver.isSet         = true;

@@ -38,6 +38,7 @@ private:
     void                drawAutoGame();
     void                drawPlayerConfirmation();
     void                drawRoundCountDown();
+    void                drawPlaying();
     void                drawGameOver();
 //    void                drawIdle();
     void                drawCalibartion();
@@ -66,6 +67,7 @@ private:
     CountDown           countDownPlaying;
     
     ofImage             imageGameOverLeftWins, imageGameOverRightWins;
+    ofImage             bgCountDown, bgIdle, bgPlaying, bgConfirmation;
 };
     
 }   // namespace telePong
