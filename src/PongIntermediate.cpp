@@ -17,8 +17,9 @@ void IntermediateControl::setup( GeometryType *geometry )
     imageGameOverRightWins.loadImage( "images/5_WIN_3_b.png" );
     
     verboseText_            = false;
-    circleRadius_           = 150;
-    circleCenter_           = ofGetWindowRect().getCenter();
+    rectGameOver            = ofRectangle(ofGetWidth()/2-200, ofGetHeight()/2-100, 400, 200);
+//    circleRadius_           = 150;
+//    circleCenter_           = ofGetWindowRect().getCenter();
     geometries_             = geometry;
     rasterPoints_           = 4;
 
@@ -106,7 +107,7 @@ void IntermediateControl::updateAutoGame()
 {
     for ( auto &cursor : cursorsAll_ )
     {
-        if (cursor.position.distance( circleCenter_ ) < circleRadius_ ) {
+        if ( rectGameOver.inside(  cursor.position ) ) {
             *stateOfGame_ = PlayerConfirmation;
             if(verboseText_) { cout << "GameState: PlayerConfirmation\n";}
         }
@@ -115,11 +116,12 @@ void IntermediateControl::updateAutoGame()
     
 void IntermediateControl::drawAutoGame()
 {
-    ofSetColor( ofColor::red );
+    //TODO Flux
+    ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
     ofFill();
-    ofCircle( circleCenter_, circleRadius_ );
+    ofRect( rectGameOver );
     ofSetColor( ofColor::white );
-    fontVerdana.drawString("Touch Me!", circleCenter_.x - 85, circleCenter_.y +10 );
+    fontVerdana.drawString("Touch\n Me", rectGameOver.position.x, rectGameOver.position.y );
 }
     
 // ------------------------------------------------------------------------
@@ -223,7 +225,7 @@ void IntermediateControl::updateGameOver()
     {
         for ( auto &cursor : cursorsAll_ )
         {
-            if (cursor.position.distance( circleCenter_ ) < circleRadius_ ) {
+            if ( rectGameOver.inside( cursor.position ) ) {
                 *stateOfGame_ = RoundCountDown;
                 if(verboseText_) { cout << "GameState: RoundCountDown\n";}
                 resetGameOver();
@@ -238,16 +240,15 @@ void IntermediateControl::updateGameOver()
 
 void IntermediateControl::drawGameOver()
 {
+    ofSetColor( ofColor::white );
     if (winner_ == Left) {
         imageGameOverLeftWins.draw(0,0);
-        //        fontVerdana.drawString("WINNER\n", circleCenter_.x - 200, circleCenter_.y +10 );
     }else if (winner_ == Right)
     {
         imageGameOverRightWins.draw(0, 0);
-        //        fontVerdana.drawString("WINNER\n", circleCenter_.x + 200, circleCenter_.y +10 );
     }
     ofSetColor( ofColor::fromHex( ofHexToInt("ffffff" ) ) );
-    fontVerdana.drawString("Play again?\n" + ofToString(countDownGameOver.currentValue), circleCenter_.x - 85, circleCenter_.y +10 );
+    fontVerdana.drawString("Play again?\n" + ofToString(countDownGameOver.currentValue), rectGameOver.position.x, rectGameOver.position.y );
 }
     
 void IntermediateControl::resetGameOver()

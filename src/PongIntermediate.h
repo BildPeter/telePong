@@ -24,7 +24,6 @@ public:
     void                update( list<CursorPoint> cursorList, int round, WinnerType winner );
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
-    void                setCircleRadius( float radius )         { circleRadius_ = radius; }
     void                toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
     void                setRasterPoints( int nr )               { rasterPoints_ = nr; }
     void                increaseRasterPointsIdle()              { rasterPoints_++; }
@@ -53,9 +52,10 @@ private:
     unsigned int        rasterPoints_;
     list<CursorPoint>   cursorsAll_;
     GameState          *stateOfGame_;
-    ofPoint             circleCenter_;
-    float               circleRadius_;
+//    ofPoint             circleCenter_;
+//    float               circleRadius_;
     ofRectangle         worldDimension_;
+    ofRectangle         rectGameOver;
     ofTrueTypeFont      fontVerdana;
     GeometryType       *geometries_;
     bool                verboseText_;
