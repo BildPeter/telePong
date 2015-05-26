@@ -13,6 +13,9 @@ namespace telePong
 
 void IntermediateControl::setup( GeometryType *geometry )
 {
+    imageGameOverLeftWins.loadImage( "images/5_WIN_3.png" );
+    imageGameOverRightWins.loadImage( "images/5_WIN_3_b.png" );
+    
     verboseText_            = false;
     circleRadius_           = 150;
     circleCenter_           = ofGetWindowRect().getCenter();
@@ -25,7 +28,7 @@ void IntermediateControl::setup( GeometryType *geometry )
     countDownGameOver.max   = 10;
     
     ofTrueTypeFont::setGlobalDpi(72);
-    fontVerdana.loadFont("verdana.ttf", 30, true, true);
+    fontVerdana.loadFont("PRESSSTART2P.TTF", 30, true, true);
     fontVerdana.setLineHeight(34.0f);
     fontVerdana.setLetterSpacing(1.035);
     
@@ -235,17 +238,16 @@ void IntermediateControl::updateGameOver()
 
 void IntermediateControl::drawGameOver()
 {
-    ofSetColor( ofColor::green );
-    ofFill();
-    ofCircle( circleCenter_, circleRadius_ );
-    ofSetColor( ofColor::white );
-    fontVerdana.drawString("GameOver\nPlay again?\n" + ofToString(countDownGameOver.currentValue), circleCenter_.x - 85, circleCenter_.y +10 );
     if (winner_ == Left) {
-        fontVerdana.drawString("WINNER\n", circleCenter_.x - 200, circleCenter_.y +10 );
+        imageGameOverLeftWins.draw(0,0);
+        //        fontVerdana.drawString("WINNER\n", circleCenter_.x - 200, circleCenter_.y +10 );
     }else if (winner_ == Right)
     {
-        fontVerdana.drawString("WINNER\n", circleCenter_.x + 200, circleCenter_.y +10 );
+        imageGameOverRightWins.draw(0, 0);
+        //        fontVerdana.drawString("WINNER\n", circleCenter_.x + 200, circleCenter_.y +10 );
     }
+    ofSetColor( ofColor::fromHex( ofHexToInt("ffffff" ) ) );
+    fontVerdana.drawString("Play again?\n" + ofToString(countDownGameOver.currentValue), circleCenter_.x - 85, circleCenter_.y +10 );
 }
     
 void IntermediateControl::resetGameOver()

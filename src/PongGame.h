@@ -75,8 +75,6 @@ private:
     int                                     roundOfGame_;
     int                                     maxRoundsGame;
     bool                                    startBall_;
-    
-    ofTrueTypeFont      fontVerdana;
 };
 
 }   // namespace telePong

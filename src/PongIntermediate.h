@@ -64,6 +64,8 @@ private:
     
     CountDown           countDownGameOver;
     CountDown           countDownPlaying;
+    
+    ofImage             imageGameOverLeftWins, imageGameOverRightWins;
 };
     
 }   // namespace telePong

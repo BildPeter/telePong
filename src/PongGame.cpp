@@ -23,10 +23,6 @@ void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     
     maxRoundsGame       = 5;
-    ofTrueTypeFont::setGlobalDpi(72);
-    fontVerdana.loadFont("verdana.ttf", 30, true, true);
-    fontVerdana.setLineHeight(34.0f);
-    fontVerdana.setLetterSpacing(1.035);
     
     world_->init();
     world_->setGravity(0, 0);
@@ -118,9 +114,11 @@ void PongGame::updateAutoGame()
 void PongGame::draw()
 {
     ofFill();
-    ofSetColor( 255, 255, 255);
+    ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
     paddleLeft_->draw();
+    ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
     paddleRight_->draw();
+    ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
     ball_->draw();
 }
     
