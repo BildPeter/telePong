@@ -55,7 +55,7 @@ void ofApp::update(){
     
     updateOSC();
     touchHandler.setWorld( ofRectangle( screenShift, 760 , 760 ) );
-    touchHandler.update();
+    touchHandler.update( superPong.getBallPosition() );
     controlIntermediate.update( touchHandler.getCursorAll(), superPong.getRound(), superPong.getWinner() );
     superPong.update( touchHandler.getGeometry().world, touchHandler.getCursorActive() );
     

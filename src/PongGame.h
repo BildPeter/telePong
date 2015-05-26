@@ -38,6 +38,7 @@ public:
     int                     getRound()                              { return roundOfGame_;}
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
     WinnerType              getWinner()                             { return winnerFinal; }
+    ofPoint                 getBallPosition()                       { return ball_->getB2DPosition(); }
     
 private:
     void                    rescaleBounds( ofRectangle bounds );

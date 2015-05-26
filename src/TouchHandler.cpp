@@ -28,10 +28,29 @@ void    TouchHandler::setup( int port, GeometryType    geometry, GameState &stat
 
 // ---------------------------------------------------------------------------
     
-void TouchHandler::update()
+void TouchHandler::update( ofPoint ballPosition )
 {
+    if ( *stateOfGame_ == AutoGame ) {
+        updateAutogame( ballPosition );
+    }
+
     tuioClient_.getMessage();
+}
     
+void TouchHandler::updateAutogame( ofPoint ballPosition )
+{
+//    ofPoint     tPoint   = ofPoint( (float)ofGetWidth() * ballPosition.x, (float)ofGetHeight() * ballPosition.y );
+//    
+//    CursorPoint             aPoint;
+//    aPoint.sessionID        = -1;
+//    aPoint.state            = getCursorPointState( tPoint );
+//    aPoint.side             = getCursorPointSide( tPoint );
+//    aPoint.position         = tPoint;
+//    aPoint.shiftY           = 0;
+//    aPoint.timeLastMovement = ofGetElapsedTimef();
+//    cursorPoints_.push_back(aPoint);
+//    
+//    calculateClosestActiveCursors();
 }
     
 // ---------------------------------------------------------------------------
@@ -230,7 +249,8 @@ void    TouchHandler::calculateClosestActiveCursors()
     float distanceLeft      = 400000;
     float distanceRight     = 400000;
     activeCursors_.clear();             // TODO Sollen sie immer gelöscht werden?
-    
+    bool                    isLeftSet   = false;
+    bool                    isRightSet  = false;
     
     for ( auto &mCursor : cursorPoints_)
     {
@@ -239,12 +259,13 @@ void    TouchHandler::calculateClosestActiveCursors()
         {
             if (mCursor.state == Paddle ) {
                 mLeft = mCursor;
-                
+                isLeftSet = true;
             }else if ( mCursor.state == ActiveArea){
                 float currentDistance = mCursor.position.distance(  geometries_.paddels[0]->position );
                 if ( currentDistance < distanceLeft ) {
                     distanceLeft = currentDistance;
                     mLeft = mCursor;
+                    isLeftSet = true;
                 }
             }
         }
@@ -252,20 +273,22 @@ void    TouchHandler::calculateClosestActiveCursors()
         {
             if (mCursor.state == Paddle ) {
                 mRight = mCursor;
+                isRightSet = true;
             }else if ( mCursor.state == ActiveArea ){
                 float currentDistance = mCursor.position.distance(  geometries_.paddels[1]->position );
                 if ( currentDistance < distanceRight ) {
                     distanceRight = currentDistance;
                     mRight = mCursor;
+                    isRightSet = true;
                 }
             }
         }
     }
     
-    if ( mLeft.position != ofPoint(-1,-1) ) {
+    if ( isLeftSet ) {
         activeCursors_.push_back( mLeft );
     }
-    if ( mRight.position != ofPoint(0,0) ) {
+    if ( isRightSet ) {
         activeCursors_.push_back( mRight );
     }
 }

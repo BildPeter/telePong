@@ -28,7 +28,8 @@ public:
     }
 
     void                setup( int port, GeometryType    geometry, GameState &state );
-    void                update();
+    void                update( ofPoint ballPosition );
+    void                updateAutogame( ofPoint ballPosition );
     void                draw();
     void                drawVerbose();
     void                drawPointStates();
@@ -58,6 +59,7 @@ private:
     list<CursorPoint>       cursorPoints_;
     list<CursorPoint>       activeCursors_;
     GameState              *stateOfGame_;
+    ofPoint                 ballPosition_;
 };
     
 }   // namespace telePong
