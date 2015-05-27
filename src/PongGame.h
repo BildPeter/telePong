@@ -21,8 +21,8 @@ class PongGame {
 public:
     PongGame()
     {
-        speedBallMax_       = 12;
-        speedBallMin_       = 10;
+        speedBallMaxBasis_       = 12;
+        speedBallMinBasis_       = 10;
         speedFactorPerRound = 1;
         roundOfGame_        = 1;
         verboseText_        = false;
@@ -66,7 +66,8 @@ private:
     shared_ptr< ofxBox2dRect >              ball_;
     shared_ptr< ofxBox2d >                  world_;
     int                                     ballRadius_;
-    int                                     speedBallMax_, speedBallMin_;
+    int                                     speedBallMax_, speedBallMaxBasis_;
+    int                                     speedBallMin_, speedBallMinBasis_;
     int                                     speedFactorPerRound;
     int                                     pointsLeft, pointsRight;
     WinnerType                              winnerLast, winnerFinal;

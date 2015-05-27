@@ -250,7 +250,7 @@ void PongGame::resetGame()
 {
     roundOfGame_        = 1;
     speedFactorPerRound = 1;
-    setBallSpeed( speedBallMin_, speedBallMax_ );
+    setBallSpeed( speedBallMinBasis_, speedBallMaxBasis_ );
     pointsLeft          = 0;
     pointsRight         = 0;
     winnerLast          = None;
@@ -260,11 +260,8 @@ void PongGame::resetRound()
 {
     roundOfGame_++;
     speedFactorPerRound = roundOfGame_;
-    setBallSpeed( speedBallMin_ + speedFactorPerRound, speedBallMax_ + speedFactorPerRound);
+    setBallSpeed( speedBallMinBasis_ + speedFactorPerRound, speedBallMaxBasis_ + speedFactorPerRound);
     *stateOfGame_   = RoundCountDown;
-
-//    geometries_->paddels[0]->setY( geometries_->activeArea[0]->getCenter().y - (geometries_->paddels[0]->height/2) );
-//    geometries_->paddels[1]->setY( geometries_->activeArea[1]->getCenter().y - (geometries_->paddels[1]->height/2));
 }
 
 
