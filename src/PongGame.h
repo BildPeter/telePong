@@ -49,6 +49,7 @@ private:
     void                    restrictSpeed(     shared_ptr< ofxBox2dRect > mBall, int maxRotSpeed );
     void                    catchBugVertical(  shared_ptr< ofxBox2dRect > mBall, double tolerance  );
     void                    resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall );
+    void                    resetBall();
     void                    setCursorActiveCentered();
     void                    nextRound();
     void                    resetGame();

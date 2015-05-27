@@ -69,6 +69,7 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
     rescaleBounds( bounds );
     
     if (*stateOfGame_ == RoundCountDown) {
+        resetBall();
         updateRoundCountDown();
         startBall_ = true;
     }
@@ -314,15 +315,19 @@ void PongGame::resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall )
             if (verboseText_) { cout << "point for left\t" <<pointsLeft<<":"<<pointsRight<<"\n"; }
         }
         
-        mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
-        mBall->setVelocity( ofVec2f::zero() );
-        mBall->setRotation( 0 );
-        mBall->setAngularVelocity( 0 );
-
+        resetBall();
         
         nextRound();
         if (verboseText_) {cout<<"Round: " << roundOfGame_ +1<<"\n";};
     }
+}
+    
+void PongGame::resetBall()
+{
+    ball_->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
+    ball_->setVelocity( ofVec2f::zero() );
+    ball_->setRotation( 0 );
+    ball_->setAngularVelocity( 0 );
 }
 
     
