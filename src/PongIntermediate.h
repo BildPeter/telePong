@@ -21,7 +21,7 @@ class IntermediateControl{
 public:
     void                setup( GeometryType *geometry );
     void                draw();
-    void                update( list<CursorPoint> cursorList, int round, WinnerType winner );
+    void                update( list<CursorPoint> cursorList, int round, WinnerType winner, pair<int, int> playerPoints );
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
     void                toggleVerbose( bool val )               { verboseText_ = val; }
@@ -62,6 +62,7 @@ private:
     bool                verboseText_;
     int                 roundOfGame_;
     WinnerType          winner_;
+    int                 pointsLeft, pointsRight;
     
     CountDown           countDownGameOver;
     CountDown           countDownPlaying;

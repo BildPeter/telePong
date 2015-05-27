@@ -62,7 +62,7 @@ void IntermediateControl::setup( GeometryType *geometry )
     videoPlanB.play();
 }
     
-void IntermediateControl::update( list<CursorPoint> cursorList, int round, WinnerType winner )
+void IntermediateControl::update( list<CursorPoint> cursorList, int round, WinnerType winner, pair<int, int> playerPoints )
 {
     if ( *stateOfGame_ == PlanB)
     {
@@ -75,6 +75,8 @@ void IntermediateControl::update( list<CursorPoint> cursorList, int round, Winne
         cursorsAll_     = cursorList;
         roundOfGame_    = round;
         winner_         = winner;
+        pointsLeft      = playerPoints.first;
+        pointsRight     = playerPoints.second;
         
         switch (*stateOfGame_) {
             case AutoGame:
@@ -138,9 +140,9 @@ void IntermediateControl::drawPlaying()
     ofSetColor( ofColor::white );
     bgPlaying.draw(0, 0);
 	ofSetColor( colBlue );
-	arcadeSmall.drawString("1", ofGetWidth() / 2 - 70, 100 );
+	arcadeSmall.drawString( ofToString( pointsLeft )  , ofGetWidth() / 2 - 70, 100 );
 	ofSetColor( colGreen );
-	arcadeSmall.drawString("2", ofGetWidth() / 2 + 30, 100 );
+	arcadeSmall.drawString( ofToString( pointsRight ) , ofGetWidth() / 2 + 30, 100 );
 }
     
 // ------------------------------------------------------------------------

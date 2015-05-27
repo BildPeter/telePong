@@ -39,6 +39,7 @@ public:
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
     WinnerType              getWinner()                             { return winnerFinal; }
     ofPoint                 getBallPosition()                       { return ball_->getB2DPosition(); }
+    std::pair<int, int>     getPointOfPlayer()                      { return std::make_pair( pointsLeft, pointsRight ); }
     
 private:
     void                    rescaleBounds( ofRectangle bounds );
