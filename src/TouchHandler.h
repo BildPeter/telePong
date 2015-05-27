@@ -39,7 +39,7 @@ public:
     list<CursorPoint>  &getCursorAll()                      { return cursorPoints_; }
     list<CursorPoint>   getCursorActive()                   { return activeCursors_; }
     GeometryType       &getGeometry()                       { return geometries_; }
-    void                toggleVerbose()                     { verboseText_ = verboseText_?false:true;}
+    void                toggleVerbose( bool val )           { verboseText_ = val; }
     
 private:
     void                    tuioAdded(      ofxTuioCursor & tuioCursor );

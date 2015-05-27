@@ -24,7 +24,7 @@ public:
     void                update( list<CursorPoint> cursorList, int round, WinnerType winner );
     
     void                setGameStateGlobal( GameState &state )  { stateOfGame_ = &state; }
-    void                toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
+    void                toggleVerbose( bool val )               { verboseText_ = val; }
     void                setRasterPoints( int nr )               { rasterPoints_ = nr; }
     void                increaseRasterPointsIdle()              { rasterPoints_++; }
     void                decreaseRasterPointsIdle()              { if(rasterPoints_ > 0) rasterPoints_--; }
@@ -42,6 +42,7 @@ private:
     void                drawGameOver();
 //    void                drawIdle();
     void                drawCalibartion();
+    void                drawPlanB();
 
     void                resetPlayerConfirmation();
     void                resetGameOver();
@@ -75,6 +76,8 @@ private:
 	ofColor				colWhite;
     ofImage             imageGameOverLeftWins, imageGameOverRightWins;
     ofImage             bgCountDown, bgIdle, bgPlaying, bgConfirmation;
+    
+    ofVideoPlayer       videoPlanB;
 };
     
 }   // namespace telePong

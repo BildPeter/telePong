@@ -44,9 +44,10 @@ void ofApp::setup(){
 		ofxSpout::init("telePong", ofGetWidth(), ofGetHeight(), true);
     #endif
     
-    touchHandler.toggleVerbose();
-    controlIntermediate.toggleVerbose();
-    superPong.toggleVerbose();
+    touchHandler.toggleVerbose( false );
+    controlIntermediate.toggleVerbose( false );
+    superPong.toggleVerbose( false );
+    verbose = false;
 // ----- TMP
 }
 
@@ -116,9 +117,13 @@ void ofApp::keyPressed(int key){
         case 'g':
             globalGameState = telePong::GameOver;
             break;
+        case 'b':
+            globalGameState = telePong::PlanB;
+            break;
         case 'v':
-            controlIntermediate.toggleVerbose();
-            touchHandler.toggleVerbose();
+            verbose = verbose==true?false:true;
+            controlIntermediate.toggleVerbose(verbose);
+            touchHandler.toggleVerbose(verbose);
             break;
         case '+':
             controlIntermediate.increaseRasterPointsIdle();
@@ -211,11 +216,22 @@ while(screenControlOSC.hasWaitingMessages()){
     {
         if (m.getArgAsInt32(0))
         {
-            superPong.toggleVerbose();
-            touchHandler.toggleVerbose();
-            controlIntermediate.toggleVerbose();
+            superPong.toggleVerbose( true );
+            touchHandler.toggleVerbose( true );
+            controlIntermediate.toggleVerbose( true );
+        }else
+        {
+            superPong.toggleVerbose( false );
+            touchHandler.toggleVerbose( false );
+            controlIntermediate.toggleVerbose( false );
         }
-
+        
+    } else if ( m.getAddress() == "/pong/planb" )
+    {
+        if (m.getArgAsInt32(0))
+        {
+            globalGameState = telePong::PlanB;
+        }
     } else if ( m.getAddress() == "/pong/ballsize" )
     {
     } else if ( m.getAddress() == "/pong/paddleheight" )

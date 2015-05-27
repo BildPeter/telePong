@@ -34,7 +34,7 @@ public:
     void                    startBall();
     void                    rescaleBounds();
     void                    setBallSpeed( int min, int max )        { speedBallMin_= min; speedBallMax_ = max; }
-    void                    toggleVerbose()                         { verboseText_ = verboseText_?false:true;}
+    void                    toggleVerbose( bool val )               { verboseText_ = val; }
     int                     getRound()                              { return roundOfGame_;}
     void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
     WinnerType              getWinner()                             { return winnerFinal; }

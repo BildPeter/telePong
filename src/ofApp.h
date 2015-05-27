@@ -45,6 +45,7 @@ public:
     
     float                           screenScale;
     ofPoint                         screenShift;
+    bool                            verbose;
     
     // --- TMP
     ofRectangle                     mPadA, mPadB, mRestrictA, mRestrictB;
