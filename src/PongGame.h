@@ -21,8 +21,8 @@ class PongGame {
 public:
     PongGame()
     {
-        speedBallMax_       = 10;
-        speedBallMin_       = 5;
+        speedBallMax_       = 12;
+        speedBallMin_       = 10;
         speedFactorPerRound = 1;
         roundOfGame_        = 1;
         verboseText_        = false;
