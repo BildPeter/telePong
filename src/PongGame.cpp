@@ -123,8 +123,14 @@ void PongGame::draw()
     paddleLeft_->draw();
     ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
     paddleRight_->draw();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
-    ball_->draw();
+    
+    if (    ( *stateOfGame_ == Playing )
+        ||  ( *stateOfGame_ == RoundCountDown )
+        )
+    {
+        ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
+        ball_->draw();
+    }
 }
     
 // ----------------------------------------------------------------------
