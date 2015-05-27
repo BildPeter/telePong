@@ -21,11 +21,11 @@ class PongGame {
 public:
     PongGame()
     {
-        speedBallMaxBasis_       = 12;
-        speedBallMinBasis_       = 10;
-        speedFactorPerRound = 1;
-        roundOfGame_        = 1;
-        verboseText_        = false;
+        speedBallMaxBasis_      = 12;
+        speedBallMinBasis_      = 10;
+        speedFactorPerRound     = 1;
+        roundOfGame_            = 1;
+        verboseText_            = false;
     }
     ~PongGame();
     void                    setup( GeometryType *geometry, GameState &state, int ballSize );
