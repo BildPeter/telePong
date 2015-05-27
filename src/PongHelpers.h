@@ -55,7 +55,8 @@ enum GameState
     PlayerConfirmation,
     RoundCountDown,
     Playing,
-    GameOver
+    GameOver,
+    PlanB
 }
     ;
 enum WinnerType{ None, Left, Right };

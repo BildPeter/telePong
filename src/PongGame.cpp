@@ -21,6 +21,7 @@ void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
     ball_        = shared_ptr< ofxBox2dRect>( new  ofxBox2dRect );
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
+    startBall_   = false;
     
     maxRoundsGame       = 5;
     
@@ -48,12 +49,12 @@ void PongGame::setCursorActiveCentered()
     CursorPoint             mLeft;
     CursorPoint             mRight;
     
-    mLeft.position      = ofPoint( geometries_->paddels[0]->position.x, ofGetHeight()/2 );
-    mRight.position     = ofPoint( geometries_->paddels[1]->position.x, ofGetHeight()/2 );
+    mLeft.position      = ofPoint( geometries_->paddels[0]->position.x, ofGetWindowHeight()/2 );
+    mRight.position     = ofPoint( geometries_->paddels[1]->position.x, ofGetWindowHeight()/2 );
     mLeft.side          = left;
     mRight.side         = right;
-    mLeft.state         = Paddle;
-    mRight.state        = Paddle;
+    mLeft.state         = ActiveArea;
+    mRight.state        = ActiveArea;
     
     activeCursorsCentered_.push_back(mLeft);
     activeCursorsCentered_.push_back(mRight);
@@ -62,8 +63,6 @@ void PongGame::setCursorActiveCentered()
 
 void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
 {
-    
-    activeCursors_ = activeCursors;
     rescaleBounds( bounds );
     
     if (*stateOfGame_ == RoundCountDown) {
@@ -72,6 +71,7 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
     }
     
     if ( *stateOfGame_ == Playing ) {
+        activeCursors_ = activeCursors;
         if (startBall_) {
             startBall();
             startBall_ = false;
@@ -79,11 +79,16 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
         updateGameMovement();
     }
     if ( *stateOfGame_ == AutoGame ) {
-        if (startBall_) {
-            startBall();
-            startBall_ = false;
-        }
+//        if (startBall_) {
+//            startBall();
+//            startBall_ = false;
+//        }
         updateAutoGame();
+    }
+    
+    if (*stateOfGame_ == GameOver ) {
+        updateRoundCountDown();
+        startBall_ = true;
     }
 }
     
@@ -98,9 +103,9 @@ void PongGame::updateGameMovement()
     
 void PongGame::updateRoundCountDown()
 {
-    world_->update();
     activeCursors_ = activeCursorsCentered_;
     updatePositions();
+    world_->update();
 }
 
 void PongGame::updateAutoGame()
@@ -128,7 +133,7 @@ void PongGame::updatePositions()
 {
     bool isLeftSet  = false;
     bool isRightSet = false;
-    // TODO Global width/height
+
     for( CursorPoint const &actPoint : activeCursors_ )
     {
         if( actPoint.side == left ){
@@ -249,8 +254,8 @@ void PongGame::resetRound()
     setBallSpeed( 5 + speedFactorPerRound, 10 + 2*speedFactorPerRound);
     *stateOfGame_   = RoundCountDown;
 
-    geometries_->paddels[0]->setY( geometries_->activeArea[0]->getCenter().y - (geometries_->paddels[0]->height/2) );
-    geometries_->paddels[1]->setY( geometries_->activeArea[1]->getCenter().y - (geometries_->paddels[1]->height/2));
+//    geometries_->paddels[0]->setY( geometries_->activeArea[0]->getCenter().y - (geometries_->paddels[0]->height/2) );
+//    geometries_->paddels[1]->setY( geometries_->activeArea[1]->getCenter().y - (geometries_->paddels[1]->height/2));
 }
 
 
