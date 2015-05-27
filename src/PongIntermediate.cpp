@@ -66,6 +66,7 @@ void IntermediateControl::update( list<CursorPoint> cursorList, int round, Winne
 {
     if ( *stateOfGame_ == PlanB)
     {
+		videoPlanB.update();
         videoPlanB.setPaused( false );
     }else
     {
@@ -332,7 +333,7 @@ void IntermediateControl::resetGameOver()
     
 void  IntermediateControl::drawPlanB()
 {
-    ofSetColor( ofColor::white );
+    //ofSetColor( ofColor::white );
     videoPlanB.draw(0, 0);
 }
     

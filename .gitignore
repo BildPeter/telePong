@@ -338,3 +338,4 @@ bin/telePong.app/Contents/Resources/icon.icns
 /bin/glut32.dll
 /bin/Zlib.dll
 /bin/ssleay32.dll
+/bin/data/movies
