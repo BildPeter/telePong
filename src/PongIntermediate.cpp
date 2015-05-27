@@ -329,7 +329,7 @@ void IntermediateControl::resetGameOver()
     
 void  IntermediateControl::drawPlanB()
 {
-    //ofSetColor( ofColor::white );
+    ofSetColor( ofColor::white );
     videoPlanB.draw(0, 0);
 }
     

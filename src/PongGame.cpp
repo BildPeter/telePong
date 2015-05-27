@@ -118,18 +118,21 @@ void PongGame::updateAutoGame()
 
 void PongGame::draw()
 {
-    ofFill();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
-    paddleLeft_->draw();
-    ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
-    paddleRight_->draw();
-    
-    if (    ( *stateOfGame_ == Playing )
-        ||  ( *stateOfGame_ == RoundCountDown )
-        )
+    if (*stateOfGame_ != PlanB )
     {
-        ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
-        ball_->draw();
+        ofFill();
+        ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
+        paddleLeft_->draw();
+        ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
+        paddleRight_->draw();
+        
+        if (    ( *stateOfGame_ == Playing )
+            ||  ( *stateOfGame_ == RoundCountDown )
+            )
+        {
+            ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
+            ball_->draw();
+        }
     }
 }
     

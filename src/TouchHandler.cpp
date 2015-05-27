@@ -57,9 +57,11 @@ void TouchHandler::updateAutogame( ofPoint ballPosition )
     
 void TouchHandler::draw()
 {
-    if ( verboseText_ ) {
-        drawVerbose();
-        drawPointStates();
+    if (*stateOfGame_ !=PlanB) {
+        if ( verboseText_ ) {
+            drawVerbose();
+            drawPointStates();
+        }
     }
 }
     
