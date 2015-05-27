@@ -32,7 +32,7 @@ void IntermediateControl::setup( GeometryType *geometry )
     countDownPlaying.isSet  = false;
     countDownPlaying.max    = 5;
     countDownGameOver.isSet = false;
-    countDownGameOver.max   = 10;
+    countDownGameOver.max   = 5;
     
     ofTrueTypeFont::setGlobalDpi(72);
 
@@ -218,8 +218,8 @@ void IntermediateControl::drawPlayerConfirmation()
             ofTranslate(bounds.width/2, bounds.height / 2, 0);
             // Flips X -> Y & Y -> -X
             ofRotateZ( 90 );
-            arcadeSmall.drawString(_text1, geometries_->world.getHeight()/2 - (bounds.width/2),
-                                          -geometries_->activeArea[0]->getWidth() /2 + (bounds.height/2) + 30 );
+            arcadeSmall.drawString(_text1, geometries_->world.getHeight()/2 - (bounds.width/2) - 55,
+                                          -geometries_->activeArea[0]->getWidth() /2 + (bounds.height/2) + 50 );
         }
         ofPopMatrix();
     }
@@ -234,8 +234,8 @@ void IntermediateControl::drawPlayerConfirmation()
             ofTranslate(bounds.width/2, bounds.height / 2, 0);
             // Flips X -> -Y & Y -> X
             ofRotateZ( -90 );
-            arcadeSmall.drawString(_text2, -geometries_->world.getHeight()/2 - (bounds.width/2),
-                                          + geometries_->world.getHeight() - geometries_->activeArea[1]->getWidth() - (bounds.height ) );
+            arcadeSmall.drawString(_text2, -geometries_->world.getHeight()/2 - (bounds.width/2) + 45,
+                                          + geometries_->world.getHeight() - geometries_->activeArea[1]->getWidth() - (bounds.height ) - 275 );
         }
         ofPopMatrix();
     }
@@ -319,10 +319,6 @@ void IntermediateControl::drawGameOver()
     {
         imageGameOverRightWins.draw(0, 0);
     }
-    ofSetColor( colWhite );
-	arcadeMedium.drawString( " PLAY \nAGAIN?", geometries_->world.getCenter().x - 180, geometries_->world.getCenter().y - 200);
-	ofSetColor( colMagenta );
-	arcadeLarge.drawString( ofToString(countDownGameOver.currentValue), geometries_->world.getCenter().x - 80, geometries_->world.getCenter().y + 300);
 	
 }
     
