@@ -54,11 +54,16 @@ private:
     void                    resetGame();
     void                    resetRound();
 
-    
     void                    updateStartingGame();
     void                    updateRoundCountDown();
     void                    updateGameMovement();
+    
     void                    updateAutoGame();
+    void                    resetBallAtBoundaryAutogame( shared_ptr< ofxBox2dRect > mBall );
+    void                    startBallAutoGame();
+    void                    updatePositionsAutoGame();
+    list<CursorPoint>       getActiveCursorsAutoGame();
+    
     
     bool                                    verboseText_;
     shared_ptr< ofxBox2dRect >              paddleLeft_, paddleRight_;
@@ -77,6 +82,9 @@ private:
     int                                     roundOfGame_;
     int                                     maxRoundsGame;
     bool                                    startBall_;
+    bool                                    startBallAutogame_;
+    
+    ofRectangle                             rectGameOver;
 };
 
 }   // namespace telePong

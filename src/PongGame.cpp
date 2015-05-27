@@ -22,6 +22,7 @@ void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
     paddleLeft_  = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     paddleRight_ = shared_ptr< ofxBox2dRect >( new ofxBox2dRect );
     startBall_   = false;
+    startBallAutogame_ = true;
     
     maxRoundsGame       = 5;
     
@@ -42,6 +43,8 @@ void PongGame::setup( GeometryType *geometry, GameState &state, int ballSize )
     updatePositions();
     setCursorActiveCentered();
     resetGame();
+    
+    rectGameOver            = ofRectangle(ofGetWidth()/2-200, ofGetHeight()/2-100, 400, 200);
 }
     
 void PongGame::setCursorActiveCentered()
@@ -79,16 +82,16 @@ void PongGame::update( ofRectangle bounds, list<CursorPoint> activeCursors  )
         updateGameMovement();
     }
     if ( *stateOfGame_ == AutoGame ) {
-//        if (startBall_) {
-//            startBall();
-//            startBall_ = false;
-//        }
+        if (startBallAutogame_) {
+            startBallAutoGame();
+            startBallAutogame_ = false;
+        }
         updateAutoGame();
     }
     
     if (*stateOfGame_ == GameOver ) {
         updateRoundCountDown();
-        startBall_ = true;
+        startBallAutogame_ = true;
     }
 }
     
@@ -108,14 +111,6 @@ void PongGame::updateRoundCountDown()
     world_->update();
 }
 
-void PongGame::updateAutoGame()
-{
-    world_->update();
-    restrictSpeed( ball_, 5 );
-    catchBugVertical( ball_, 0.7 );
-    resetBallAtBoundary( ball_ );
-}
-
 void PongGame::draw()
 {
     if (*stateOfGame_ != PlanB )
@@ -129,6 +124,12 @@ void PongGame::draw()
         if (    ( *stateOfGame_ == Playing )
             ||  ( *stateOfGame_ == RoundCountDown )
             )
+        {
+            ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
+            ball_->draw();
+        } else
+        if (    ( *stateOfGame_ == AutoGame )
+            &&  ( !(rectGameOver.inside( ball_->getPosition())) ) )
         {
             ofSetColor( ofColor::fromHex( ofHexToInt( "e20074" ) ) );
             ball_->draw();
@@ -184,7 +185,100 @@ void PongGame::updatePositions()
                                    geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
     }
 }
+// ----------------------------------------------------------------------
+void PongGame::updateAutoGame()
+{
+    activeCursors_ = getActiveCursorsAutoGame();
+    world_->update();
+    restrictSpeed( ball_, 5 );
+    catchBugVertical( ball_, 0.7 );
+    resetBallAtBoundaryAutogame( ball_ );
+    updatePositionsAutoGame();
+}
     
+    void PongGame::updatePositionsAutoGame()
+{
+    bool isLeftSet  = false;
+    bool isRightSet = false;
+    
+    for( CursorPoint const &actPoint : activeCursors_ )
+    {
+        if( actPoint.side == left ){
+            if ( actPoint.state == Paddle ) {
+                paddleLeft_->setPosition( geometries_->paddels[0]->getX() + geometries_->paddels[0]->width/2,
+                                         geometries_->paddels[0]->getY() + geometries_->paddels[0]->height/2);
+            }else{
+                setAttractionLeft( actPoint.position.y, 40 );
+                paddleLeft_->setDamping(0.95);
+                paddleLeft_->setRotation(0);
+                paddleLeft_->setVelocity(0, paddleLeft_->getVelocity().y );
+                geometries_->paddels[0]->setPosition( geometries_->paddels[0]->getX(),
+                                                     paddleLeft_->getPosition().y - (geometries_->paddels[0]->height/2) );
+            }
+            isLeftSet = true;
+        }
+        if( actPoint.side == right ){
+            if ( actPoint.state == Paddle ) {
+                paddleRight_->setPosition( geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
+                                          geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
+            }else{
+                setAttractionRight( actPoint.position.y, 40 );
+                paddleRight_->setDamping(0.95);
+                paddleRight_->setRotation(0);
+                paddleRight_->setVelocity(0, paddleRight_->getVelocity().y );
+                geometries_->paddels[1]->setPosition( geometries_->paddels[1]->getX(),
+                                                     paddleRight_->getPosition().y - (geometries_->paddels[1]->height/2) );            }
+            isRightSet = true;
+        }
+    }
+    
+    // -- If the cursor leaves or disappears. Stop the movement
+    if (!isLeftSet) {
+        paddleLeft_->setPosition( geometries_->paddels[0]->getX() + (geometries_->paddels[0]->width/2) ,
+                                 geometries_->paddels[0]->getY() + (geometries_->paddels[0]->height/2) );
+    }
+    if (!isRightSet) {
+        paddleRight_->setPosition( geometries_->paddels[1]->getX() + (geometries_->paddels[1]->width/2) ,
+                                  geometries_->paddels[1]->getY() + (geometries_->paddels[1]->height/2) );
+    }
+}
+
+    
+list<CursorPoint>    PongGame::getActiveCursorsAutoGame()
+{
+    list<CursorPoint>       activeCursor;
+    CursorPoint             cursor;
+    
+    cursor.position      = ball_->getPosition();
+    cursor.side          = cursor.position.x>ofGetWindowWidth()/2? right:left ;
+    cursor.state         = ActiveArea;
+    activeCursor.push_back(cursor);
+    
+    return activeCursor;
+}
+
+void PongGame::resetBallAtBoundaryAutogame( shared_ptr< ofxBox2dRect > mBall )
+{
+    if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) )
+        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) )
+        ||   ( !( (*geometries_).world.inside( mBall->getPosition() ) ) ) )     // catch a bug, if the ball leaves the game world
+    {
+        mBall->setPosition( ofVec2f( (*geometries_).world.getCenter().x, (*geometries_).world.getCenter().y ) );
+        mBall->setVelocity( ofVec2f::zero() );
+        mBall->setRotation( 0 );
+        mBall->setAngularVelocity( 0 );
+        startBallAutoGame();
+    }
+}
+    
+void PongGame::startBallAutoGame()
+{
+    float  signY = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    float  signX = ( ofRandom(-1, 1) > 0 ) ? 1 : (-1);
+    
+    ball_->setVelocity( signX * ofRandom( speedBallMin_, speedBallMax_/3 ) ,
+                        signY * ofRandom( 0, speedBallMax_ ) );
+}
 // ----------------------------------------------------------------------
     
 void PongGame::nextRound()
