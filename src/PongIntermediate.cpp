@@ -208,7 +208,6 @@ void IntermediateControl::drawPlayerConfirmation()
     
     if (!isPlayerOneConfirmed) {
         ofSetColor( colBlue );
-        ofRect( *geometries_->activeArea[0] );
         string      _text1   = "TOUCH PADDLE\n  TO START";
         ofPushMatrix();
         {
@@ -226,7 +225,6 @@ void IntermediateControl::drawPlayerConfirmation()
     if (!isPlayerTwoConfirmed) {
         string      _text2   = "TOUCH PADDLE\n  TO START";
         ofSetColor( colGreen );
-        ofRect( *geometries_->activeArea[1] );
         ofPushMatrix();
         {
             ofSetColor( colGreen );

@@ -99,9 +99,6 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 
     switch (key) {
-        case 'f':
-            ofToggleFullscreen();
-            rescalePong();
         case 's':
             superPong.startBall();
             break;
