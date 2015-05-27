@@ -198,7 +198,8 @@ void IntermediateControl::updatePlayerConfirmation()
     
     if ( isPlayerTwoConfirmed && isPlayerOneConfirmed) {
         resetPlayerConfirmation();
-        *stateOfGame_ = RoundCountDown;
+        countDownPlaying.isSet  = false;
+        *stateOfGame_           = RoundCountDown;
         if(verboseText_) { cout << "GameState: RoundCountDown\n";}
     }
 }
