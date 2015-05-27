@@ -17,6 +17,8 @@ void ofApp::setup(){
     int sizeBall        = XML.getValue( "BALLSIZE", 30 );
     int paddleWidth     = XML.getValue( "PADDLEWIDTH", 50 );
     int paddleHeight    = XML.getValue( "PADDLEHEIGHT", 100 );
+    int speedMin        = XML.getValue("SPEEDMIN", 10);
+    int speedMax        = XML.getValue("SPEEDMAX", 12);
     
     int     portTuio    = 3333;
     int     portControl = 4444;
@@ -39,7 +41,8 @@ void ofApp::setup(){
     controlIntermediate.setGameStateGlobal( globalGameState );
     controlIntermediate.setup( &touchHandler.getGeometry() );
     superPong.setup( &touchHandler.getGeometry(), globalGameState, sizeBall );
-
+    superPong.setBallSpeedRestriction( speedMin, speedMax );
+    
     #ifdef _WIN32
 		ofxSpout::init("telePong", ofGetWidth(), ofGetHeight(), true);
     #endif

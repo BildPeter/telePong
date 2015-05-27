@@ -33,15 +33,16 @@ public:
     void                    draw();
     void                    startBall();
     void                    rescaleBounds();
-    void                    setBallSpeed( int min, int max )        { speedBallMin_= min; speedBallMax_ = max; }
-    void                    toggleVerbose( bool val )               { verboseText_ = val; }
-    int                     getRound()                              { return roundOfGame_;}
-    void                    setRounds( int rounds )                 { maxRoundsGame = rounds; }
-    WinnerType              getWinner()                             { return winnerFinal; }
-    ofPoint                 getBallPosition()                       { return ball_->getB2DPosition(); }
-    std::pair<int, int>     getPointOfPlayer()                      { return std::make_pair( pointsLeft, pointsRight ); }
+    void                    setBallSpeedRestriction( int min, int max ) { speedBallMinBasis_= min; speedBallMaxBasis_ = max; }
+    void                    toggleVerbose( bool val )                   { verboseText_ = val; }
+    int                     getRound()                                  { return roundOfGame_;}
+    void                    setRounds( int rounds )                     { maxRoundsGame = rounds; }
+    WinnerType              getWinner()                                 { return winnerFinal; }
+    ofPoint                 getBallPosition()                           { return ball_->getB2DPosition(); }
+    std::pair<int, int>     getPointOfPlayer()                          { return std::make_pair( pointsLeft, pointsRight ); }
     
 private:
+    void                    setBallSpeed( int min, int max )            { speedBallMin_= min; speedBallMax_ = max; }
     void                    rescaleBounds( ofRectangle bounds );
     void                    setAttractionLeft( int y, float amount );
     void                    setAttractionRight( int y, float amount );
