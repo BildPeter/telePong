@@ -207,7 +207,8 @@ void PongGame::resetBallAtBoundary( shared_ptr< ofxBox2dRect > mBall )
     int     distanceFromBorder = 0;
     
     if (     ( mBall->getPosition().x < (*geometries_).world.getMinX() + (mBall->getWidth()) + distanceFromBorder )
-        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder ) )
+        ||   ( mBall->getPosition().x > (*geometries_).world.getMaxX() - (mBall->getWidth()) - distanceFromBorder )
+        ||   ( !( (*geometries_).world.inside( mBall->getPosition() ) ) ) )     // catch a bug, if the ball leaves the game world
     {
         if (mBall->getPosition().x < (*geometries_).world.getCenter().x) {
             pointsRight++;
