@@ -114,14 +114,17 @@ void PongGame::updateRoundCountDown()
 
 void PongGame::draw()
 {
+    //TODO switch / case cleanup
     if (*stateOfGame_ != PlanB )
     {
-        ofFill();
-        ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
-        paddleLeft_->draw();
-        ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
-        paddleRight_->draw();
-        
+        if( *stateOfGame_ != GameOver )
+        {
+            ofFill();
+            ofSetColor( ofColor::fromHex( ofHexToInt( "64b9e4" ) ) );
+            paddleLeft_->draw();
+            ofSetColor( ofColor::fromHex( ofHexToInt( "babd5a" ) ) );
+            paddleRight_->draw();
+        }
         if (    ( *stateOfGame_ == Playing )
             ||  ( *stateOfGame_ == RoundCountDown )
             )
