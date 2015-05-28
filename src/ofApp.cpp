@@ -82,7 +82,7 @@ void ofApp::draw(){
     {
         ofTranslate( screenShift );
         ofScale( screenScale, screenScale );
-        ofRect(5, 5, touchHandler.getGeometry().world.getWidth() - 10, touchHandler.getGeometry().world.getHeight() - 10 );
+        //ofRect(5, 5, touchHandler.getGeometry().world.getWidth() - 10, touchHandler.getGeometry().world.getHeight() - 10 );
         controlIntermediate.draw();
         superPong.draw();
     }

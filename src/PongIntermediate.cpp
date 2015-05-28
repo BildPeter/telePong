@@ -173,7 +173,8 @@ void IntermediateControl::updateAutoGame()
     
 void IntermediateControl::drawAutoGame()
 {
-    //TODO Flux
+    ofSetColor( ofColor::white );
+    bgIdle.draw(0, 0);
     ofSetColor( colMagenta );
     ofFill();
     ofRect( rectGameOver );
